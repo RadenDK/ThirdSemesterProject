@@ -1,0 +1,6 @@
+.vs/
+
+GameClient/GameClientApi/obj/
+GameClient/GameClientApi/debug/
+
+appsettings.*
