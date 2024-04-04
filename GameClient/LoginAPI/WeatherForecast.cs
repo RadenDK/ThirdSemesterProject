@@ -1,4 +1,4 @@
-namespace Login
+namespace LoginAPI
 {
     public class WeatherForecast
     {

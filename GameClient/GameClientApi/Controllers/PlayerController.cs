@@ -6,18 +6,18 @@ namespace GameClientApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class PlayerController : ControllerBase
     {
 
-        private UserService _userService;
+        private PlayerService _userService;
 
-        public UsersController(IConfiguration configuration)
+        public PlayerController(IConfiguration configuration)
         {
-            _userService = new UserService(configuration);
+            _userService = new PlayerService(configuration);
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Player> Get()
         {
             return _userService.GetUsers();
 
