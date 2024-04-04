@@ -4,18 +4,37 @@
     align-items: center;
     height: 100vh;
     padding: 20px;
+
 }
 
 .left-panel {
-    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
+    margin-left: 50px;
+    height: 60%;
+
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+.links a {
+    text-align: center;
+    margin: 5px 0;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 30px;
+    margin-bottom: 30px;
+    margin-top: 10px;
 }
 
 form {
@@ -25,28 +44,55 @@ form {
 
 label {
     font-weight: bold;
+
 }
 
 input[type="text"],
 input[type="password"] {
     padding: 10px;
     margin-bottom: 10px;
+    margin-top: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 90%; /* Add this line */
 }
 
-input[type="checkbox"] {
-    margin-right: 5px;
-}
 
 button {
     background-color: #007bff;
     color: #fff;
+    margin: 80px 80px;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
 }
+
+.checkbox-label-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label-group input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.username-textfields,
+.password-textfields {
+    margin-bottom: 20px;
+}
+
+.username-textfields label,
+.password-textfields label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+.username-textfields input,
+.password-textfields input {
+    margin-top: 1px;
+}
+
 
 /* Right panel (profile picture) */
 .right-panel {
@@ -54,11 +100,11 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .profile-picture img {
-    width: 100px;
-    height: 100px;
+    width: 70vh;
     border-radius: 50%;
     background-color: #ccc;
 }

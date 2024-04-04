@@ -2,24 +2,33 @@
     Layout = "";
     ViewData["Title"] = "Home Page";
 }
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/loginStyle.css">
-    <title>Sign In</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="~/css/loginStyle.css">
+        <title>Sign In</title>
+    </head>
+    <body>
     <div class="container">
         <div class="left-panel">
             <h1>Sign in</h1>
             <form>
+                <div class="textfields">
+                    <div class="username-textfields">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                    <div class="password-textfields">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                <input type="checkbox" id="stay-signed-in" name="stay-signed-in">
-                <label for="stay-signed-in">Stay signed in</label>
+                        </div>
+                </div>
+                <div class="checkbox-container">
+                    <div class="checkbox-label-group">
+                        <input type="checkbox" id="stay-signed-in" name="stay-signed-in">
+                        <label for="stay-signed-in">Stay signed in</label>
+                    </div>
+                </div>
                 <button type="submit">Sign In</button>
             </form>
             <div class="links">
@@ -30,10 +39,10 @@
         <div class="right-panel">
             <div class="profile-picture">
                 <!-- Placeholder for user profile picture -->
-                <img src="default-profile.png" alt="User Profile">
+                <img src="/maskot.png" alt="lol">
             </div>
         </div>
     </div>
-</body>
+    </body>
 </html>
 
