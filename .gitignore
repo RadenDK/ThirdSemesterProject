@@ -4,3 +4,7 @@ GameClient/GameClientApi/obj/
 GameClient/GameClientApi/debug/
 
 appsettings.*
+
+*.log
+temp/
+config.json
