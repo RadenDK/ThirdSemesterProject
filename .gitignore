@@ -8,3 +8,14 @@ appsettings.*
 *.log
 temp/
 config.json
+
+[Bb]in/
+[Oo]bj/
+
+/bin/
+/obj/
+
+*.suo
+*.user
+*.userosscache
+.sln.docstates
