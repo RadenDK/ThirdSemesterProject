@@ -9,27 +9,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners for mousedown and mouseup events
     submitButton.addEventListener('mousedown', function() {
         this.classList.add('pressed');
-        console.log('Button pressed'); // Log when the button is pressed
-        console.log('Pressed class added:', this.classList.contains('pressed')); // Log if the pressed class is added
     });
+
     submitButton.addEventListener('mouseup', function() {
         this.classList.remove('pressed');
-        console.log('Button released'); // Log when the button is released
-        console.log('Pressed class removed:', !this.classList.contains('pressed')); // Log if the pressed class is removed
     });
+
     // Function to check if the fields are empty
     function checkFields() {
-        console.log('checkFields function called'); // Log when the function is called
-
         if (usernameField.value === '' || passwordField.value === '') {
-            console.log('One or both fields are empty'); // Log when one or both fields are empty
-
             // If either field is empty, disable the button and change its color to grey
             submitButton.disabled = true;
             submitButton.style.backgroundColor = 'grey';
-        } else {
-            console.log('Both fields are filled'); // Log when both fields are filled
 
+        } else {
             // If neither field is empty, enable the button and change its color back to the original color
             submitButton.disabled = false;
             submitButton.style.backgroundColor = '#007bff';
