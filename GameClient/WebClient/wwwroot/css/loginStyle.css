@@ -178,6 +178,7 @@ button#submit-button.pressed {
     border-radius: 5px;
     background-color: #2e2b2b;
     color: #2e2b2b;
+    margin-left: 20px;
 }
 
 #stay-signed-in {
