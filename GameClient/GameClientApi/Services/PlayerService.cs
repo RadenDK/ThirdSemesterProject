@@ -1,6 +1,6 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
-
+using BC = BCrypt.Net.BCrypt;
 namespace GameClientApi.Services
 {
     public class PlayerService
@@ -15,7 +15,7 @@ namespace GameClientApi.Services
         public bool VerifyLogin(string userName, string password)
         {
             string storedHashedPassword = _playerAccessor.GetPassword(userName);
-            return BCrypt.Net.BCrypt.Verify(password, storedHashedPassword);
+            return BC.Verify(password, storedHashedPassword);
         }
     }
 }
