@@ -9,17 +9,25 @@ namespace GameClientApi.Controllers
     public class PlayerController : ControllerBase
     {
 
-        private PlayerService _userService;
+        private PlayerService _playerService;
 
         public PlayerController(IConfiguration configuration)
         {
-            _userService = new PlayerService(configuration);
+            _playerService = new PlayerService(configuration);
         }
 
-        [HttpGet]
-        public IEnumerable<Player> Get()
+        [HttpGet("exists/{username}")]
+        public IActionResult Get(string userName)
         {
-            return _userService.GetUsers();
+            bool playerExists = _playerService.GetUserName(userName);
+            if (playerExists)
+            {
+                return Ok(new {exists = true});
+            }
+            else
+            {
+                return Ok(new { exists = false });
+            }
 
         }
     }

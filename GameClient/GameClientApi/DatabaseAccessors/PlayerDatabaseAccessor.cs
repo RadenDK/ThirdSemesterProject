@@ -15,23 +15,33 @@ namespace GameClientApi.DatabaseAccessors
 
         }
 
-        public IEnumerable<Player> GetUsers()
+        public bool GetUserName(string userName)
         {
 
-            string selectQueryString = "SELECT * FROM Users";
-
-            IEnumerable<Player> users = new List<Player>();
+            string selectQueryString = "SELECT * FROM Users WHERE FirstName = @UserName";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                users = connection.Query<Player>(selectQueryString);
-
-                return users.ToList();
+                var players = connection.Query<Player>(selectQueryString, new {UserName = userName});
+                return players != null;
             }
-
-            return users;
         }
+
+        public bool GetPassword(string password)
+        {
+
+            string selectQueryString = "SELECT * FROM Users WHERE LastName = @Password";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                var players = connection.Query<Player>(selectQueryString, new { Password = password });
+                return players != null;
+            }
+        }
+
     }
 }

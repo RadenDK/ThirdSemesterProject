@@ -5,16 +5,16 @@ namespace GameClientApi.Services
 {
     public class PlayerService
     {
-        PlayerDatabaseAccessor _userAccessor;
+        PlayerDatabaseAccessor _playerAccessor;
 
         public PlayerService(IConfiguration configuration)
         {
-            _userAccessor = new PlayerDatabaseAccessor(configuration);
+            _playerAccessor = new PlayerDatabaseAccessor(configuration);
         }
 
-        public IEnumerable<Player> GetUsers()
+        public bool GetUserName(string userName)
         {
-            return _userAccessor.GetUsers();
+            return _playerAccessor.GetUserName(userName);
         }
     }
 }
