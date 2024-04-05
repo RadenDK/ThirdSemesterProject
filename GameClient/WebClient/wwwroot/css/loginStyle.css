@@ -24,7 +24,7 @@ body, .container {
     border-radius: 10px;
     margin-left: 50px;
     height: 70vh;
-    overflow-y: auto; /* Enables vertical scrolling in left panel, when window size is vertically less than expected */
+    overflow-y: hidden;
 }
 
 .links {
