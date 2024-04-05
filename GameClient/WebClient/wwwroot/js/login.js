@@ -4,8 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     var passwordField = document.querySelector('#password');
 
     // Select the submit button
-    var submitButton = document.querySelector('button[type="submit"]');
+    var submitButton = document.querySelector('button#submit-button');
 
+    // Add event listeners for mousedown and mouseup events
+    submitButton.addEventListener('mousedown', function() {
+        this.classList.add('pressed');
+        console.log('Button pressed'); // Log when the button is pressed
+        console.log('Pressed class added:', this.classList.contains('pressed')); // Log if the pressed class is added
+    });
+    submitButton.addEventListener('mouseup', function() {
+        this.classList.remove('pressed');
+        console.log('Button released'); // Log when the button is released
+        console.log('Pressed class removed:', !this.classList.contains('pressed')); // Log if the pressed class is removed
+    });
     // Function to check if the fields are empty
     function checkFields() {
         console.log('checkFields function called'); // Log when the function is called
