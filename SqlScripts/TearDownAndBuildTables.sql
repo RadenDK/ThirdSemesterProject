@@ -37,7 +37,7 @@
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR (50) NOT NULL,
-        PasswordHash NVARCHAR (50) NOT NULL,
+        PasswordHash NVARCHAR (200) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
         Email VARCHAR (50) DEFAULT NULL,
         Birthday DATETIME NOT NULL,
