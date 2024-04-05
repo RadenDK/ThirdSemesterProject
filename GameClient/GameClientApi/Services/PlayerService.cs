@@ -12,9 +12,9 @@ namespace GameClientApi.Services
             _playerAccessor = new PlayerDatabaseAccessor(configuration);
         }
 
-        public bool GetUserName(string userName)
+        public bool VerifyLogin(string userName, string password)
         {
-            return _playerAccessor.GetUserName(userName);
+            return _playerAccessor.VerifyLogin(userName, password);
         }
     }
 }
