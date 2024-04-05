@@ -32,7 +32,7 @@ body, .container {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    margin: 0 auto;
 }
 
 
@@ -79,6 +79,33 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%; /* textfield length */
+    transition: all 0.3s cubic-bezier(0.82,-0.1, 0.33, 1.35);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    transform: scale(1.05); /* Grow on focus */
+    border-color: #007bff; /* Change border color on focus */
+    background-color: #f5f5f5; /* Change background color on focus */
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+input[type="text"].error,
+input[type="password"].error {
+    animation: shake 0.5s; /* Shake on error */
 }
 
 .username-textfields {
@@ -91,6 +118,7 @@ input[type="password"] {
 
 button {
     background-color: #007bff;
+    font-family: "Poppins", sans-serif;
     color: #f4f4f4;
     margin: 80px 80px;
     border: none;
