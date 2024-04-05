@@ -18,7 +18,7 @@ namespace GameClientApi.DatabaseAccessors
         public bool VerifyLogin(string userName, string password)
         {
 
-            string selectQueryString = "SELECT * FROM Users WHERE Username = @UserName AND passwordHash = @Password";
+            string selectQueryString = "SELECT FROM Player WHERE Username = @UserName AND passwordHash = @Password";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -31,7 +31,7 @@ namespace GameClientApi.DatabaseAccessors
 
         public string GetPassword(string userName)
         {
-            string selectQueryString = "SELECT PasswordHash FROM Users WHERE Username = @UserName";
+            string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
             
             using(SqlConnection connection = new SqlConnection(_connectionString))
             {
