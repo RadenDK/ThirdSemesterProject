@@ -16,10 +16,10 @@ namespace GameClientApi.Controllers
             _playerService = new PlayerService(configuration);
         }
 
-        [HttpGet("exists/{username}")]
-        public IActionResult Get(string userName)
+        [HttpPost("exists")]
+        public IActionResult DoesPlayerExist([FromBody]string userName, string password)
         {
-            bool playerExists = _playerService.GetUserName(userName);
+            bool playerExists = _playerService.VerifyLogin(userName, password);
             if (playerExists)
             {
                 return Ok(new {exists = true});
