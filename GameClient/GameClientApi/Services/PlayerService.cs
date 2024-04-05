@@ -14,7 +14,8 @@ namespace GameClientApi.Services
 
         public bool VerifyLogin(string userName, string password)
         {
-            return _playerAccessor.VerifyLogin(userName, password);
+            string storedHashedPassword = _playerAccessor.GetPassword(userName);
+            return BCrypt.Net.BCrypt.Verify(password, storedHashedPassword);
         }
     }
 }

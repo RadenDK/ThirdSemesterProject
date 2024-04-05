@@ -28,5 +28,17 @@ namespace GameClientApi.DatabaseAccessors
                 return players != null;
             }
         }
+
+        public string GetPassword(string userName)
+        {
+            string selectQueryString = "SELECT PasswordHash FROM Users WHERE Username = @UserName";
+            
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = userName });
+                return password;
+            }
+        }
     }
 }
