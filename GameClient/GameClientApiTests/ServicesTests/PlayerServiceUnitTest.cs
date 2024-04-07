@@ -13,13 +13,13 @@ using Moq;
 
 namespace GameClientApiTests.PlayerServiceTest
 {
-	public class PlayerServiceTest
+	public class PlayerServiceUnitTest
 	{
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
-		public PlayerServiceTest()
+		public PlayerServiceUnitTest()
 		{
 			_mockAccessor = new Mock<IPlayerDatabaseAccessor>();
 		}
