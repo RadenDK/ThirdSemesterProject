@@ -1,0 +1,25 @@
+name: Deploy Webclient to Heroku
+
+on:
+  push:
+    # branches:
+    #   - main
+    # paths:
+    #   - 'api-service/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: gameclient-demo
+        heroku_email: 10478735@ucn.dk
+        appdir: GameClient/WebClient
+        usedocker: true
