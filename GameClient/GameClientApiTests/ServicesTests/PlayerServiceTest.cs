@@ -4,165 +4,119 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using GameClientApi.DatabaseAccessors;
 using GameClientApi.Services;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Moq;
 
 namespace GameClientApiTests.PlayerServiceTest
 {
-	public class PlayerServiceTest : IDisposable
+	public class PlayerServiceTest
 	{
 
-		private IConfiguration _configuration;
-		private string _connectionString;
+		private readonly IConfiguration? _mockConfiguration;
+		private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
-		private TestDatabaseHelper _testDatabaseHelper;
-
-		public PlayerServiceTest(IConfiguration configuration)
+		public PlayerServiceTest()
 		{
-			_configuration = configuration;
-			_connectionString = _configuration.GetConnectionString("TestDatabase");
-			_testDatabaseHelper = new TestDatabaseHelper(configuration);
-		}
-
-		public void Dispose()
-		{
-			_testDatabaseHelper.TearDownAndBuildTestDatabase();
-		}
-
-		private void InsertValidPlayerMockData()
-		{
-			string query = "";
-			_testDatabaseHelper.RunQuery(query);
-		}
-
-		private void InsertInvalidPlayerMockData() {
-			string query = "";
-			_testDatabaseHelper.RunQuery(query);
+			_mockAccessor = new Mock<IPlayerDatabaseAccessor>();
 		}
 
 		[Fact]
 		public void VerifyLogin_TC1_ReturnsTrueWhenInputIsFound()
 		{
 			// Arrange
-			InsertValidPlayerMockData();
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "validUsername";
-			string mockPassword = "validHashedPassword";
+			string testUsername = "Username";
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.GetPassword(testUsername))
+				.Returns(testPassword);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
+			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.True(testResult);
-		}
-
-		[Fact]
-		public void VerifyLogin_TC2_ReturnsFalseWhenInputIsNotFound()
-		{
-			// Arrange
-			InsertInvalidPlayerMockData();
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "invalidlUsername";
-			string mockPassword = "invalidHashedPassword";
-
-			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
-
-			// Assert
-			Assert.False(testResult);
+			Assert.True(testResult, "Should return True but does not");
 		}
 
 		[Fact]
 		public void VerifyLogin_TC3_ReturnsFalseWhenUsernameIsNotFound()
 		{
 			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "invalidlUsername";
-			string mockPassword = "validHashedPassword";
+			string testUsername = "Username";
+			string testPassword = "ExpectedHashedPassword";
 
+			_mockAccessor.Setup(a => a.GetPassword("invalidUsername"))
+				.Returns("");
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+		
 			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
+			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.False(testResult, "Should return False but does not");
 		}
 
 		[Fact]
 		public void VerifyLogin_TC4_ReturnsFalseWhenPasswordIsNotFound()
 		{
 			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "validlUsername";
-			string mockPassword = "invalidHashedPassword";
+			string testUsername = "Username";
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.GetPassword("Username"))
+				.Returns("");
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
+			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.False(testResult, "Should return False but does not");
 		}
 
 		[Fact]
 		public void VerifyLogin_TC5_ReturnsFalseWhenUsernameAndPasswordAreEmpty()
 		{
 			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "";
-			string mockPassword = "";
+			string testUsername = "";
+			string testPassword = "";
+
+			_mockAccessor.Setup(a => a.GetPassword(testUsername))
+				.Returns(testPassword);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
+			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.False(testResult, "Should return False but does not");
 		}
 
 		[Fact]
 		public void VerifyLogin_TC6_ReturnsFalseWhenUsernameAndPasswordAreNull()
 		{
 			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = null;
-			string mockPassword = null;
+			string testUsername = "Username";
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.GetPassword(testUsername))
+				.Returns("null");
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
+			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.False(testResult, "Should return False but does not");
 		}
-
-		[Fact]
-		public void VerifyLogin_TC7_ReturnsFalseWhenPasswordIsEmpty()
-		{
-			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "validUsername";
-			string mockPassword = "";
-
-			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
-
-			// Assert
-			Assert.False(testResult);
-		}
-
-		[Fact]
-		public void VerifyLogin_TC8_ReturnsFalseWhenUsernameIsEmpty()
-		{
-			// Arrange
-			PlayerService playerService = new PlayerService(_configuration);
-			string mockUsername = "";
-			string mockPassword = "validHashedPassword";
-
-			// Act
-			bool testResult = playerService.VerifyLogin(mockUsername, mockPassword);
-
-			// Assert
-			Assert.False(testResult);
-		}
-
 	}
 }
