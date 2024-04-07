@@ -120,7 +120,7 @@ button {
     background-color: #007bff;
     font-family: "Poppins", sans-serif;
     color: #f4f4f4;
-    margin: 80px 80px auto;
+    margin: 30px 80px auto;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -178,6 +178,7 @@ button#submit-button.pressed {
     border-radius: 5px;
     background-color: #2e2b2b;
     color: #2e2b2b;
+    margin-left: 20px;
 }
 
 #stay-signed-in {
