@@ -12,7 +12,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UserNameExists(string username);
 
-		bool InGameNameExists(string ingamename)
+		bool InGameNameExists(string ingamename);
 
 
 	}
