@@ -193,8 +193,8 @@ button#submit-button.pressed {
 }
 
 .profile-picture img {
-    width: 100vh;
-    height: 80vh;
+    width: 70vh;
+    height: 70vh;
     border-radius: 5px;
     /* background-color: rgb(25, 23, 23); */
     color: rgb(23, 23, 23);
