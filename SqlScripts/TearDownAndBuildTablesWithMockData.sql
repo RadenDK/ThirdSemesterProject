@@ -37,7 +37,7 @@
         Username NVARCHAR (50) NOT NULL,
         PasswordHash NVARCHAR (200) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
-        Email VARCHAR (50) DEFAULT NULL,
+        Email VARCHAR (50) NOT NULL,
         Birthday DATETIME NOT NULL,
         Elo INT DEFAULT 0,
         Banned bit DEFAULT 0,
