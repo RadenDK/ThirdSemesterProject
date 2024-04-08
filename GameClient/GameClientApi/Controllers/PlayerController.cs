@@ -32,10 +32,10 @@ namespace GameClientApi.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult CreatePlayer(Player player)
         {
             throw new NotImplementedException();
         }
-    }
+	}
 }
