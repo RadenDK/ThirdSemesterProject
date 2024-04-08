@@ -23,11 +23,11 @@ namespace GameClientApi.Controllers
             bool playerExists = _playerService.VerifyLogin(player.UserName, player.Password);
             if (playerExists)
             {
-                return Ok(new {exists = true, message = "Success"});
+                return RedirectToAction("Blank", "Home");
             }
             else
             {
-                return Unauthorized(new { exists = false, message = "Failure" });
+                return RedirectToAction("Index", "Home", new {error=true});
             }
 
         }

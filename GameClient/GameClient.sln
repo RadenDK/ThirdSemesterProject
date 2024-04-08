@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameClientApi", "GameClient
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebClient.csproj", "{9036063F-FDD7-4C35-B270-A3BE6AF866C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClientApiTests", "GameClientApiTests\GameClientApiTests.csproj", "{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameClientApiTests", "GameClientApiTests\GameClientApiTests.csproj", "{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
