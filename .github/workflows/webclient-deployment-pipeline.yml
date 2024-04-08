@@ -2,11 +2,11 @@ name: Deploy Webclient to Heroku
 
 on:
   push:
-    # branches:
-    #   - main
-    #   - Development
-    # paths:
-    #   - 'GameClient/WebClient/**' 
+    branches:
+      - main
+      - Development
+    paths:
+      - 'GameClient/WebClient/**' 
 
 jobs:
   deploy:
