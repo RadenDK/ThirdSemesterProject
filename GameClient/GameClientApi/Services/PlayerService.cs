@@ -18,5 +18,10 @@ namespace GameClientApi.Services
             string storedHashedPassword = _playerAccessor.GetPassword(userName);
             return BC.Verify(password, storedHashedPassword);
         }
+
+        public bool CreatePlayer(Player player)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

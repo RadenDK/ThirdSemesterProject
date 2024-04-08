@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using GameClientApi.DatabaseAccessors;
 using GameClientApi.Services;
+using GameClientApi.Models;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -118,5 +119,102 @@ namespace GameClientApiTests.PlayerServiceTest
 			// Assert
 			Assert.False(testResult, "Should return False but does not");
 		}
+
+		[Fact]
+		public void CreatePlayer_TC1_ReturnsTrueIfPlayerIsValid()
+		{
+			// Arrange
+			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename"};
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+				.Returns(true);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+
+			// Act
+			bool testResult = playerService.CreatePlayer(mockPlayer);
+
+			// Assert
+			Assert.True(testResult);
+		}
+
+		[Fact]
+		public void CreatePlayer_TC2_ThrowsExpectionIfUsernameDoesNotExist()
+		{
+			// Arrange
+			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+				.Returns(true);
+			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+				.Returns(false);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+
+			// Assert
+			Assert.Throws<Exception>(() =>
+			{
+				// Act
+				bool testResult = playerService.CreatePlayer(mockPlayer);
+
+			});
+		}
+
+		[Fact]
+		public void CreatePlayer_TC3_ThrowsExpectionIfIngamenameDoesNotExist()
+		{
+			// Arrange
+			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+				.Returns(true);
+			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+				.Returns(false);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+
+			// Assert
+			Assert.Throws<Exception>(() =>
+			{
+				// Act
+				bool testResult = playerService.CreatePlayer(mockPlayer);
+
+			});
+		}
+
+		[Fact]
+		public void CreatePlayer_TC4_ReturnsFalsePlayerWasNotCreated()
+		{
+			// Arrange
+			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+			string testPassword = "ExpectedHashedPassword";
+
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+				.Returns(false);
+
+			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+
+			// Act
+			bool testResult = playerService.CreatePlayer(mockPlayer);
+
+			// Assert
+			Assert.False(testResult);
+		}
+
 	}
 }
