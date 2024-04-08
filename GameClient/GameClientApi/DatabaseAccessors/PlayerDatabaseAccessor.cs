@@ -40,5 +40,21 @@ namespace GameClientApi.DatabaseAccessors
                 return password;
             }
         }
-    }
+
+        public bool CreatePlayer(Player newPlayer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UserNameExists(string username)
+        {
+            throw new NotImplementedException();
+		}
+
+		public bool InGameNameExists(string ingamename)
+		{
+			throw new NotImplementedException();
+		}
+
+	}
 }
