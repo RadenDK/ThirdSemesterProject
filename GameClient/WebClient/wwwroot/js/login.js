@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (usernameField.value === '' || passwordField.value === '') {
             // If either field is empty, disable the button and change its color to grey
             submitButton.disabled = true;
-            submitButton.style.backgroundColor = 'grey';
+            submitButton.style.backgroundColor = 'rgb(23, 23, 23);';
 
         } else {
             // If neither field is empty, enable the button and change its color back to the original color
