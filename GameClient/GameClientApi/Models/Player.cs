@@ -21,5 +21,10 @@
             this.Currency = Currency;
         }
 
+        public Player()
+        {
+
+        }
+
     }
 }
