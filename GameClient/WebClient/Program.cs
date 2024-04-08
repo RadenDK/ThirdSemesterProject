@@ -24,4 +24,12 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
+string port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+	// If the PORT environment variable is set, use it to configure the app's URLs
+	app.Urls.Clear();
+	app.Urls.Add($"http://*:{port}");
+}
+
 app.Run();

@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GameClientApi.DatabaseAccessors
 {
-    public class PlayerDatabaseAccessor
+    public class PlayerDatabaseAccessor : IPlayerDatabaseAccessor
     {
 
         private readonly string _connectionString;

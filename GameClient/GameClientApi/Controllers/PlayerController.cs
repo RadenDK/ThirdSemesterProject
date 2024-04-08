@@ -1,6 +1,7 @@
 using GameClientApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
+using GameClientApi.DatabaseAccessors;
 
 namespace GameClientApi.Controllers
 {
@@ -11,9 +12,9 @@ namespace GameClientApi.Controllers
 
         private PlayerService _playerService;
 
-        public PlayerController(IConfiguration configuration)
+        public PlayerController(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
         {
-            _playerService = new PlayerService(configuration);
+            _playerService = new PlayerService(configuration, playerDatabaseAccessor);
         }
 
         [HttpPost("exists")]
