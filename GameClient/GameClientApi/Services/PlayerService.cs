@@ -5,11 +5,12 @@ namespace GameClientApi.Services
 {
     public class PlayerService
     {
-        PlayerDatabaseAccessor _playerAccessor;
+        IPlayerDatabaseAccessor _playerAccessor;
 
-        public PlayerService(IConfiguration configuration)
+        public PlayerService(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
         {
             _playerAccessor = new PlayerDatabaseAccessor(configuration);
+            _playerAccessor = playerDatabaseAccessor;
         }
 
         public bool VerifyLogin(string userName, string password)

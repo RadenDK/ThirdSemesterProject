@@ -15,20 +15,17 @@ namespace GameClientApiTests.TestHelpers
 		private IConfiguration _configuration;
 		private string _connectionString;
 
-		public TestDatabaseHelper(IConfiguration configuration)
+		public TestDatabaseHelper(string connectionString)
 		{
-			_configuration = configuration;
-			_connectionString = _configuration.GetConnectionString("TestDatabase");
+			_connectionString = connectionString;
 		}
-
 
 		public void TearDownAndBuildTestDatabase()
 		{
 			string currentDirectory = Directory.GetCurrentDirectory();
-			string relativePath = Path.Combine(currentDirectory, "..", "..", "..", "..", "SqlScripts", "TearDownAndBuildTablesTestDatabase.sql");
-			string absolutePath = Path.GetFullPath(relativePath);
-
-			string fileQueryContents = File.ReadAllText(absolutePath);
+			string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.Parent.Parent.FullName;
+			string relativePath = Path.Combine(projectDirectory, "SqlScripts", "TearDownAndBuildTablesTestDatabase.sql");
+			string fileQueryContents = File.ReadAllText(relativePath);
 
 			// Split the file content into separate commands
 
