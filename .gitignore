@@ -82,3 +82,4 @@ _[Ss]cripts
 *.dot[Cc]over
 *.idea
 .DS_Store
+appsettingsForTesting.json

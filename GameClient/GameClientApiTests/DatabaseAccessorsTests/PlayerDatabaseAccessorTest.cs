@@ -19,7 +19,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 		{
 			_configuration = new ConfigurationBuilder()
 		.SetBasePath(Directory.GetCurrentDirectory())
-		.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+		.AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
 		.Build();
 
 			_testDatabaseHelper = new TestDatabaseHelper(_configuration.GetConnectionString("DefaultConnection"));
