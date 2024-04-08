@@ -2,7 +2,7 @@
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 300;
-    background-color: #0c0b0b;
+    background-color: rgb(23, 23, 23);
 }
 
 .container {
@@ -10,7 +10,12 @@
     justify-content: space-between;
     align-items: center;
     height: 100vh;
-    padding: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-top: 20px;
+    background-color: rgb(16, 16, 16);
+    backdrop-filter: blur(100%); /* Frosted glass effect, not sure if working properly*/
+    overflow-x: hidden;
 }
 body, .container {
     overflow-y: hidden; /* Disable vertical scrolling for the rest of the page*/
@@ -19,12 +24,12 @@ body, .container {
 .left-panel {
     min-width: 300px;
     max-width: 600px;
-    padding: 20px;
-    background-color: rgb(46, 43, 43);
+    padding: 25px;
     border-radius: 10px;
-    margin-left: 50px;
-    height: 70vh;
+    margin-left: 30px;
+    height: 60vh;
     overflow-y: hidden;
+    transform: translateY(-20%);
 }
 
 .links {
@@ -39,7 +44,7 @@ body, .container {
 
 .links a {
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     text-decoration: none;
     color: #d1d1d1;
@@ -53,40 +58,48 @@ body, .container {
 }
 
 h1 {
-    font-size: 30px;
-    margin-bottom: 30px;
+    font-size: 37px;
+    margin-bottom: 40px;
     margin-top: 10px;
-    color: white;
+    color: #ffffff;
+
 }
 
 form {
     display: flex;
     flex-direction: column;
-
 }
 
 label {
     font-weight: bold;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 input[type="text"],
 input[type="password"] {
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
     margin-top: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(209, 209, 209, 0);
     border-radius: 5px;
-    width: 100%; /* textfield length */
+    width: 93%; /* textfield length */
     transition: all 0.3s cubic-bezier(0.82,-0.1, 0.33, 1.35);
+    background-color: rgb(23, 23, 23);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    transform: scale(1.05); /* Grow on focus */
-    border-color: #007bff; /* Change border color on focus */
-    background-color: #f5f5f5; /* Change background color on focus */
+    transform: scale(1.05);
+    outline: none; /* Remove blue and white border on focus */
+    caret-color: transparent;
+    caret-shape: underscore;
+    font-size: 12px;
+
+
 }
 
 @keyframes shake {
@@ -105,24 +118,25 @@ input[type="password"]:focus {
 
 input[type="text"].error,
 input[type="password"].error {
-    animation: shake 0.5s; /* Shake on error */
+    animation: shake 0.5s; /* Shake on error, but doesnt work??? */
 }
 
 .username-textfields {
-    margin-bottom: 15px;
+    margin-bottom: -1px;
 }
 
 .password-textfields {
-    margin-top: 15px;
 }
 
 button {
     background-color: #007bff;
     font-family: "Poppins", sans-serif;
     color: #f4f4f4;
-    margin: 30px 80px auto;
+    /* margins er iffy atm */
+    margin: 50px 80px auto;
+    margin-bottom: 10px;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
@@ -142,13 +156,13 @@ button:disabled {
 button:not(:disabled):hover {
     color: #ffffff;
     background-color: #007bff;
-    transform: scale(1.1);
+    transform: scale(1.08);
     cursor: pointer;
 }
 
 button#submit-button.pressed {
-    transform: scale(0.98); /* Shrink on press */
-    transition: transform 0.1s ease-in-out; /* Ease-in-out animation for press */
+    transform: scale(0.99);
+    transition: transform 0.1s ease-out;
 }
 
 .checkbox-label-group {
@@ -157,10 +171,9 @@ button#submit-button.pressed {
 }
 
 .checkbox-label-group input[type="checkbox"] {
-    margin-right: 5px;
-
-    height: 15px;
-    width: 15px;
+    margin-right: 10px;
+    height: 12px;
+    width: 12px;
 }
 
 
@@ -170,15 +183,23 @@ button#submit-button.pressed {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 2000%;
+    height: 120%;
+    /* border-radius: 120px; */
+
+    background-color: rgb(23, 23, 23);
+    margin-left: 50px;
+    margin-right: 0;
 }
 
 .profile-picture img {
     width: 100vh;
     height: 80vh;
     border-radius: 5px;
-    background-color: #2e2b2b;
-    color: #2e2b2b;
-    margin-left: 20px;
+    /* background-color: rgb(25, 23, 23); */
+    color: rgb(23, 23, 23);
+    margin-left: 5%;
+    margin-right:5%;
 }
 
 #stay-signed-in {
@@ -187,16 +208,8 @@ button#submit-button.pressed {
 
 #stay-signed-in:hover {
     color: #0f0f13;
-    background-color: #1c87f8;
+    background-color: #000000;
     transform: scale(1.1);
     border-radius: 5px;
 }
 
-@media (max-height: 1080px) {
-    .links {
-        /* Adjust the styles for the .links class here */
-        font-size: 12px; /* Adjust the font size */
-        margin: 5px auto; /* Adjust the margin */
-        /* Add any other styles you want to adjust */
-    }
-}

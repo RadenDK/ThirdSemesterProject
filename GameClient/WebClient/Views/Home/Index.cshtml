@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="~/css/loginStyle.css">
           <script src="js/login.js"></script>
-        <title>Sign In</title>
+      <title>Sign In</title>
     </head>
     <body>
     <div class="container">
@@ -16,13 +16,13 @@
             <form method="post" action="/Player/exists">
                 <div class="textfields">
                     <div class="username-textfields">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="UserName" placeholder="Enter your username" required>
-                </div>
+                        <!--   <label for="username">Username:</label> -->
+                        <input type="text" id="username" name="UserName" placeholder="USERNAME" required>
+                    </div>
                     <div class="password-textfields">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="Password" placeholder="Enter your password" required>
-                        </div>
+                        <!--   <label for="password">Password:</label> -->
+                        <input type="password" id="password" name="Password" placeholder="PASSWORD" required>
+                    </div>
                 </div>
                 <div class="checkbox-container">
                     <div class="checkbox-label-group">
@@ -30,7 +30,7 @@
                         <label for="stay-signed-in">Stay signed in</label>
                     </div>
                 </div>
-                <button type="submit" id="submit-button">Sign In</button>
+                <button type="submit" id="submit-button">Sign in</button>
             </form>
             <div class="links">
                 <a href="#">Forgot password?</a>
