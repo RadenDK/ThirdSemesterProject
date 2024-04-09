@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 // The below line makes it so that when the project is build asp.net know to create 
 // a new PlayerDatabaseAccessor and give it as an constructor parameter to the controller
 // if it takes an parameter like IPlayerDatabaseAccessor

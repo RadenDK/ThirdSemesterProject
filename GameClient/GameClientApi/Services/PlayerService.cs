@@ -9,15 +9,19 @@ namespace GameClientApi.Services
 
         public PlayerService(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
         {
-            _playerAccessor = new PlayerDatabaseAccessor(configuration);
             _playerAccessor = playerDatabaseAccessor;
         }
 
         public bool VerifyLogin(string userName, string password)
         {
             string storedHashedPassword = _playerAccessor.GetPassword(userName);
+            if (storedHashedPassword == null)
+            {
+                return false;
+            }
             return BC.Verify(password, storedHashedPassword);
         }
+
 
         public bool CreatePlayer(Player player)
         {
