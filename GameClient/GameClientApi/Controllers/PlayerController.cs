@@ -2,12 +2,13 @@ using GameClientApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
 using GameClientApi.DatabaseAccessors;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GameClientApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PlayerController : ControllerBase
+    public class PlayerController : Controller
     {
 
         private PlayerService _playerService;
@@ -23,11 +24,11 @@ namespace GameClientApi.Controllers
             bool playerExists = _playerService.VerifyLogin(player.UserName, player.Password);
             if (playerExists)
             {
-                return RedirectToAction("Blank", "Home");
+                return Ok();
             }
             else
             {
-                return RedirectToAction("Index", "Home", new {error=true});
+                return BadRequest();
             }
 
         }
