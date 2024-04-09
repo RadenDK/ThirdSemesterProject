@@ -124,10 +124,10 @@ namespace GameClientApiTests.PlayerServiceTest
 		public void CreatePlayer_TC1_ReturnsTrueIfPlayerIsValid()
 		{
 			// Arrange
-			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename"};
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename"};
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -147,10 +147,10 @@ namespace GameClientApiTests.PlayerServiceTest
 		public void CreatePlayer_TC2_ThrowsExpectionIfUsernameDoesNotExist()
 		{
 			// Arrange
-			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(true);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -172,10 +172,10 @@ namespace GameClientApiTests.PlayerServiceTest
 		public void CreatePlayer_TC3_ThrowsExpectionIfIngamenameDoesNotExist()
 		{
 			// Arrange
-			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(true);
@@ -196,11 +196,11 @@ namespace GameClientApiTests.PlayerServiceTest
 		[Fact]
 		public void CreatePlayer_TC4_ReturnsFalsePlayerWasNotCreated()
 		{
-			// Arrange
-			Player mockPlayer = new Player { UserName = "Username", InGameName = "Ingamename" };
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);

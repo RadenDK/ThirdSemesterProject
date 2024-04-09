@@ -24,7 +24,7 @@ namespace GameClientApi.DatabaseAccessors
             {
                 connection.Open();
 
-                var players = connection.Query<Player>(selectQueryString, new {UserName = userName, Password = password});
+                var players = connection.Query<Player>(selectQueryString, new { UserName = userName, Password = password });
                 return players != null;
             }
         }
@@ -32,8 +32,8 @@ namespace GameClientApi.DatabaseAccessors
         public string GetPassword(string userName)
         {
             string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
-            
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = userName });
@@ -41,20 +41,32 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public bool CreatePlayer(Player newPlayer)
+        public bool CreatePlayer(AccountRegistrationModel newPlayer)
         {
-            throw new NotImplementedException();
+            string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
+                "VALUES (@Username, @PasswordHash, @InGameName, @Email, @Birthday)";
+
+            bool playerInserted = false;
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var rowsAffected = connection.Execute(insertQuery, newPlayer);
+                playerInserted = rowsAffected == 1;
+            }
+            return playerInserted;
+
         }
 
         public bool UserNameExists(string username)
         {
             throw new NotImplementedException();
-		}
+        }
 
-		public bool InGameNameExists(string ingamename)
-		{
-			throw new NotImplementedException();
-		}
+        public bool InGameNameExists(string ingamename)
+        {
+            throw new NotImplementedException();
+        }
 
-	}
+    }
 }

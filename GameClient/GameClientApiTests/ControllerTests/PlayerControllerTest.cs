@@ -37,9 +37,9 @@ namespace GameClientApiTests.PlayerControllerTests
 		public void CreatePlayer_TC1_ReturnsOKIfPlayerWasCreated()
 		{
 			// Arrange
-			Player mockPlayer = new Player();
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel();
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -59,9 +59,9 @@ namespace GameClientApiTests.PlayerControllerTests
 		public void CreatePlayer_TC2_ReturnsBadRequestWhenUsernameExists()
 		{
 			// Arrange
-			Player mockPlayer = new Player { UserName = "ExistingUsername" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "ExistingUsername" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(true);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -84,9 +84,9 @@ namespace GameClientApiTests.PlayerControllerTests
 		public void CreatePlayer_TC3_ReturnsBadRequestWhenInGameNameExists()
 		{
 			// Arrange
-			Player mockPlayer = new Player { InGameName = "ExistingInGameName" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { InGameName = "ExistingInGameName" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(true);
@@ -110,9 +110,9 @@ namespace GameClientApiTests.PlayerControllerTests
 		public void CreatePlayer_TC4_ReturnsBadRequestWhenUnknownErrorOccurs()
 		{
 			// Arrange
-			Player mockPlayer = new Player { UserName = "NewUsername", InGameName = "NewInGameName" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "NewUsername", InGameName = "NewInGameName" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.UserName))
+			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);

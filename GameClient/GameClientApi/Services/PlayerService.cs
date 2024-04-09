@@ -23,7 +23,7 @@ namespace GameClientApi.Services
         }
 
 
-        public bool CreatePlayer(Player player)
+        public bool CreatePlayer(AccountRegistrationModel player)
         {
             throw new NotImplementedException();
         }
