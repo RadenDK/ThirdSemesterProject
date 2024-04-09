@@ -33,3 +33,9 @@ input[type=checkbox] {
     .button:hover {
         opacity: 0.8;
     }
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

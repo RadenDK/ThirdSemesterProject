@@ -2,6 +2,15 @@
 	ViewData["Title"] = "Blank";
 	Layout = "";
 }
+@section Scripts {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+@model WebClient.Models.AccountRegistrationModel
+
 
 <head>
 	<meta charset="UTF-8">
@@ -9,29 +18,61 @@
 	<title>Create Profile</title>
 	<link rel="stylesheet" href="~/css/registrationStyle.css">
 
-	
+
 </head>
 <body>
 	<div class="container">
-		<h2 >Create Profile</h2>
-		<form>
-			<label for="username">Username:</label>
-			<input type="text" id="username" name="username" required>
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" required>
-			<label for="confirm_password">Confirm Password:</label>
-			<input type="password" id="confirm_password" name="confirm_password" required>
-			<label for="email">Email:</label>
-			<input type="email" id="email" name="email" required>
-			<label for="game_name">Game name:</label>
-			<input type="text" id="game_name" name="game_name">
-			<label for="birthday">Birthday:</label>
-			<input type="date" id="birthday" name="birthday">
-			<input type="checkbox" id="eula" name="eula" required>
-			<label for="eula">I accept the end user license agreement</label><br>
-			<input type="checkbox" id="messages" name="messages">
-			<label for="messages">I want to receive targeted messages</label><br>
-			<button type="submit" class="button">Create Account</button>
-		</form>
+		<h2>Create Profile</h2>
+        <form asp-controller="Registration" asp-action="CreatePlayer" method="post">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input asp-for="Username" type="text" id="username" name="username">
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input asp-for="Password" type="password" id="password" name="password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input asp-for="ConfirmPassword" type="password" id="confirmPassword" name="confirmPassword">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input asp-for="Email" type="email" id="email" name="email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="inGameName">In Game Name:</label>
+                <input asp-for="InGameName" type="text" id="inGameName" name="inGameName">
+                <span asp-validation-for="InGameName" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="birthday">Birthday:</label>
+                <input asp-for="BirthDay" type="date" id="birthday" name="birthday">
+                <span asp-validation-for="BirthDay" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="eula" name="eula">
+                <label for="eula">I accept the end user license agreement</label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="messages" name="messages">
+                <label for="messages">I want to receive targeted messages</label>
+            </div>
+
+            <button type="submit" class="button">Create Account</button>
+        </form>
+
+
 	</div>
 </body>
