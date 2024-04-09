@@ -33,9 +33,9 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult CreatePlayer(Player player)
+        public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
         {
-            throw new NotImplementedException();
+            return Ok(accountRegistration);
         }
 	}
 }
