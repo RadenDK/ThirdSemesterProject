@@ -18,6 +18,11 @@ namespace WebClient.Controllers
             return View();
         }
 
+        public ActionResult Blank()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<ActionResult> Index(string userName, string password)
         {
@@ -26,12 +31,12 @@ namespace WebClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 // If the API returned a 200 status code, redirect to the new view
-                return View("Blank");
+                return RedirectToAction("Blank");
             }
             else
             {
                 // If the API returned a 400 status code, return the same view
-                return View();
+                return View("Index");
             }
         }
 
@@ -39,10 +44,10 @@ namespace WebClient.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:5198/");
+                client.BaseAddress = new Uri("http://localhost:5198/");
                 var requestData = new { UserName = userName, Password = password };
                 var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), System.Text.Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("Player/exists", content);
+                HttpResponseMessage response = await client.PostAsync("Player/verify", content);
                 return response;
             }
         }
