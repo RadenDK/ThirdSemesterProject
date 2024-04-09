@@ -2,6 +2,20 @@
     Layout = "";
     ViewData["Title"] = "Home Page";
 }
+
+@*
+    The following code snippet ensures that the message "Account has been created" is displayed
+    in the Registration view after the user presses the 'Create Account' button,
+    indicating successful account creation.
+*@
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        alert("@TempData["SuccessMessage"]");
+        window.location.href = '@Url.Action("Index", "Login")';
+    </script>
+}
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +48,7 @@
             </form>
             <div class="links">
                 <a href="#">Forgot password?</a>
-                <a href="#">Create account!</a>
+                <a asp-controller="Registration" asp-action="Registration">Create account!</a>
             </div>
         </div>
         <div class="right-panel">
