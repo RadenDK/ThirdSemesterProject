@@ -1,19 +1,16 @@
-﻿using System.Net.Http;
+﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebClient.Models;
 
 namespace WebClient.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly HttpClient _client;
 
-        public LoginController()
-        {
-            _client = new HttpClient();
-        }
 
         // GET: LoginController
         public ActionResult Index()
@@ -21,14 +18,16 @@ namespace WebClient.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Index(string userName, string password)
+        public ActionResult Blank()
         {
-            var playerData = new { UserName = userName, Password = password };
-            var content = new StringContent(JsonSerializer.Serialize(playerData), Encoding.UTF8, "application/json");
+            return View();
+        }
 
-            var response = await _client.PostAsync("https://localhost:7292/Player/exists", content);
-
+        [HttpPost]
+        public async Task<ActionResult> Index(PlayerModel playerModel)
+        {
+            var requestData = new PlayerModel { UserName = playerModel.UserName, Password = playerModel.Password };
+            var response = await SendCredentialsToApi(requestData);
             if (response.IsSuccessStatusCode)
             {
                 // If the API returned a 200 status code, redirect to the new view
@@ -37,8 +36,25 @@ namespace WebClient.Controllers
             else
             {
                 // If the API returned a 400 status code, return the same view
-                return View();
+                return View("Index");
             }
+        }
+
+        private async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5198/");
+                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(playerModel), System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync("Player/verify", content);
+                return response;
+            }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

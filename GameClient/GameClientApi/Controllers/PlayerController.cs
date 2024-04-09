@@ -18,8 +18,9 @@ namespace GameClientApi.Controllers
             _playerService = new PlayerService(configuration, playerDatabaseAccessor);
         }
 
-        [HttpPost("exists")]
-        public IActionResult DoesPlayerExist([FromBody] Player player)
+
+        [HttpPost("verify")]
+        public IActionResult DoesPlayerExist([FromBody]Player player)
         {
             bool playerExists = _playerService.VerifyLogin(player.UserName, player.Password);
             if (playerExists)
