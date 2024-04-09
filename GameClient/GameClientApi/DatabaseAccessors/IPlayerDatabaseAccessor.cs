@@ -10,7 +10,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool CreatePlayer(AccountRegistrationModel newPlayer);
 
-		bool UserNameExists(string username);
+		bool UsernameExists(string username);
 
 		bool InGameNameExists(string ingamename);
 

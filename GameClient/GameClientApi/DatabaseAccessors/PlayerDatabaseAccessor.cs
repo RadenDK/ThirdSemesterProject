@@ -44,7 +44,7 @@ namespace GameClientApi.DatabaseAccessors
         public bool CreatePlayer(AccountRegistrationModel newPlayer)
         {
             string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
-                "VALUES (@Username, @PasswordHash, @InGameName, @Email, @Birthday)";
+                "VALUES (@Username, @Password, @InGameName, @Email, @Birthday)";
 
             bool playerInserted = false;
 
@@ -58,14 +58,28 @@ namespace GameClientApi.DatabaseAccessors
 
         }
 
-        public bool UserNameExists(string username)
+        public bool UsernameExists(string username)
         {
-            throw new NotImplementedException();
+            string selectQueryString = "SELECT 1 FROM Player WHERE Username = @UserName";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var player = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = username });
+                return player != null;
+            }
         }
 
-        public bool InGameNameExists(string ingamename)
+        public bool InGameNameExists(string inGameName)
         {
-            throw new NotImplementedException();
+            string selectQueryString = "SELECT 1 FROM Player WHERE InGameName = @inGameName";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var player = connection.QuerySingleOrDefault<string>(selectQueryString, new { InGameName = inGameName });
+                return player != null;
+            }
         }
 
     }

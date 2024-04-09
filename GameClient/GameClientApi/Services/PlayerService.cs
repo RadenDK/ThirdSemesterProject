@@ -25,7 +25,18 @@ namespace GameClientApi.Services
 
         public bool CreatePlayer(AccountRegistrationModel player)
         {
-            throw new NotImplementedException();
+            if (_playerAccessor.UsernameExists(player.Username))
+            {
+                throw new ArgumentException("Username already exists");
+            }
+            if (_playerAccessor.InGameNameExists(player.InGameName))
+            {
+                throw new ArgumentException("InGameName already exists");
+            }
+
+            player.Password = BC.HashPassword(player.Password);
+
+            return _playerAccessor.CreatePlayer(player);
         }
     }
 }
