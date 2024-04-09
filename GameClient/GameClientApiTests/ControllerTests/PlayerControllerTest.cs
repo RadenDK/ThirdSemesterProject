@@ -39,7 +39,7 @@ namespace GameClientApiTests.PlayerControllerTests
 			// Arrange
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel();
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -61,7 +61,7 @@ namespace GameClientApiTests.PlayerControllerTests
 			// Arrange
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "ExistingUsername" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(true);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -86,7 +86,7 @@ namespace GameClientApiTests.PlayerControllerTests
 			// Arrange
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { InGameName = "ExistingInGameName" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(true);
@@ -112,7 +112,7 @@ namespace GameClientApiTests.PlayerControllerTests
 			// Arrange
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "NewUsername", InGameName = "NewInGameName" };
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);

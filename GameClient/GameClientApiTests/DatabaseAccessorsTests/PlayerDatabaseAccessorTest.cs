@@ -179,7 +179,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = "Username";
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.True(testResult);
@@ -194,7 +194,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = null;
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.False(testResult);
@@ -208,7 +208,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = "Username";
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.False(testResult);

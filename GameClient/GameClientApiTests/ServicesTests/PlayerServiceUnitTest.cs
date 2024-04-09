@@ -127,7 +127,7 @@ namespace GameClientApiTests.PlayerServiceTest
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename"};
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -150,7 +150,7 @@ namespace GameClientApiTests.PlayerServiceTest
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(true);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -175,7 +175,7 @@ namespace GameClientApiTests.PlayerServiceTest
 			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(true);
@@ -200,7 +200,7 @@ namespace GameClientApiTests.PlayerServiceTest
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
 			string testPassword = "ExpectedHashedPassword";
 
-			_mockAccessor.Setup(a => a.UserNameExists(mockPlayer.Username))
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
