@@ -18,6 +18,7 @@ namespace GameClientApi.Controllers
             _playerService = new PlayerService(configuration, playerDatabaseAccessor);
         }
 
+
         [HttpPost("verify")]
         public IActionResult DoesPlayerExist([FromBody]Player player)
         {
@@ -36,7 +37,22 @@ namespace GameClientApi.Controllers
         [HttpPost("create")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
         {
-            return Ok(accountRegistration);
+            try
+            {
+                if (_playerService.CreatePlayer(accountRegistration))
+                {
+                    return Ok(); // Return Ok if the player was created successfully
+                }
+                else
+                {
+                    return BadRequest("Error creating the player.");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                // Return BadRequest with the exception message
+                return BadRequest(e.Message);
+            }
         }
-	}
+    }
 }

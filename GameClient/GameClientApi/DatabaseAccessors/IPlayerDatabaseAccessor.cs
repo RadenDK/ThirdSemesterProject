@@ -8,9 +8,9 @@ namespace GameClientApi.DatabaseAccessors
 
 		string GetPassword(string password);
 
-		bool CreatePlayer(Player newPlayer);
+		bool CreatePlayer(AccountRegistrationModel newPlayer);
 
-		bool UserNameExists(string username);
+		bool UsernameExists(string username);
 
 		bool InGameNameExists(string ingamename);
 

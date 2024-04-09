@@ -102,10 +102,18 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Arrange
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
-			Player mockPlayer = new Player("username1", "password1", "InGameName1", "Rank1", "email1@example.com", false, 1000);
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			// Act
-			bool testResult = SUT.CreatePlayer(mockPlayer);
+
+            // Act
+            bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			// Assert
 			Assert.True(testResult);
@@ -113,7 +121,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			{
 				connection.Open();
 				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.UserName });
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
 				Assert.True(queryResult.Any(), "Expected a mock player to be inserted in the database but could not find it");
 			}
 		}
@@ -124,7 +132,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Arrange
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
-			Player mockPlayer = new Player { UserName = "username1" };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "username1" };
 
 			// Act
 			bool testResult = SUT.CreatePlayer(mockPlayer);
@@ -135,7 +143,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			{
 				connection.Open();
 				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.UserName });
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
 				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
 			}
 		}
@@ -146,7 +154,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Arrange
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
-			Player mockPlayer = null;
+			AccountRegistrationModel mockPlayer = null;
 
 			// Act
 			bool testResult = SUT.CreatePlayer(mockPlayer);
@@ -157,7 +165,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			{
 				connection.Open();
 				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.UserName });
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
 				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
 			}
 		}
@@ -171,7 +179,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = "Username";
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.True(testResult);
@@ -186,7 +194,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = null;
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.False(testResult);
@@ -200,7 +208,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			string mockUsername = "Username";
 
 			// Act
-			bool testResult = SUT.UserNameExists(mockUsername);
+			bool testResult = SUT.UsernameExists(mockUsername);
 
 			// Assert
 			Assert.False(testResult);
