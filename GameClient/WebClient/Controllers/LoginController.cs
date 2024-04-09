@@ -24,10 +24,10 @@ namespace WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(string userName, string password)
+        public async Task<ActionResult> Index(PlayerModel playerModel)
         {
-           
-            var response = await SendCredentialsToApi(userName, password);
+            var requestData = new PlayerModel { UserName = playerModel.UserName, Password = playerModel.Password };
+            var response = await SendCredentialsToApi(requestData);
             if (response.IsSuccessStatusCode)
             {
                 // If the API returned a 200 status code, redirect to the new view
@@ -40,13 +40,12 @@ namespace WebClient.Controllers
             }
         }
 
-        private async Task<HttpResponseMessage> SendCredentialsToApi(string userName, string password)
+        private async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:5198/");
-                var requestData = new { UserName = userName, Password = password };
-                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), System.Text.Encoding.UTF8, "application/json");
+                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(playerModel), System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync("Player/verify", content);
                 return response;
             }
