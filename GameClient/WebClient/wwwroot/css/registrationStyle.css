@@ -39,3 +39,22 @@ input[type=checkbox] {
     align-items: center;
     gap: 10px;
 }
+
+.go-back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: black;
+    background-color: lightcoral;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 10px; /* Adjust this value to change the roundness of the corners */
+}
+
+input.input-validation-error {
+    border: 1px solid red;
+}
+
+.text-danger {
+    color:red;
+}

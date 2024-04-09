@@ -1,6 +1,7 @@
 ﻿@{
 	ViewData["Title"] = "Blank";
 	Layout = "";
+
 }
 @section Scripts {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -8,6 +9,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+	<script>
+		alert("@TempData["ErrorMessage"]");
+	</script>
+}
 
 @model WebClient.Models.AccountRegistrationModel
 
@@ -22,56 +29,72 @@
 </head>
 <body>
 	<div class="container">
+		<a asp-controller="Login" asp-action="Index" class="go-back-button">Go Back</a>
 		<h2>Create Profile</h2>
-        <form asp-controller="Registration" asp-action="CreatePlayer" method="post">
-            <div class="input-group">
-                <label for="username">Username:</label>
-                <input asp-for="Username" type="text" id="username" name="username">
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+		<form asp-controller="Registration" asp-action="CreatePlayer" method="post">
+			<div>
+				<div class="input-group">
+					<label for="username">Username:</label>
+					<input asp-for="Username" type="text" id="username" name="username">
 
-            <div class="input-group">
-                <label for="password">Password:</label>
-                <input asp-for="Password" type="password" id="password" name="password">
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+				</div>
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
 
-            <div class="input-group">
-                <label for="confirmPassword">Confirm Password:</label>
-                <input asp-for="ConfirmPassword" type="password" id="confirmPassword" name="confirmPassword">
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
+			<div>
+				<div class="input-group">
+					<label for="password">Password:</label>
+					<input asp-for="Password" type="password" id="password" name="password">
+				</div>
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
 
-            <div class="input-group">
-                <label for="email">Email:</label>
-                <input asp-for="Email" type="email" id="email" name="email">
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
 
-            <div class="input-group">
-                <label for="inGameName">In Game Name:</label>
-                <input asp-for="InGameName" type="text" id="inGameName" name="inGameName">
-                <span asp-validation-for="InGameName" class="text-danger"></span>
-            </div>
+			<div>
+				<div class="input-group">
+					<label for="confirmPassword">Confirm Password:</label>
+					<input asp-for="ConfirmPassword" type="password" id="confirmPassword" name="confirmPassword">
+				</div>
+				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+			</div>
 
-            <div class="input-group">
-                <label for="birthday">Birthday:</label>
-                <input asp-for="BirthDay" type="date" id="birthday" name="birthday">
-                <span asp-validation-for="BirthDay" class="text-danger"></span>
-            </div>
+			<div>
+				<div class="input-group">
+					<label for="email">Email:</label>
+					<input asp-for="Email" type="email" id="email" name="email">
+				</div>
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
 
-            <div class="input-group">
-                <input type="checkbox" id="eula" name="eula">
-                <label for="eula">I accept the end user license agreement</label>
-            </div>
+			<div>
+				<div class="input-group">
+					<label for="inGameName">In Game Name:</label>
+					<input asp-for="InGameName" type="text" id="inGameName" name="inGameName">
+				</div>
+				<span asp-validation-for="InGameName" class="text-danger"></span>
+			</div>
 
-            <div class="input-group">
-                <input type="checkbox" id="messages" name="messages">
-                <label for="messages">I want to receive targeted messages</label>
-            </div>
+			<div>
+			<div class="input-group">
+				<label for="birthday">Birthday:</label>
+				<input asp-for="BirthDay" type="date" id="birthday" name="birthday">
+			</div>
+				<span asp-validation-for="BirthDay" class="text-danger"></span>
+			</div>
 
-            <button type="submit" class="button">Create Account</button>
-        </form>
+			<div class="input-group">
+				<input type="checkbox" id="eula" name="eula">
+				<label for="eula">I accept the end user license agreement</label>
+			</div>
+
+			<div class="input-group">
+				<input type="checkbox" id="messages" name="messages">
+				<label for="messages">I want to receive targeted messages</label>
+			</div>
+
+			<button type="submit" class="button">Create Account</button>
+
+		</form>
 
 
 	</div>
