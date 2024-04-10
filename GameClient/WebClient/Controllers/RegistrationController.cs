@@ -81,11 +81,11 @@ namespace WebClient.Controllers
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 var errorMessage = await GetErrorMessageFromResponse(response);
-                if (errorMessage == "Username already exists")
+                if (errorMessage == ApiErrorMessages.UsernameExistsCode)
                 {
                     ModelState.AddModelError("Username", "The username already exists. Please choose a different username.");
                 }
-                else if (errorMessage == "InGameName already exists")
+                else if (errorMessage == ApiErrorMessages.InGameNameExistsCode)
                 {
                     ModelState.AddModelError("InGameName", "The in game name already exists. Please choose a different in game name.");
                 }

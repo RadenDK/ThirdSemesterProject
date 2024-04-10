@@ -16,7 +16,7 @@
 
     CREATE TABLE Chat(
         ChatID INT IDENTITY(1,1) PRIMARY KEY,
-        CreatedDate DATETIME DEFAULT GETDATE(),
+        CreatedDate DATETIME DEFAULT GETDATE() CHECK (CreatedDate <= GETDATE()),
         ChatType NVARCHAR (50) NOT NULL
     );
 
@@ -24,59 +24,59 @@
     CREATE TABLE GameLobby ( 
         GameLobbyID INT IDENTITY(1,1) PRIMARY KEY,
         LobbyName NVARCHAR (50) NOT NULL,
-        AmountOfPlayers INT DEFAULT 10,
+        AmountOfPlayers INT DEFAULT 10 CHECK (AmountOfPlayers BETWEEN 1 AND 10),
         PasswordHash NVARCHAR (50) DEFAULT NULL,
         InviteLink VARCHAR (50) NOT NULL,
         LobbyChatId INT NOT NULL,
-        FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID)
+        FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID) ON DELETE SET NULL
     );
 
 
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
-        Username NVARCHAR (50) NOT NULL,
+        Username NVARCHAR (50) NOT NULL UNIQUE,
         PasswordHash NVARCHAR (200) NOT NULL,
-        InGameName NVARCHAR (50) NOT NULL,
+        InGameName NVARCHAR (50) NOT NULL UNIQUE,
         Email VARCHAR (50) NOT NULL,
-        Birthday DATETIME NOT NULL,
-        Elo INT DEFAULT 0,
+        Birthday DATETIME NOT NULL CHECK (Birthday <= GETDATE()),
+        Elo INT DEFAULT 0 CHECK (Elo >= 0),
         Banned bit DEFAULT 0,
-        CurrencyAmount INT DEFAULT 0,
+        CurrencyAmount INT DEFAULT 0 CHECK (CurrencyAmount >= 0),
         GameLobbyID INT DEFAULT NULL,
         OnlineStatus bit DEFAULT 0,
-        FOREIGN KEY (GameLobbyID) REFERENCES GameLobby(GameLobbyID)
+        FOREIGN KEY (GameLobbyID) REFERENCES GameLobby(GameLobbyID) ON DELETE SET NULL
     );
 
 
     CREATE TABLE Message (
         MessageID INT IDENTITY(1,1) PRIMARY KEY,
         TextMessage NVARCHAR (MAX) NOT NULL,
-        [TimeStamp] DATETIME DEFAULT GETDATE(),
+        [TimeStamp] DATETIME DEFAULT GETDATE() CHECK ([TimeStamp] <= GETDATE()),
         SenderID INT NOT NULL,
         ChatID INT NOT NULL,
         [Read] bit DEFAULT 0,
-        FOREIGN KEY (SenderID) REFERENCES Player(PlayerID),
+        FOREIGN KEY (SenderID) REFERENCES Player(PlayerID), 
         FOREIGN KEY (ChatID) REFERENCES Chat(ChatID)
     );
 
 
     CREATE TABLE FriendList(
-        Player1ID INT NOT NULL,
-        Player2ID INT NOT NULL,
-        ChatId INT DEFAULT NULL,
-        FOREIGN KEY (Player1ID) REFERENCES Player(PlayerID),
-        FOREIGN KEY (Player2ID) REFERENCES Player(PlayerID),
-        FOREIGN KEY (ChatId) REFERENCES Chat(ChatID),
-        CONSTRAINT PK_FriendList PRIMARY KEY (Player1ID, Player2ID)
-    );
+    Player1ID INT NOT NULL,
+    Player2ID INT NOT NULL,
+    ChatId INT DEFAULT NULL,
+    FOREIGN KEY (Player1ID) REFERENCES Player(PlayerID) ON DELETE CASCADE,
+    FOREIGN KEY (Player2ID) REFERENCES Player(PlayerID) ON DELETE CASCADE,
+    FOREIGN KEY (ChatId) REFERENCES Chat(ChatID) ON DELETE SET NULL,
+    CONSTRAINT PK_FriendList PRIMARY KEY (Player1ID, Player2ID)
+);
 
 
     CREATE TABLE Item (
         ItemID INT IDENTITY(1,1) PRIMARY KEY,
-        [Name] NVARCHAR (50) NOT NULL,
+        [Name] NVARCHAR (50) NOT NULL UNIQUE,
         ReleaseDate DATETIME DEFAULT GETDATE(),
-        Price INT NOT NULL,
-        CopyQuantity INT NOT NULL,
+        Price INT NOT NULL CHECK (Price >= 0),
+        CopyQuantity INT NOT NULL CHECK (CopyQuantity >= 0),
         ItemType NVARCHAR (50) NOT NULL
     );
 
@@ -111,6 +111,29 @@
         FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID)
     );
 
+    CREATE TABLE Admin (
+        AdminID INT IDENTITY(1,1) PRIMARY KEY,
+        [Name] NVARCHAR (50) NOT NULL,
+        Email VARCHAR (50) NOT NULL,
+        CprNumber VARCHAR (10) NOT NULL UNIQUE,
+        PhoneNumber VARCHAR (10) NOT NULL,
+        AddressId INT NOT NULL,
+        FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+    );
+
+    CREATE TABLE [Address] (
+        AddressId INT IDENTITY(1,1) PRIMARY KEY,
+        StreetName NVARCHAR (50) NOT NULL,
+        StreetNumber INT NOT NULL,
+        ZipCode INT NOT NULL,
+        FOREIGN KEY (ZipCode) REFERENCES City(ZipCode)
+    );
+
+    CREATE TABLE City (
+        ZipCode INT PRIMARY KEY,
+        CityName NVARCHAR (50) NOT NULL
+    );
+
 
     -- Inserting mock data
 
@@ -128,14 +151,14 @@
 
     -- Insert data into Player
     -- Insert data into Player
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player1', 'hash1', 'InGameName1', GETDATE(), 'player1@example.com', 1);
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player2', 'hash2', 'InGameName2', GETDATE(), 'player2@example.com', 1);
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player3', 'hash3', 'InGameName3', GETDATE(), 'player3@example.com');
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player4', 'hash4', 'InGameName4', GETDATE(), 'player4@example.com');
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player5', 'hash5', 'InGameName5', GETDATE(), 'player5@example.com', 1);
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player6', 'hash6', 'InGameName6', GETDATE(), 'player6@example.com', 1);
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player7', 'hash7', 'InGameName7', GETDATE(), 'player7@example.com');
-    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player8', 'hash8', 'InGameName8', GETDATE(), 'player8@example.com');
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player1', '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i', 'InGameName1', GETDATE(), 'player1@example.com', 1); -- Password is a hashed version of "Player1"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player2', '$2a$11$j3D2bz5NUgeivWNZOc0dyOmSlfsHkMgmmcXK5cJTxUg6xZAZTZbKe', 'InGameName2', GETDATE(), 'player2@example.com', 1); -- Password is a hashed version of "Player2"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player3', '$2a$11$I9Z4yRD6qBWux3xeoKZmDuKB4VQRBg.yDTCdRE4toQPVHA6b54Oze', 'InGameName3', GETDATE(), 'player3@example.com'); -- Password is a hashed version of "Player3"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player4', '$2a$11$V8M5WAQWb9cl68sm0LFHCe0mIaxXexs4yj0QnAy352LDtRsBF5TsK', 'InGameName4', GETDATE(), 'player4@example.com'); -- Password is a hashed version of "Player4"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player5', '$2a$11$6ule5Buo7y1LSAKCA5VLreoKA5gFLIa.RnVH1Cg66HHucedfuSu3C', 'InGameName5', GETDATE(), 'player5@example.com', 1); -- Password is a hashed version of "Player5"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player6', '$2a$11$8nKGqpk2d4SRpXo2Nn13Z.E1nvCzoPBph79pD/pYgc.62mB3vP/a.', 'InGameName6', GETDATE(), 'player6@example.com', 1); -- Password is a hashed version of "Player6"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player7', '$2a$11$o0ZNk3a0JBhXjqSzUP0ZQOlMFBVjwqsLkaxFhJhihWOhgyQHErwyK', 'InGameName7', GETDATE(), 'player7@example.com'); -- Password is a hashed version of "Player7"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player8', '$2a$11$3Y.Pqf9.U4ydTMEYvr4QFuAiWx6P9pQHAI1M/31pcXTsHa3pbHIHC', 'InGameName8', GETDATE(), 'player8@example.com'); -- Password is a hashed version of "Player8"
 
     -- Insert data into Message
 
