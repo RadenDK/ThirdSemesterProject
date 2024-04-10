@@ -1,11 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClient.Controllers
 {
@@ -16,9 +20,14 @@ namespace WebClient.Controllers
         // GET: LoginController
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
             return View();
         }
 
+        [Authorize]
         public ActionResult Blank()
         {
             return View();
@@ -30,6 +39,17 @@ namespace WebClient.Controllers
             var response = await SendCredentialsToApi(username, password);
             if (response.IsSuccessStatusCode)
             {
+                // Retrieve user information from the response or any other source
+                var claims = new List<Claim> {
+                    new Claim(ClaimTypes.Name, username)
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                // Sign in the user
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 // If the API returned a 200 status code, redirect to the new view
                 return RedirectToAction("Blank");
             }
