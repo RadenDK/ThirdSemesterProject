@@ -24,7 +24,7 @@ namespace WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(PlayerModel playerModel)
+        public async Task<ActionResult> LoginToProfile(PlayerModel playerModel)
         {
             var response = await SendCredentialsToApi(playerModel);
             if (response.IsSuccessStatusCode)
@@ -39,7 +39,7 @@ namespace WebClient.Controllers
             }
         }
 
-        private async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
+        private static async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
         {
             using (var client = new HttpClient())
             {
