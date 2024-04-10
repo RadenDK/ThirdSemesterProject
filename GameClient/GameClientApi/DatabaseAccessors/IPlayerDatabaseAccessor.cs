@@ -6,7 +6,7 @@ namespace GameClientApi.DatabaseAccessors
 	{
 		bool VerifyLogin(string userName, string password);
 
-		string GetPassword(string password);
+		string GetPassword(string userName);
 
 		bool CreatePlayer(AccountRegistrationModel newPlayer);
 
