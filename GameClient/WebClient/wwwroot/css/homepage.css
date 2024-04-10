@@ -1,0 +1,134 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: rgba(62, 174, 244, 0.84);
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+
+/* Style for the header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(23, 23, 23);
+    padding: 10px 20px;
+    height: 80px;
+}
+
+.left-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Take up full height of the parent container */
+    padding: 10px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px;
+}
+
+/* Style for the left menu icons */
+.left-menu img {
+    margin-right: 20px;
+    width: 24px;
+    height: 24px;
+}
+.left-menu p {
+    color: #ffffff;
+    text-align: center;
+    padding-right: 20px;
+    margin-top: 10px
+}
+
+/* Style for the "PLAY" button */
+.play-button {
+    background-color: rgba(62, 174, 244, 0.84);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Style for the right menu */
+.right-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style for the profile section */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style for the profile picture */
+.profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Style for the level, name, status, and custom message */
+.level, .name, .status, .custom-message {
+    margin-bottom: 5px;
+}
+
+/* Style for the social pane */
+.social-pane {
+    position: fixed;
+    right: 0;
+    top: 60px;
+    height: calc(100% - 80px); /* Subtract the height of the navbar */
+    width: 200px;
+    overflow-y: auto;
+    background-color: rgb(23, 23, 23);
+    padding: 20px;
+    margin-top: 20px
+}
+
+/* Style for the friend list */
+.friend-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+.main-content-container {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    left: 0;
+    top: 80px; /* Add space for the navbar */
+    height: calc(100vh - 80px); /* Subtract the height of the navbar */
+    width: calc(100% - 200px); /* Subtract the width of the social pane */
+    padding: 20px; /* Add padding to prevent overlap with navbar and social pane */
+}
+
+.main-content {
+    padding: 20px;
+    font-size: 18px;
+    background-color: #ffffff;
+    width: 100%; /* Take up full width of the parent container */
+    height: 100%; /* Take up full height of the parent container */
+    margin: 20px; /* Add some space from the edges of the parent container */
+}
+
+/* Style for the friend's icon */
+.friend img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Makes the image circular */
+    margin-right: 10px; /* Adds some space between the image and the friend's name */
+}

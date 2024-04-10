@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    @RenderSection("Styles", required:false)
+</head>
+<body>
+<div class="header">
+    <div class="left-menu">
+        <a href="store.html" class="menu-item">
+            <img src="assets/maskot.png" alt="Store">
+            <p>Store</p>
+        </a>
+        <a href="collection.html" class="menu-item">
+            <img src="assets/maskot.png" alt="Collection">
+            <p>Collection</p>
+        </a>
+        <a href="profile.html" class="menu-item">
+            <img src="assets/maskot.png" alt="Profile">
+            <p>Profile</p>
+        </a>
+    </div>
+    <button class="play-button">PLAY</button>
+    <div class="right-menu">
+        <div class="profile-section">
+            <img class="profile-pic" src="assets/maskot.png" alt="Profile Picture">
+            <p class="level">Level 10</p>
+            <p class="name">John Doe</p>
+            <p class="status">Online</p>
+            <p class="custom-message">Hello, world!</p>
+        </div>
+        <div class="social-pane">
+            <ul class="friend-list">
+                <li class="friend">
+                    <img src="assets/maskot.png" alt="Hydra Icon">
+                    <p>Hydra</p>
+                    <span>Offline</span>
+                </li>
+                <li class="friend">
+                    <img src="assets/maskot.png" alt="ap144 Icon">
+                    <p>ap144</p>
+                    <span>Offline</span>
+                </li>
+            </ul>
+        </div>
+        <div class="main-content-container">
+            <div class="main-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
