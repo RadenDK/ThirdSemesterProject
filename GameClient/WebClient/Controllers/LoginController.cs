@@ -24,10 +24,9 @@ namespace WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(PlayerModel playerModel)
+        public async Task<ActionResult> LoginToProfile(PlayerModel playerModel)
         {
-            var requestData = new PlayerModel { UserName = playerModel.UserName, Password = playerModel.Password };
-            var response = await SendCredentialsToApi(requestData);
+            var response = await SendCredentialsToApi(playerModel);
             if (response.IsSuccessStatusCode)
             {
                 // If the API returned a 200 status code, redirect to the new view
@@ -40,7 +39,7 @@ namespace WebClient.Controllers
             }
         }
 
-        private async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
+        private static async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
         {
             using (var client = new HttpClient())
             {
