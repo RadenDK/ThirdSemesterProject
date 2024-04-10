@@ -23,6 +23,7 @@ namespace GameClientApi.Controllers
         public IActionResult DoesPlayerExist([FromBody]Player player)
         {
             bool playerExists = _playerService.VerifyLogin(player.UserName, player.Password);
+
             if (playerExists)
             {
                 return Ok();
