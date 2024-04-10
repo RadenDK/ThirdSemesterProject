@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -24,9 +25,9 @@ namespace WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoginToProfile(PlayerModel playerModel)
+        public async Task<ActionResult> LoginToProfile(string username, string password)
         {
-            var response = await SendCredentialsToApi(playerModel);
+            var response = await SendCredentialsToApi(username, password);
             if (response.IsSuccessStatusCode)
             {
                 // If the API returned a 200 status code, redirect to the new view
@@ -39,12 +40,12 @@ namespace WebClient.Controllers
             }
         }
 
-        private static async Task<HttpResponseMessage> SendCredentialsToApi(PlayerModel playerModel)
+        private static async Task<HttpResponseMessage> SendCredentialsToApi(string username, string password)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:5198/");
-                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(playerModel), System.Text.Encoding.UTF8, "application/json");
+                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync("Player/verify", content);
                 return response;
             }
