@@ -184,14 +184,20 @@ namespace GameClientApiTests.PlayerControllerTests
         }
 
         [Fact]
-        public void DoesPlayerExist_ReturnsOk_WhenPlayerExists()
+        public void DoesPlayerExist_TC1_ReturnsOkWhenPlayerExists()
         {
             // Arrange
+            
+
             LoginModel mockLogin = new LoginModel
             {
                 Username = "Player1",
                 Password = "Player1"
             };
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
+
+            _mockAccessor.Setup(a => a.GetPassword(mockLogin.Username)).Returns(hashedPassword);
 
             // Insert a mock player into the test database
             InsertMockPlayerInTestDatabase();
@@ -206,7 +212,7 @@ namespace GameClientApiTests.PlayerControllerTests
         }
 
         [Fact]
-        public void DoesPlayerExist_ReturnsBadRequest_WhenPlayerDoesNotExist()
+        public void DoesPlayerExist_TC2_ReturnsBadRequestWhenPlayerDoesNotExist()
         {
             // Arrange
             LoginModel mockLogin = new LoginModel
