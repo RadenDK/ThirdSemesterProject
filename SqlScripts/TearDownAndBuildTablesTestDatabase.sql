@@ -112,3 +112,27 @@ use [DMA-CSD-V23_10478735];
         FOREIGN KEY (ItemCopyID) REFERENCES ItemCopy(ItemCopyID),
         FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID)
     );
+
+
+ CREATE TABLE Admin (
+        AdminID INT IDENTITY(1,1) PRIMARY KEY,
+        [Name] NVARCHAR (50) NOT NULL,
+        Email VARCHAR (50) NOT NULL,
+        CprNumber VARCHAR (10) NOT NULL UNIQUE,
+        PhoneNumber VARCHAR (10) NOT NULL,
+        AddressId INT NOT NULL,
+        FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+    );
+
+    CREATE TABLE [Address] (
+        AddressId INT IDENTITY(1,1) PRIMARY KEY,
+        StreetName NVARCHAR (50) NOT NULL,
+        StreetNumber INT NOT NULL,
+        ZipCode INT NOT NULL,
+        FOREIGN KEY (ZipCode) REFERENCES City(ZipCode)
+    );
+
+    CREATE TABLE City (
+        ZipCode INT PRIMARY KEY,
+        CityName NVARCHAR (50) NOT NULL
+    );

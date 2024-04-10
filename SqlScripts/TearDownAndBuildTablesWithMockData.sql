@@ -61,14 +61,14 @@
 
 
     CREATE TABLE FriendList(
-        Player1ID INT NOT NULL,
-        Player2ID INT NOT NULL,
-        ChatId INT DEFAULT NULL,
-        FOREIGN KEY (Player1ID) REFERENCES Player(PlayerID), ON DELETE CASCADE,
-        FOREIGN KEY (Player2ID) REFERENCES Player(PlayerID), ON DELETE CASCADE,
-        FOREIGN KEY (ChatId) REFERENCES Chat(ChatID) ON DELETE SET NULL,
-        CONSTRAINT PK_FriendList PRIMARY KEY (Player1ID, Player2ID)
-    );
+    Player1ID INT NOT NULL,
+    Player2ID INT NOT NULL,
+    ChatId INT DEFAULT NULL,
+    FOREIGN KEY (Player1ID) REFERENCES Player(PlayerID) ON DELETE CASCADE,
+    FOREIGN KEY (Player2ID) REFERENCES Player(PlayerID) ON DELETE CASCADE,
+    FOREIGN KEY (ChatId) REFERENCES Chat(ChatID) ON DELETE SET NULL,
+    CONSTRAINT PK_FriendList PRIMARY KEY (Player1ID, Player2ID)
+);
 
 
     CREATE TABLE Item (
@@ -119,7 +119,7 @@
         PhoneNumber VARCHAR (10) NOT NULL,
         AddressId INT NOT NULL,
         FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
-    )
+    );
 
     CREATE TABLE [Address] (
         AddressId INT IDENTITY(1,1) PRIMARY KEY,
@@ -127,12 +127,12 @@
         StreetNumber INT NOT NULL,
         ZipCode INT NOT NULL,
         FOREIGN KEY (ZipCode) REFERENCES City(ZipCode)
-    )
+    );
 
     CREATE TABLE City (
         ZipCode INT PRIMARY KEY,
         CityName NVARCHAR (50) NOT NULL
-    )
+    );
 
 
     -- Inserting mock data
