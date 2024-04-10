@@ -11,6 +11,8 @@ using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using GameClientApiTests.TestHelpers;
+using GameClientApi.Services;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
@@ -23,6 +25,8 @@ namespace GameClientApiTests.PlayerControllerTests
 
         private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
+        private TestDatabaseHelper _testDatabaseHelper;
+
 
         public PlayerControllerTest()
         {
@@ -34,6 +38,17 @@ namespace GameClientApiTests.PlayerControllerTests
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             _mockAccessor = new Mock<IPlayerDatabaseAccessor>();
+
+            _testDatabaseHelper = new TestDatabaseHelper(_connectionString);
+        }
+
+        private void InsertMockPlayerInTestDatabase()
+        {
+            string insertMockPlayerQuery =
+                "INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) " +
+                "VALUES ('Player1', '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i', 'InGameName1', GETDATE(), 'player1@example.com');";
+
+            _testDatabaseHelper.RunQuery(insertMockPlayerQuery);
         }
 
         [Fact]
@@ -167,5 +182,48 @@ namespace GameClientApiTests.PlayerControllerTests
             Assert.True(deserializedValue.ContainsKey("message"));
             Assert.Equal("Error creating the player", deserializedValue["message"]);
         }
+
+        [Fact]
+        public void DoesPlayerExist_ReturnsOk_WhenPlayerExists()
+        {
+            // Arrange
+            LoginModel mockLogin = new LoginModel
+            {
+                Username = "Player1",
+                Password = "Player1"
+            };
+
+            // Insert a mock player into the test database
+            InsertMockPlayerInTestDatabase();
+
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            // Act
+            IActionResult testResult = SUT.DoesPlayerExist(mockLogin);
+
+            // Assert
+            Assert.IsType<OkResult>(testResult);
+        }
+
+        [Fact]
+        public void DoesPlayerExist_ReturnsBadRequest_WhenPlayerDoesNotExist()
+        {
+            // Arrange
+            LoginModel mockLogin = new LoginModel
+            {
+                Username = "nonExistingUser",
+                Password = "wrongPassword"
+            };
+
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            // Act
+            IActionResult testResult = SUT.DoesPlayerExist(mockLogin);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(testResult);
+        }
+
+        
     }
 }
