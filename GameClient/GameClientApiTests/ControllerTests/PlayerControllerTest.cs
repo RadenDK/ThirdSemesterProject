@@ -9,127 +9,163 @@ using GameClientApi.DatabaseAccessors;
 using Moq;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
-	public class PlayerControllerTest
-	{
+    public class PlayerControllerTest
+    {
 
-		private IConfiguration _configuration;
+        private IConfiguration _configuration;
 
-		private string _connectionString;
+        private string _connectionString;
 
-		private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
+        private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
 
-		public PlayerControllerTest()
-		{
-			_configuration = new ConfigurationBuilder()
-		.SetBasePath(Directory.GetCurrentDirectory())
-		.AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
-		.Build();
+        public PlayerControllerTest()
+        {
+            _configuration = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
+        .Build();
 
-			_connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-		}
+            _mockAccessor = new Mock<IPlayerDatabaseAccessor>();
+        }
 
-		[Fact]
-		public void CreatePlayer_TC1_ReturnsOKIfPlayerWasCreated()
-		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel();
+        [Fact]
+        public void CreatePlayer_TC1_ReturnsOKIfPlayerWasCreated()
+        {
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
-				.Returns(true);
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+                .Returns(true);
 
-			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-			// Act
-			IActionResult testResult = SUT.CreatePlayer(mockPlayer);
+            // Act
+            IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-			// Assert
-			Assert.IsType<OkResult>(testResult);
-		}
+            // Assert
+            Assert.IsType<OkResult>(testResult);
+        }
 
-		[Fact]
-		public void CreatePlayer_TC2_ReturnsBadRequestWhenUsernameExists()
-		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "ExistingUsername" };
+        [Fact]
+        public void CreatePlayer_TC2_ReturnsBadRequestWhenUsernameExists()
+        {
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
-				.Returns(true);
-			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
-				.Returns(false);
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+                .Returns(true);
+            _mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+                .Returns(false);
 
-			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-			// Act
-			IActionResult testResult = SUT.CreatePlayer(mockPlayer);
+            // Act
+            IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-			// Assert
-			var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-			var modelState = badRequestResult.Value as SerializableError;
-			Assert.NotNull(modelState);
-			var errorMessages = modelState["UserName"] as string[];
-			Assert.Contains("Username already exists.", errorMessages);
-		}
-		[Fact]
-		public void CreatePlayer_TC3_ReturnsBadRequestWhenInGameNameExists()
-		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { InGameName = "ExistingInGameName" };
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
+            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
+            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
+            Assert.NotNull(deserializedValue);
+            Assert.True(deserializedValue.ContainsKey("message"));
+            Assert.Equal("Username already exists", deserializedValue["message"]);
+        }
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
-				.Returns(true);
-			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
-				.Returns(false);
+        [Fact]
+        public void CreatePlayer_TC3_ReturnsBadRequestWhenInGameNameExists()
+        {
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+                .Returns(true);
+            _mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+                .Returns(false);
 
-			// Act
-			IActionResult testResult = SUT.CreatePlayer(mockPlayer);
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-			// Assert
-			var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-			var modelState = badRequestResult.Value as SerializableError;
-			Assert.NotNull(modelState);
-			var errorMessages = modelState["InGameName"] as string[];
-			Assert.Contains("In-game name already exists.", errorMessages);
-		}
+            // Act
+            IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-		[Fact]
-		public void CreatePlayer_TC4_ReturnsBadRequestWhenUnknownErrorOccurs()
-		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "NewUsername", InGameName = "NewInGameName" };
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
+            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
+            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
+            Assert.NotNull(deserializedValue);
+            Assert.True(deserializedValue.ContainsKey("message"));
+            Assert.Equal("InGameName already exists", deserializedValue["message"]);
+        }
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
-				.Returns(false);
-			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
-				.Returns(false);
 
-			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+        [Fact]
+        public void CreatePlayer_TC4_ReturnsBadRequestWhenUnknownErrorOccurs()
+        {
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			// Act
-			IActionResult testResult = SUT.CreatePlayer(mockPlayer);
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+                .Returns(false);
+            _mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+                .Returns(false);
 
-			// Assert
-			var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-			var modelState = badRequestResult.Value as SerializableError;
-			Assert.NotNull(modelState);
-			var errorMessages = modelState[""] as string[];
-			Assert.Contains("Something went wrong when creating the player.", errorMessages);
-		}
-	}
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            // Act
+            IActionResult testResult = SUT.CreatePlayer(mockPlayer);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
+            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
+            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
+            Assert.NotNull(deserializedValue);
+            Assert.True(deserializedValue.ContainsKey("message"));
+            Assert.Equal("Error creating the player", deserializedValue["message"]);
+        }
+    }
 }

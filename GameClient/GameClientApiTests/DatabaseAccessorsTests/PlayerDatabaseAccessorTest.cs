@@ -31,9 +31,12 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			_connectionString = _configuration.GetConnectionString("DefaultConnection");
 
 			_testDatabaseHelper = new TestDatabaseHelper(_connectionString);
-		}
 
-		public void Dispose()
+            _testDatabaseHelper.TearDownAndBuildTestDatabase();
+
+        }
+
+        public void Dispose()
 		{
 			_testDatabaseHelper.TearDownAndBuildTestDatabase();
 		}
@@ -143,7 +146,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			{
 				connection.Open();
 				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { Username = mockPlayer.Username });
 				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
 			}
 		}
@@ -164,8 +167,8 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
-				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
+				string query = "SELECT 1 FROM Player";
+				IEnumerable<string> queryResult = connection.Query<string>(query);
 				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
 			}
 		}

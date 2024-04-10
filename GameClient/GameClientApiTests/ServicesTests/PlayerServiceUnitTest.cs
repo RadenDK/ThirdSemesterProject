@@ -123,9 +123,15 @@ namespace GameClientApiTests.PlayerServiceTest
 		[Fact]
 		public void CreatePlayer_TC1_ReturnsTrueIfPlayerIsValid()
 		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename"};
-			string testPassword = "ExpectedHashedPassword";
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
 			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
@@ -146,11 +152,17 @@ namespace GameClientApiTests.PlayerServiceTest
 		[Fact]
 		public void CreatePlayer_TC2_ThrowsExpectionIfUsernameDoesNotExist()
 		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
-			string testPassword = "ExpectedHashedPassword";
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(true);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -160,7 +172,7 @@ namespace GameClientApiTests.PlayerServiceTest
 			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<ArgumentException>(() =>
 			{
 				// Act
 				bool testResult = playerService.CreatePlayer(mockPlayer);
@@ -171,11 +183,17 @@ namespace GameClientApiTests.PlayerServiceTest
 		[Fact]
 		public void CreatePlayer_TC3_ThrowsExpectionIfIngamenameDoesNotExist()
 		{
-			// Arrange
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
-			string testPassword = "ExpectedHashedPassword";
+            // Arrange
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(true);
@@ -185,7 +203,7 @@ namespace GameClientApiTests.PlayerServiceTest
 			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<ArgumentException>(() =>
 			{
 				// Act
 				bool testResult = playerService.CreatePlayer(mockPlayer);
@@ -197,10 +215,16 @@ namespace GameClientApiTests.PlayerServiceTest
 		public void CreatePlayer_TC4_ReturnsFalsePlayerWasNotCreated()
 		{
             // Arrange
-            AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "Username", InGameName = "Ingamename" };
-			string testPassword = "ExpectedHashedPassword";
+            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+            {
+                Username = "username1",
+                Password = "password1",
+                Email = "email1@example.com",
+                InGameName = "InGameName1",
+                BirthDay = DateTime.Now // or any other DateTime value
+            };
 
-			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+            _mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
@@ -216,5 +240,5 @@ namespace GameClientApiTests.PlayerServiceTest
 			Assert.False(testResult);
 		}
 
-	}
+    }
 }
