@@ -11,8 +11,8 @@ namespace WebClient.Controllers;
 
 public class HomepageController: Controller
 {
-    [HttpGet("HomepageTest")]
-    public ActionResult HomepageTest()
+    [HttpGet]
+    public ActionResult Homepage()
     {
         return View();
     }
