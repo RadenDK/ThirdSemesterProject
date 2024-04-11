@@ -5,8 +5,6 @@ namespace WebClient.Controllers
 {
     public class GameLobbyController : Controller
     {
-
-
         [HttpGet]
         public IActionResult CreateLobby()
         {
@@ -16,11 +14,10 @@ namespace WebClient.Controllers
         [HttpGet]
         public IActionResult JoinLobby()
         {
-            IEnumerable<GameLobbyModel> gameLobbies = GenerateRandomGameLobbies(50);
+            IEnumerable<GameLobbyModel> gameLobbies = GenerateRandomGameLobbies(5);
 
             return View(gameLobbies);
         }
-
 
         private IEnumerable<GameLobbyModel> GenerateRandomGameLobbies(int amountOfLobbies)
         {
@@ -65,6 +62,17 @@ namespace WebClient.Controllers
             }
 
             return gameLobbies;
+        }
+
+        [HttpGet]
+        public IActionResult GameLobby(int lobbyId)
+        {
+            var gameLobbies = GenerateRandomGameLobbies(1);
+            var gameLobby = gameLobbies.First();
+
+            gameLobby.GameLobbyId = lobbyId;
+
+            return View(gameLobby);
         }
 
 
