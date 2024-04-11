@@ -19,7 +19,7 @@
             this.Elo = Rank;
             this.Email = Email;
             this.Banned = Banned;
-            this.CurrencyAmount = Currency;
+            this.CurrencyAmount = CurrencyAmount;
             this.OnlineStatus = OnlineStatus;
         }
 
