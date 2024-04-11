@@ -40,29 +40,38 @@ namespace GameClientApiTests.DatabaseAccessorsTests
             _testDatabaseHelper.TearDownAndBuildTestDatabase();
         }
 
-        public void InsertMockLobbyInTestDatebase(string lobbyName, string inviteLink, int lobbyChatId)
+        public void InsertMockLobbyInTestDatebase()
         {
-            string inserMockLobbyQuery =
+            string insertMockLobbyQuery1 =
                 "INSERT INTO GameLobby (LobbyName, PasswordHash, InviteLink, LobbyChatId)" +
-                "VALUES (@LobbyName, NULL, @InviteLink, @LobbyChatId)";
+                "VALUES ('LobbyNameTest1' , NULL, 'InviteLinkTest1', 1)";
+            string insertMockLobbyQuery2 =
+                "INSERT INTO GameLobby (LobbyName, PasswordHash, InviteLink, LobbyChatId)" +
+                "VALUES ('LobbyNameTest2' , NULL, 'InviteLinkTest2', 2)";
+            string insertMockLobbyQuery3 =
+                "INSERT INTO GameLobby (LobbyName, PasswordHash, InviteLink, LobbyChatId)" +
+                "VALUES ('LobbyNameTest3' , NULL, 'InviteLinkTest3', 3)";
 
-            _testDatabaseHelper.RunQuery(inserMockLobbyQuery, new { LobbyName = lobbyName, InviteLink = inviteLink, LobbyChatId = lobbyChatId });
-        }
-
-        public void InsertMultipleMockLobbiesInTestDatabase()
-        {
-            InsertMockLobbyInTestDatebase("LobbyTest1", "linkTest1", 1);
-            InsertMockLobbyInTestDatebase("LobbyTest2", "linkTest2", 2);
-            InsertMockLobbyInTestDatebase("LobbyTest3", "linkTest3", 3);
-            // Add more calls to InsertMockLobbyInTestDatebase as needed
+            _testDatabaseHelper.RunQuery(insertMockLobbyQuery1);
+            _testDatabaseHelper.RunQuery(insertMockLobbyQuery2);
+            _testDatabaseHelper.RunQuery(insertMockLobbyQuery3);
         }
 
         [Fact]
         public void GetAllGameLobbies_TC1_ReturnsAllGameLobbies()
         {
-            InserMockLobbyInTestDatebase();
+            // Arrange
+            InsertMockLobbyInTestDatebase();
+            GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
 
+            // Act
+            List<GameLobbyModel> result = SUT.GetAllGameLobbies();
 
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count); // Replace 3 with the number of lobbies you inserted
+                                           // Add more assertions here to verify that the returned lobbies are correct
+   
         }
     }
 }
