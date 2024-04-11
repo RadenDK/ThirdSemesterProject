@@ -102,5 +102,10 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
+        public List<GameLobbyModel> GetAllGameLobbies()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

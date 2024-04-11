@@ -45,5 +45,7 @@ namespace GameClientApi.Services
 
             return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
         }
+
+
     }
 }

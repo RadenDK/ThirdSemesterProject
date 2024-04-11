@@ -13,6 +13,6 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool InGameNameExists(string ingamename);
 
-
+		List<GameLobbyModel> GetAllGameLobbies();
 	}
 }
