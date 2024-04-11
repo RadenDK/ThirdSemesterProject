@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    }
+}
 
 .wrapper {
     display: flex;
@@ -28,16 +28,18 @@ body {
 
 .main-content-container {
     flex: 1;
-    padding: 5px 20px;
-    background-color: rgb(16, 16, 16);
+    background-color: #181A1B;
 }
+
+    .main-content-container h1 {
+        color: white;
+    }
 
 .section {
     margin-bottom: 20px;
 }
 
 .section-2 {
-
 }
 
 .bento-box {
@@ -64,8 +66,10 @@ body {
 #bento-box-4 {
     padding: 20px 20px;
 }
+
 #bento-box-6 {
 }
+
 #bento-box-7 {
 }
 
@@ -86,6 +90,7 @@ body {
 .input {
     background-color: rgb(42, 42, 42);
 }
+
 input[type="text"] {
     width: 100%;
     padding: 5px;
@@ -123,7 +128,6 @@ input[type="text"] {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
-
 }
 
 .friends {
@@ -136,22 +140,24 @@ input[type="text"] {
     display: flex;
     align-items: center;
 }
-.friend div {
-    display: flex;
-    flex-direction: column;
-}
 
-.friend p {
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 7px;
-    font-size: 12px;
-    font-weight: 500;
-}
-.friend span {
-    font-size: 11px;
-    color: #878787;
-}
+    .friend div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .friend p {
+        margin: 0;
+        padding-top: 0;
+        padding-bottom: 7px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .friend span {
+        font-size: 11px;
+        color: #878787;
+    }
 
 #online {
     font-size: 11px;
@@ -194,13 +200,46 @@ input[type="text"] {
     text-decoration: none;
 }
 
-.menu-item img {
-    width: 15px;
-    height: 15px;
-    margin-right: 10px;
-}
+    .menu-item img {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+    }
+
 .bento-box img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
+}
+
+
+.footer-layout-lobby {
+    display: flex;
+    justify-content: center;
+}
+
+.header-layout-lobby {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+    .header-layout-lobby a {
+        padding: 20px;
+        color: #ffffff; /* Default color */
+        text-decoration: none; /* Removes underline */
+    }
+
+        .header-layout-lobby a:hover {
+            color: #ff0000; /* Color on hover */
+            text-decoration: none; /* Removes underline */
+        }
+
+
+.search-for-lobby-container {
+    display: flex;
+}
+
+.header-join-lobby {
+    display: flex;
 }
