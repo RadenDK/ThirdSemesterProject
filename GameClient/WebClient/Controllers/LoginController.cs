@@ -70,7 +70,7 @@ namespace WebClient.Controllers
                     return View("Index");
                 }
             }
-            catch(Exception e)
+            catch
             {
                 return View("Error");
             }
