@@ -8,10 +8,14 @@
 }
 
 <div>
-	<h1>Custom Game Lobby</h1>
-	<div class="search-for-lobby-container">
-		<input type="text" id="searchField" placeholder="Search for a game lobby..." />
-		<button type="button" onclick="location.reload();">Refresh</button>
+	<div class="header-join-lobby">
+		<h1>Custom Game Lobby</h1>
+		<div class="search-for-lobby-container">
+			<input type="text" id="searchField" placeholder="Search for a game lobby..." />
+			<button class="btn btn-dark" type="button" onclick="location.reload();">Refresh</button>
+		</div>
+		<button class="btn btn-dark" type="button" onclick="">Create Lobby</button>
+
 	</div>
 
 	<div class="lobby-container">
@@ -34,10 +38,8 @@
 								{
 									<i class="bi bi-lock-fill"></i>
 								}
-
 							</td>
 							<td>
-								
 							</td>
 							<td>@lobby.lobbyOwner.InGameName</td>
 							<td>@lobby.LobbyPlayers.Count()/@lobby.AmountOfPlayers</td>
@@ -54,8 +56,9 @@
 	$(document).ready(function () {
 		$(".table-row").click(function () {
 			var lobbyId = $(this).data("lobby-id");
-			// Redirect to the lobby page with the lobbyId
-			window.location.href = "http://localhost:5028/?lobbyId=" + lobbyId;
+			// Redirect to the GameLobby action in the GameLobbyController with the lobbyId
+			window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
 		});
 	});
+
 </script>
