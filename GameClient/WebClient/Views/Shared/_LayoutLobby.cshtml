@@ -1,17 +1,30 @@
 @{
-    Layout = "_LayoutGameClient";
-   
+	Layout = "_LayoutGameClient";
+
 }
 
 @section Styles {
-    <link rel="stylesheet" type="text/css" href="~/css/lobby/createLobbyStyle.css" />
+	<link rel="stylesheet" type="text/css" href="~/css/lobby/createLobbyStyle.css" />
 }
 
-<div class="createOrJoinHeader">
-    <a asp-controller="GameLobby" asp-action="CreateLobby">Create Custom Lobby</a>
-    <a asp-controller="GameLobby" asp-action="JoinLobby">Join Custom Lobby</a>
+<div class="header-layout-lobby">
+	<a asp-controller="GameLobby" asp-action="CreateLobby">Create Custom Lobby</a>
+	<a asp-controller="GameLobby" asp-action="JoinLobby">Join Custom Lobby</a>
 </div>
 
 <div>
-    @RenderBody()
+	@RenderBody()
 </div>
+
+<div class="footer-layout-lobby">
+	<a asp-controller="Homepage" asp-action="Homepage" class="menu-item">
+		<button class="btn btn-dark">
+			<i class="bi bi-x"></i>
+		</button>
+	</a>
+
+	<button class="btn btn-dark">
+		Join Custom Lobby
+	</button>
+</div>
+
