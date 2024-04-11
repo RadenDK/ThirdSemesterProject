@@ -50,6 +50,11 @@ namespace WebClient.Controllers
                 // Sign in the user
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+                // Store player's data in the session
+                var playerData = await response.Content.ReadAsStringAsync();
+                var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
+                HttpContext.Session.SetString("Player", JsonSerializer.Serialize(player));
+
                 // If the API returned a 200 status code, redirect to the new view
                 return RedirectToAction("Blank");
             }

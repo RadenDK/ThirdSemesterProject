@@ -22,6 +22,11 @@ namespace GameClientApi.Services
             return BC.Verify(password, storedHashedPassword);
         }
 
+        public Player GetPlayer(string userName)
+        {
+            return _playerAccessor.GetPlayer(userName);
+        }
+
 
         public bool CreatePlayer(AccountRegistrationModel newPlayerAccount)
         {
