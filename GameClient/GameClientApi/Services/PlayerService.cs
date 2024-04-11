@@ -15,16 +15,21 @@ namespace GameClientApi.Services
         public bool VerifyLogin(string userName, string password)
         {
             string storedHashedPassword = _playerAccessor.GetPassword(userName);
-            if (storedHashedPassword == null)
+            if (storedHashedPassword == null || userName == null)
             {
-                return false;
+                throw new ArgumentNullException("storedHashedPassword or userName is null");
             }
             return BC.Verify(password, storedHashedPassword);
         }
 
         public Player GetPlayer(string userName)
         {
-            return _playerAccessor.GetPlayer(userName);
+            Player playerData = _playerAccessor.GetPlayer(userName);
+            if (playerData == null)
+            {
+                throw new Exception("Player not found");
+            }
+            return playerData;
         }
 
 
