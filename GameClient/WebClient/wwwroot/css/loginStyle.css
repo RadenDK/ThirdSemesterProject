@@ -21,6 +21,13 @@ body, .container {
     overflow-y: hidden; /* Disable vertical scrolling for the rest of the page*/
 }
 
+.error-message p {
+    color: #d1d1d1;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px; /* Adjust font size as needed */
+}
+
 .left-panel {
     min-width: 300px;
     max-width: 600px;
