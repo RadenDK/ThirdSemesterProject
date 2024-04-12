@@ -12,7 +12,7 @@ namespace GameClientApi.DatabaseAccessors
 		bool UsernameExists(string username);
 
 		bool InGameNameExists(string ingamename);
+		List<PlayerModel> GetAllPlayersInLobby(int lobbyID);
 
-		List<GameLobbyModel> GetAllGameLobbies();
 	}
 }
