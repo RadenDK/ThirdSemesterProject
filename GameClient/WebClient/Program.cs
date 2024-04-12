@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using WebClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<IHttpClientService, HttpClientService>();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

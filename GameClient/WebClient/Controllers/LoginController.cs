@@ -11,11 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
 using Microsoft.AspNetCore.Authorization;
 
+using WebClient.Services;
+
 namespace WebClient.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly IHttpClientService _httpClientService;
 
+        public LoginController(IHttpClientService httpClientService)
+        {
+            _httpClientService = httpClientService;
+        }
 
         // GET: LoginController
         public ActionResult Index()
@@ -60,15 +67,11 @@ namespace WebClient.Controllers
             }
         }
 
-        private static async Task<HttpResponseMessage> SendCredentialsToApi(string username, string password)
+        private async Task<HttpResponseMessage> SendCredentialsToApi(string username, string password)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5198/");
-                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("Player/verify", content);
-                return response;
-            }
+            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClientService.PostAsync("Player/verify", content);
+            return response;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
