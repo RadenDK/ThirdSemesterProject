@@ -58,7 +58,7 @@ namespace WebClient.Controllers
                     HttpContext.Session.SetString("Player", JsonSerializer.Serialize(player));
 
                     // If the API returned a 200 status code, redirect to the new view
-                    return RedirectToAction("Blank");
+                    return RedirectToAction("HomePage", player);
                 }
                 else
                 { 
