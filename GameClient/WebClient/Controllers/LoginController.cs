@@ -17,7 +17,6 @@ namespace WebClient.Controllers
     public class LoginController : Controller
     {
 
-
         // GET: LoginController
         public ActionResult Index()
         {
@@ -56,9 +55,11 @@ namespace WebClient.Controllers
                     var playerData = await response.Content.ReadAsStringAsync();
                     var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
                     HttpContext.Session.SetString("Player", JsonSerializer.Serialize(player));
+                    HttpContext.Session.SetString("InGameName", player.InGameName);
+
 
                     // If the API returned a 200 status code, redirect to the new view
-                    return RedirectToAction("HomePage", player);
+                    return RedirectToAction("HomePage", "Homepage");
                 }
                 else
                 { 

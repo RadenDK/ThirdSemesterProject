@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebClient.Views;
 
-public class HomepageTest : PageModel
+public class Homepage : PageModel
 {
     public void OnGet()
     {
