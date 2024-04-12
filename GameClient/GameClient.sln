@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameClientApiTests", "GameClientApiTests\GameClientApiTests.csproj", "{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClientTest", "WebClientTest\WebClientTest.csproj", "{CC7866F3-B6F4-4D60-B291-FD63B901E13D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABDF6E6B-54C2-4F69-8D6A-86D5DD9C8FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

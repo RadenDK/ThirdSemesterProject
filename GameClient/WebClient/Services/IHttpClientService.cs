@@ -2,6 +2,7 @@
 {
     public interface IHttpClientService
     {
-        Task<HttpResponseMessage> PostAsync(string url, HttpContent content);
+        Task<HttpResponseMessage> Post(string url, string data);
+        Task<HttpResponseMessage> PostAsync(string url, StringContent content);
     }
 }

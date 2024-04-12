@@ -1,4 +1,6 @@
-﻿namespace WebClient.Services
+﻿using System.Text;
+
+namespace WebClient.Services
 {
     public class HttpClientService : IHttpClientService
     {
@@ -9,9 +11,15 @@
             _httpClient = httpClient;
         }
 
-        public Task<HttpResponseMessage> PostAsync(string url, HttpContent content)
+        public async Task<HttpResponseMessage> Post(string url, string data)
         {
-            return _httpClient.PostAsync(url, content);
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            return await _httpClient.PostAsync(url, content);
+        }
+
+        public async Task<HttpResponseMessage> PostAsync(string url, StringContent content)
+        {
+            return await _httpClient.PostAsync(url, content);
         }
     }
 }
