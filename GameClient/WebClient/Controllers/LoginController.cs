@@ -69,9 +69,10 @@ namespace WebClient.Controllers
 
         private async Task<HttpResponseMessage> SendCredentialsToApi(string username, string password)
         {
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClientService.PostAsync("Player/verify", content);
-            return response;
+                var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClientService.PostAsync("Player/verify", content);
+                return response;
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

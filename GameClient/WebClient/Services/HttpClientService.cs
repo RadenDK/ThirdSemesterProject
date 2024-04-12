@@ -1,14 +1,23 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace WebClient.Services
 {
     public class HttpClientService : IHttpClientService
     {
         private readonly HttpClient _httpClient;
+        private Uri BaseAddress;
 
-        public HttpClientService(HttpClient httpClient)
+    public HttpClientService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5198/")
+            };
+
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<HttpResponseMessage> Post(string url, string data)

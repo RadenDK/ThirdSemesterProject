@@ -35,7 +35,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=GameLobby}/{action=CreateLobby}/{id?}");
+	pattern: "{controller=LoginController}/{action=Index}/{id?}");
 
 string port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrEmpty(port))
