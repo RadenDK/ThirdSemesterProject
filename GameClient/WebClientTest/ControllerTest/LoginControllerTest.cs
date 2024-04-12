@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Authentication;
     using WebClient.Services;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.AspNetCore.Mvc.Routing;
 
     public class LoginControllerTests
     {
@@ -27,8 +28,15 @@
                 .Setup(service => service.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
                 .Returns(Task.CompletedTask);
 
+            var mockUrlHelperFactory = new Mock<IUrlHelperFactory>();
+            mockUrlHelperFactory
+                .Setup(factory => factory.GetUrlHelper(It.IsAny<ActionContext>()))
+                .Returns(Mock.Of<IUrlHelper>());
+
             var serviceProvider = new ServiceCollection()
+                .AddSingleton<IHttpClientService>(mockHttpClientService.Object)
                 .AddSingleton<IAuthenticationService>(mockAuthenticationService.Object)
+                .AddSingleton<IUrlHelperFactory>(mockUrlHelperFactory.Object)
                 .BuildServiceProvider();
 
             var controller = new LoginController(mockHttpClientService.Object)
