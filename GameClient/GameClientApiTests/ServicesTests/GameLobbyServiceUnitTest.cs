@@ -43,13 +43,13 @@ namespace GameClientApiTests.ServicesTests
 
 			List<PlayerModel> expectedPlayersGameLobby1 = new List<PlayerModel>
 			{
-				new PlayerModel { UserName = "Player1", InGameName = "InGame1", IsOwner = true },
+				new PlayerModel { Username = "Player1", InGameName = "InGame1", IsOwner = true },
 			};
 
 			List<PlayerModel> expectedPlayersGameLobby2 = new List<PlayerModel>
 			{
-				new PlayerModel { UserName = "Player4", InGameName = "InGame4", IsOwner = true },
-				new PlayerModel { UserName = "Player5", InGameName = "InGame5", IsOwner = false },
+				new PlayerModel { Username = "Player4", InGameName = "InGame4", IsOwner = true },
+				new PlayerModel { Username = "Player5", InGameName = "InGame5", IsOwner = false },
 			};
 
 
@@ -112,8 +112,8 @@ namespace GameClientApiTests.ServicesTests
 
 			List<PlayerModel> expectedPlayersGameLobby1 = new List<PlayerModel>
 			{
-				new PlayerModel { UserName = "Player1", InGameName = "InGame1", IsOwner = false },
-				new PlayerModel { UserName = "Player2", InGameName = "InGame2", IsOwner = false },
+				new PlayerModel { Username = "Player1", InGameName = "InGame1", IsOwner = false },
+				new PlayerModel { Username = "Player2", InGameName = "InGame2", IsOwner = false },
 			};
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
@@ -152,8 +152,8 @@ namespace GameClientApiTests.ServicesTests
 
 			List<PlayerModel> expectedPlayersGameLobby1 = new List<PlayerModel>
 			{
-				new PlayerModel { UserName = "Player1", InGameName = "InGame1", IsOwner = true },
-				new PlayerModel { UserName = "Player2", InGameName = "InGame2", IsOwner = true },
+				new PlayerModel { Username = "Player1", InGameName = "InGame1", IsOwner = true },
+				new PlayerModel { Username = "Player2", InGameName = "InGame2", IsOwner = true },
 			};
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
@@ -218,9 +218,9 @@ namespace GameClientApiTests.ServicesTests
 
 			List<PlayerModel> expectedPlayersGameLobby1 = new List<PlayerModel>
 			{
-				new PlayerModel { UserName = "Player1", InGameName = "InGame1", IsOwner = true },
-				new PlayerModel { UserName = "Player2", InGameName = "InGame2", IsOwner = false },
-				new PlayerModel { UserName = "Player3", InGameName = "InGame3", IsOwner = false },
+				new PlayerModel { Username = "Player1", InGameName = "InGame1", IsOwner = true },
+				new PlayerModel { Username = "Player2", InGameName = "InGame2", IsOwner = false },
+				new PlayerModel { Username = "Player3", InGameName = "InGame3", IsOwner = false },
 
 			};
 
