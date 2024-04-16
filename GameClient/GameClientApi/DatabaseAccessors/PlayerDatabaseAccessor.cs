@@ -12,7 +12,6 @@ namespace GameClientApi.DatabaseAccessors
         public PlayerDatabaseAccessor(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
-
         }
 
         public string GetPassword(string userName)
@@ -113,7 +112,25 @@ namespace GameClientApi.DatabaseAccessors
 			}
 		}
 
-   
+		public bool UpdatePlayerLobbyId(PlayerModel player)
+		{
+			bool updateSucces = false;
 
-    }
+			string deleteLobbyQuery = "UPDATE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
+
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+                int rowsAffected = 1;
+				if (rowsAffected > 0) updateSucces = true;
+			}
+
+			return updateSucces;
+		}
+
+        public bool UpdatePlayerOwnership(PlayerModel player)
+        {
+            throw new NotImplementedException();
+        }
+	}
 }

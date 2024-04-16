@@ -14,5 +14,8 @@ namespace GameClientApi.DatabaseAccessors
 		bool InGameNameExists(string ingamename);
 		List<PlayerModel> GetAllPlayersInLobby(int lobbyID);
 
+		bool UpdatePlayerLobbyId(PlayerModel player);
+
+		bool UpdatePlayerOwnership(PlayerModel player);
 	}
 }
