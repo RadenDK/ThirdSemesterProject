@@ -102,10 +102,18 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public List<GameLobbyModel> GetAllGameLobbies()
-        {
-            throw new NotImplementedException();
-        }
+		public List<PlayerModel> GetAllPlayersInLobby(int lobbyID)
+		{
+			string getAllPlayersInLobbyQuery = "SELECT PlayerID, InGameName, IsOwner FROM Player WHERE GameLobbyID = @LobbyID";
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				List<PlayerModel> players = connection.Query<PlayerModel>(getAllPlayersInLobbyQuery, new { LobbyID = lobbyID }).ToList();
+				return players;
+			}
+		}
+
+   
 
     }
 }
