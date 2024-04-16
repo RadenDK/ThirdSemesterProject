@@ -11,9 +11,15 @@ namespace WebClient.Controllers;
 
 public class HomepageController: Controller
 {
-    [HttpGet]
+    [HttpGet("Homepage")]
     public ActionResult Homepage()
     {
-        return View();
+        // Retrieve the in-game name from the session
+        var inGameName = HttpContext.Session.GetString("InGameName");
+
+        // Pass the in-game name to the view
+        ViewBag.InGameName = inGameName;
+        // Return the HomePageTest (Homepage) view
+        return View("~/Views/HomePage/Homepage.cshtml");
     }
 }

@@ -21,6 +21,13 @@ body, .container {
     overflow-y: hidden; /* Disable vertical scrolling for the rest of the page*/
 }
 
+.error-message p {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px; /* Adjust font size as needed */
+}
+
 .left-panel {
     min-width: 300px;
     max-width: 600px;
@@ -98,8 +105,6 @@ input[type="password"]:focus {
     caret-color: transparent;
     caret-shape: underscore;
     font-size: 12px;
-
-
 }
 
 @keyframes shake {

@@ -25,7 +25,8 @@ namespace GameClientApi.Controllers
             bool playerExists = _playerService.VerifyLogin(loginModel.Username, loginModel.Password);
             if (playerExists)
             {
-                return Ok();
+                var player = _playerService.GetPlayer(loginModel.Username);
+                return Ok(player);
             }
             else
             {

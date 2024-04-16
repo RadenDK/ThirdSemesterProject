@@ -26,6 +26,20 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
+        public Player GetPlayer(string userName)
+        {
+            string selectQueryString = "SELECT * FROM Player WHERE Username = @UserName";
+            string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @UserName";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                connection.Execute(updateQueryString, new { UserName = userName });
+                var player = connection.QuerySingleOrDefault<Player>(selectQueryString, new { UserName = userName });
+                return player;
+            }
+        }
+
         public bool CreatePlayer(AccountRegistrationModel newPlayer)
         {
             bool playerInserted = false;

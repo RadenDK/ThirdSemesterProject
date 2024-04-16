@@ -12,15 +12,25 @@ namespace GameClientApi.Services
 			_playerAccessor = playerDatabaseAccessor;
 		}
 
-		public bool VerifyLogin(string userName, string password)
-		{
-			string storedHashedPassword = _playerAccessor.GetPassword(userName);
-			if (storedHashedPassword == null)
-			{
-				return false;
-			}
-			return BC.Verify(password, storedHashedPassword);
-		}
+        public bool VerifyLogin(string userName, string password)
+        {
+            string storedHashedPassword = _playerAccessor.GetPassword(userName);
+            if (storedHashedPassword == null || userName == null)
+            {
+                throw new ArgumentNullException("Stored HashedPassword or username is null");
+            }
+            return BC.Verify(password, storedHashedPassword);
+        }
+
+        public PlayerModel GetPlayer(string userName)
+        {
+			PlayerModel playerData = _playerAccessor.GetPlayer(userName);
+            if (playerData == null)
+            {
+                throw new Exception("Player not found");
+            }
+            return playerData;
+        }
 
 
 		public bool CreatePlayer(AccountRegistrationModel newPlayerAccount)

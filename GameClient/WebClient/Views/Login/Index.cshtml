@@ -27,6 +27,12 @@
     <div class="container">
         <div class="left-panel">
             <h1>Sign in</h1>
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                    <div class="error-message">
+                        <p>@ViewBag.ErrorMessage</p>
+                    </div>
+            }
             <form asp-controller="Login" asp-action="LoginToProfile" method="post">
                 <div class="textfields">
                     <div class="username-textfields">
