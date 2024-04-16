@@ -1,0 +1,41 @@
+. {
+
+}
+body {
+    background-color: rgb(16, 16, 16);
+}
+
+
+.bento-box-create-lobby {
+    border: 1px solid #2e2e2e;
+    padding: 10px;
+    display: flex;
+    background-color: rgb(23, 23, 23);
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+    border-radius: 10px;
+}
+
+.lobbyPassword-bento-box {
+    flex: 1;
+    margin: 10px 10px;
+}
+.lobbyName-bento-box {
+    flex: 1;
+    margin: 10px 10px;
+}
+.playerCount-bento-box {
+    flex: 1;
+    margin: 10px 10px;
+}
+
+.playerCount-bento-box:hover {
+    background-color: rgb(42, 42, 42);
+}
+.lobbyPassword-bento-box:hover {
+    background-color: rgb(42, 42, 42);
+}
+.lobbyName-bento-box:hover {
+    background-color: rgb(42, 42, 42);
+}

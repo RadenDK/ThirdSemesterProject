@@ -12,7 +12,6 @@ namespace GameClientApi.DatabaseAccessors
         public PlayerDatabaseAccessor(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
-
         }
 
         public string GetPassword(string userName)
@@ -27,7 +26,7 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public Player GetPlayer(string userName)
+        public PlayerModel GetPlayer(string userName)
         {
             string selectQueryString = "SELECT * FROM Player WHERE Username = @UserName";
             string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @UserName";
@@ -36,7 +35,7 @@ namespace GameClientApi.DatabaseAccessors
             {
                 connection.Open();
                 connection.Execute(updateQueryString, new { UserName = userName });
-                var player = connection.QuerySingleOrDefault<Player>(selectQueryString, new { UserName = userName });
+                var player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = userName });
                 return player;
             }
         }
@@ -116,5 +115,36 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-    }
+		public List<PlayerModel> GetAllPlayersInLobby(int lobbyID)
+		{
+			string getAllPlayersInLobbyQuery = "SELECT PlayerID, InGameName, IsOwner FROM Player WHERE GameLobbyID = @LobbyID";
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				List<PlayerModel> players = connection.Query<PlayerModel>(getAllPlayersInLobbyQuery, new { LobbyID = lobbyID }).ToList();
+				return players;
+			}
+		}
+
+		public bool UpdatePlayerLobbyId(PlayerModel player)
+		{
+			bool updateSucces = false;
+
+			string deleteLobbyQuery = "UPDATE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
+
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+                int rowsAffected = 1;
+				if (rowsAffected > 0) updateSucces = true;
+			}
+
+			return updateSucces;
+		}
+
+        public bool UpdatePlayerOwnership(PlayerModel player)
+        {
+            throw new NotImplementedException();
+        }
+	}
 }

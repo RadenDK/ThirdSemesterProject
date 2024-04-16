@@ -12,7 +12,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace GameClientApiTests.PlayerServiceTest
+namespace GameClientApiTests.ServicesTests
 {
 	public class PlayerServiceUnitTest
 	{

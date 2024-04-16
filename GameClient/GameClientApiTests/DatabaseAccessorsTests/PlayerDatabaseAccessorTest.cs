@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace GameClientApiTests.DatabaseAccessorsTests
 {
+	[Collection("Sequential")]
+
 	public class PlayerDatabaseAccessorTest : IDisposable
 	{
 		private IConfiguration _configuration;
@@ -47,7 +49,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 				"INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) " +
 				"VALUES ('Player1', 'hash1', 'InGameName1', GETDATE(), 'player1@example.com');";
 
-			_testDatabaseHelper.RunQuery(insertMockPlayerQuery);
+			_testDatabaseHelper.RunTransactionQuery(insertMockPlayerQuery);
 		}
 
 		[Fact]
