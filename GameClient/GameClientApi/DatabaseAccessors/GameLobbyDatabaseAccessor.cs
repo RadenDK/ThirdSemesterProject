@@ -6,13 +6,10 @@ namespace GameClientApi.DatabaseAccessors
 {
 	public class GameLobbyDatabaseAccessor : IGameLobbyDatabaseAccessor
 	{
-		private IPlayerDatabaseAccessor _playerDatabaseAccessor;
 		private readonly string _connectionString;
 		public GameLobbyDatabaseAccessor(IConfiguration configuration)
 		{
-			_playerDatabaseAccessor = new PlayerDatabaseAccessor(configuration);
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
-
 		}
 
 		public List<GameLobbyModel> GetAllGameLobbies()
@@ -24,25 +21,23 @@ namespace GameClientApi.DatabaseAccessors
 				connection.Open();
 				gameLobbies = connection.Query<GameLobbyModel>(getAllGameLobbies).ToList();
 			}
-			foreach (GameLobbyModel gameLobby in gameLobbies)
-			{
-				List<PlayerModel> playersInLobby = _playerDatabaseAccessor.GetAllPlayersInLobby(gameLobby.GameLobbyId);
-				gameLobby.PlayersInLobby = playersInLobby;
-				SetOwnerOfLobby(gameLobby);
-			}
-
 			return gameLobbies;
-
 		}
-		private void SetOwnerOfLobby(GameLobbyModel gameLobby)
+
+		public bool DeleteGameLobby(int gameLobbyId)
 		{
-			foreach (PlayerModel player in gameLobby.PlayersInLobby)
+			bool deletionSucces = false;
+
+			string deleteLobbyQuery = "DELETE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
+
+			using(SqlConnection connection = new SqlConnection(_connectionString))
 			{
-				if (player.IsOwner)
-				{
-					gameLobby.Owner = player;
-				}
+				connection.Open();
+				int rowsAffected = connection.Execute(deleteLobbyQuery, new {GameLobbyId = gameLobbyId});
+				if (rowsAffected > 0) deletionSucces = true;	
 			}
+
+			return deletionSucces;
 		}
 	}
 
