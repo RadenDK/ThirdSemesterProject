@@ -18,7 +18,9 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace GameClientApiTests.ServicesTests
 {
-    public class PlayerServiceIntergrationTest : IDisposable
+	[Collection("Sequential")]
+
+	public class PlayerServiceIntergrationTest : IDisposable
     {
         private IConfiguration _configuration;
 
@@ -59,7 +61,7 @@ namespace GameClientApiTests.ServicesTests
                 Password = "password1",
                 Email = "email1@example.com",
                 InGameName = "InGameName1",
-                BirthDay = DateTime.Now // or any other DateTime value
+                BirthDay = DateTime.Now 
             };
 
             // Act

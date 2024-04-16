@@ -17,6 +17,7 @@ using Azure.Identity;
 
 namespace GameClientApiTests.ServicesTests
 {
+	[Collection("Sequential")]
 	public class GameLobbyServiceIntergrationTest : IDisposable
 	{
 		private IConfiguration _configuration;
@@ -55,7 +56,7 @@ namespace GameClientApiTests.ServicesTests
 							
 			SET IDENTITY_INSERT GameLobby OFF;";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 		private void InsertMockPlayersInGameLobbies()
@@ -71,7 +72,7 @@ namespace GameClientApiTests.ServicesTests
                (5, 'Player5', 'PasswordHash5', 'InGameName5', '2022-01-05'),
                (6, 'Player6', 'PasswordHash6', 'InGameName6', '2022-01-06');";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 		private void AssosiatePlayerWithGameLobbies()
@@ -81,7 +82,7 @@ namespace GameClientApiTests.ServicesTests
         UPDATE Player SET GameLobbyId = 2 WHERE PlayerId IN (2, 3);
         UPDATE Player SET GameLobbyId = 3 WHERE PlayerId IN (4,5,6);";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 
@@ -92,7 +93,7 @@ namespace GameClientApiTests.ServicesTests
 			SET IsOwner = 1
 			WHERE PlayerId IN (1, 2, 4)";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 		private void SetInvalidOwnershipOfGameLobbie()
@@ -102,7 +103,7 @@ namespace GameClientApiTests.ServicesTests
 			SET IsOwner = 1
 			WHERE PlayerId IN (1, 2, 3, 4, 5, 6)";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 
@@ -200,6 +201,6 @@ namespace GameClientApiTests.ServicesTests
 			// This test will check that the GetAllGameLobbies method does not return any lobbies that have more players than the specified capacity.
 		}
 
-		
+
 	}
 }

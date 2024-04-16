@@ -29,15 +29,10 @@ namespace GameClientApiTests.TestHelpers
 
 			// Split the file content into separate commands
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-
-				connection.Execute(fileQueryContents);
-			}
+			RunTransactionQuery(fileQueryContents);
 		}
 
-		public bool RunQuery(string query)
+		public bool RunTransactionQuery(string query)
 		{
 			bool success = true;
 
@@ -45,18 +40,24 @@ namespace GameClientApiTests.TestHelpers
 			{
 				connection.Open();
 
-				try
+				using (SqlTransaction transaction = connection.BeginTransaction())
 				{
-					connection.Execute(query);
-				}
-				catch (SqlException ex)
-				{
-					success = false;
-					throw;
+					try
+					{
+						connection.Execute(query, transaction: transaction);
+						transaction.Commit();
+					}
+					catch (SqlException ex)
+					{
+						success = false;
+						transaction.Rollback();
+						throw;
+					}
 				}
 			}
 
 			return success;
 		}
+
 	}
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace GameClientApiTests.DatabaseAccessorsTests
 {
+	[Collection("Sequential")]
 	public class GameLobbyDatabaseAccessorTest : IDisposable
 	{
 		private IConfiguration _configuration;
@@ -59,7 +60,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 							
 					SET IDENTITY_INSERT GameLobby OFF;";
 
-			_testDatabaseHelper.RunQuery(query);
+			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
 
@@ -93,7 +94,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
 
 			// Act
-			List<GameLobbyModel> testResult = SUT.GetAllGameLobbies().ToList();
+			List<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
 			Assert.NotNull(testResult);

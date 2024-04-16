@@ -16,7 +16,8 @@ using GameClientApi.Services;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
-    public class PlayerControllerTest
+	[Collection("Sequential")]
+	public class PlayerControllerTest : IDisposable
     {
 
         private IConfiguration _configuration;
@@ -42,13 +43,18 @@ namespace GameClientApiTests.PlayerControllerTests
             _testDatabaseHelper = new TestDatabaseHelper(_connectionString);
         }
 
-        private void InsertMockPlayerInTestDatabase()
+		public void Dispose()
+		{
+            _testDatabaseHelper.TearDownAndBuildTestDatabase();
+		}
+
+		private void InsertMockPlayerInTestDatabase()
         {
             string insertMockPlayerQuery =
                 "INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) " +
                 "VALUES ('Player1', '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i', 'InGameName1', GETDATE(), 'player1@example.com');";
 
-            _testDatabaseHelper.RunQuery(insertMockPlayerQuery);
+            _testDatabaseHelper.RunTransactionQuery(insertMockPlayerQuery);
         }
 
         [Fact]
@@ -186,29 +192,31 @@ namespace GameClientApiTests.PlayerControllerTests
         [Fact]
         public void DoesPlayerExist_TC1_ReturnsOkWhenPlayerExists()
         {
-            // Arrange
-            
+			// Arrange
+			InsertMockPlayerInTestDatabase();
 
-            LoginModel mockLogin = new LoginModel
+			LoginModel mockLogin = new LoginModel
             {
                 Username = "Player1",
                 Password = "Player1"
             };
 
+            PlayerModel expectedPlayer = new PlayerModel { Username = mockLogin.Username };
+
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
 
             _mockAccessor.Setup(a => a.GetPassword(mockLogin.Username)).Returns(hashedPassword);
+			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username)).Returns(expectedPlayer);
 
-            // Insert a mock player into the test database
-            InsertMockPlayerInTestDatabase();
+			// Insert a mock player into the test database
 
-            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
             // Act
             IActionResult testResult = SUT.DoesPlayerExist(mockLogin);
 
             // Assert
-            Assert.IsType<OkResult>(testResult);
+            Assert.IsType<OkObjectResult>(testResult);
         }
 
         [Fact]
@@ -227,9 +235,9 @@ namespace GameClientApiTests.PlayerControllerTests
             IActionResult testResult = SUT.DoesPlayerExist(mockLogin);
 
             // Assert
-            Assert.IsType<BadRequestResult>(testResult);
+            Assert.IsType<BadRequestObjectResult>(testResult);
         }
 
-        
-    }
+		
+	}
 }
