@@ -6,38 +6,47 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GameClientApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class PlayerController : Controller
-    {
+	[ApiController]
+	[Route("[controller]")]
+	public class PlayerController : Controller
+	{
 
-        private PlayerService _playerService;
+		private PlayerService _playerService;
 
-        public PlayerController(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
-        {
-            _playerService = new PlayerService(configuration, playerDatabaseAccessor);
-        }
+		public PlayerController(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
+		{
+			_playerService = new PlayerService(configuration, playerDatabaseAccessor);
+		}
 
 
-        [HttpPost("verify")]
-        public IActionResult DoesPlayerExist(LoginModel loginModel)
-        {
-            bool playerExists = _playerService.VerifyLogin(loginModel.Username, loginModel.Password);
-            if (playerExists)
-            {
-                var player = _playerService.GetPlayer(loginModel.Username);
-                return Ok(player);
-            }
-            else
-            {
-                return BadRequest();
-            }
+		[HttpPost("verify")]
+		public IActionResult DoesPlayerExist(LoginModel loginModel)
+		{
+			try
+			{
 
-        }
+				bool playerExists = _playerService.VerifyLogin(loginModel.Username, loginModel.Password);
+				if (playerExists)
+				{
+					var player = _playerService.GetPlayer(loginModel.Username);
+					return Ok(player);
+				}
+				else
+				{
+					return BadRequest();
+				}
+			}
+			catch (ArgumentNullException ex)
+			{
+				return BadRequest(ex.Message);
+			}
 
-        [HttpPost("create")]
-        public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
-        {
+
+		}
+
+		[HttpPost("create")]
+		public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
+		{
 			try
 			{
 				if (_playerService.CreatePlayer(accountRegistration))
@@ -55,5 +64,5 @@ namespace GameClientApi.Controllers
 				return BadRequest(new { message = e.Message });
 			}
 		}
-    }
+	}
 }
