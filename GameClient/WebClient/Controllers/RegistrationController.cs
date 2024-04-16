@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Text;
 using WebClient.Models;
+using WebClient.Services;
 
 namespace WebClient.Controllers
 {
@@ -12,11 +13,13 @@ namespace WebClient.Controllers
     {
 
         private readonly ILogger<RegistrationController> _logger;
+		private readonly IHttpClientService _httpClientService;
 
-        public RegistrationController(ILogger<RegistrationController> logger)
+		public RegistrationController(ILogger<RegistrationController> logger, IHttpClientService httpClientService)
         {
             _logger = logger;
-        }
+			_httpClientService = httpClientService;
+		}
 
         [HttpGet("Registration")]
         public IActionResult Registration()
@@ -48,31 +51,28 @@ namespace WebClient.Controllers
 
         private async Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount)
         {
-            using (var client = new HttpClient { BaseAddress = new Uri("http://localhost:5198/") })
+            var apiModel = new AccountRegistrationApiModel
             {
-                var apiModel = new AccountRegistrationApiModel
+                Username = newAccount.Username,
+                Password = newAccount.Password,
+                Email = newAccount.Email,
+                InGameName = newAccount.InGameName,
+                BirthDay = newAccount.BirthDay
+            };
+
+            var json = JsonConvert.SerializeObject(apiModel);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                return await _httpClientService.PostAsync("Player/create", data);
+            }
+            catch (HttpRequestException)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    Username = newAccount.Username,
-                    Password = newAccount.Password,
-                    Email = newAccount.Email,
-                    InGameName = newAccount.InGameName,
-                    BirthDay = newAccount.BirthDay
+                    Content = new StringContent("An error occurred while trying to create the account. Please try again later.")
                 };
-
-                var json = JsonConvert.SerializeObject(apiModel);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-                try
-                {
-                    return await client.PostAsync("Player/create", data);
-                }
-                catch (HttpRequestException)
-                {
-                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                    {
-                        Content = new StringContent("An error occurred while trying to create the account. Please try again later.")
-                    };
-                }
             }
         }
 
