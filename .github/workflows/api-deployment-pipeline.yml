@@ -1,0 +1,26 @@
+name: Deploy API to Heroku
+
+on:
+  push:
+    branches:
+      - main
+      - Development
+    paths:
+      - 'GameClient/WebClient/**' 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: third-semester-api
+        heroku_email: 10478735@ucn.dk
+        appdir: GameClient/GameClientApi
+        usedocker: true

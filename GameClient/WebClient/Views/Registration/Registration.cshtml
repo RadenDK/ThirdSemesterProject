@@ -1,0 +1,105 @@
+﻿@{
+	ViewData["Title"] = "Blank";
+	Layout = "";
+
+}
+@section Scripts {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<script>
+		alert("@TempData["ErrorMessage"]");
+	</script>
+}
+
+@model WebClient.Models.AccountRegistrationModel
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Create Profile</title>
+	<link rel="stylesheet" href="~/css/registrationStyle.css">
+
+
+</head>
+<body>
+	<div class="container">
+		<a asp-controller="Login" asp-action="Index" class="go-back-button">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+				<path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1"/>
+			</svg>
+		</a>
+		<h2>Create Profile</h2>
+		<form asp-controller="Registration" asp-action="CreatePlayer" method="post">
+			<div>
+				<div class="input-group">
+					<label for="username">Username:</label>
+					<input asp-for="Username" type="text" id="username" name="username">
+
+				</div>
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+
+			<div>
+				<div class="input-group">
+					<label for="password">Password:</label>
+					<input asp-for="Password" type="password" id="password" name="password">
+				</div>
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+
+
+			<div>
+				<div class="input-group">
+					<label for="confirmPassword">Confirm Password:</label>
+					<input asp-for="ConfirmPassword" type="password" id="confirmPassword" name="confirmPassword">
+				</div>
+				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+			</div>
+
+			<div>
+				<div class="input-group">
+					<label for="email">Email:</label>
+					<input asp-for="Email" type="email" id="email" name="email">
+				</div>
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div>
+				<div class="input-group">
+					<label for="inGameName">In Game Name:</label>
+					<input asp-for="InGameName" type="text" id="inGameName" name="inGameName">
+				</div>
+				<span asp-validation-for="InGameName" class="text-danger"></span>
+			</div>
+
+			<div>
+			<div class="input-group">
+				<label for="birthday">Birthday:</label>
+				<input asp-for="BirthDay" type="date" id="birthday" name="birthday">
+			</div>
+				<span asp-validation-for="BirthDay" class="text-danger"></span>
+			</div>
+
+			<div class="input-group-checkbox">
+				<input type="checkbox" id="eula" name="eula">
+				<label for="eula">I accept the end user license agreement</label>
+			</div>
+
+			<div class="input-group-checkbox">
+				<input type="checkbox" id="messages" name="messages">
+				<label for="messages">I want to receive targeted messages</label>
+			</div>
+
+			<button type="submit" class="button">Create Account</button>
+
+		</form>
+
+
+	</div>
+</body>

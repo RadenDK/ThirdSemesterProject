@@ -1,0 +1,64 @@
+﻿@{
+	@model List<GameLobbyModel>
+
+}
+
+@{
+	Layout = "_LayoutLobby";
+}
+
+<div>
+	<div class="header-join-lobby">
+		<h1>Custom Game Lobby</h1>
+		<div class="search-for-lobby-container">
+			<input type="text" id="searchField" placeholder="Search for a game lobby..." />
+			<button class="btn btn-dark" type="button" onclick="location.reload();">Refresh</button>
+		</div>
+		<button class="btn btn-dark" type="button" onclick="">Create Lobby</button>
+
+	</div>
+
+	<div class="lobby-container">
+		<div class="table-responsive">
+			<table class="table table-dark">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Lobby Name</th>
+						<th>Owner</th>
+						<th>Players</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (GameLobbyModel lobby in Model)
+					{
+						<tr class="table-row" data-lobby-id="@lobby.GameLobbyId">
+							<td>
+								@if (lobby.IsPrivate())
+								{
+									<i class="bi bi-lock-fill"></i>
+								}
+							</td>
+							<td>
+							</td>
+							<td>@lobby.lobbyOwner.InGameName</td>
+							<td>@lobby.LobbyPlayers.Count()/@lobby.AmountOfPlayers</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$(".table-row").click(function () {
+			var lobbyId = $(this).data("lobby-id");
+			// Redirect to the GameLobby action in the GameLobbyController with the lobbyId
+			window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+		});
+	});
+
+</script>

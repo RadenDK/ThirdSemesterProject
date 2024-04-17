@@ -1,0 +1,11 @@
+* {
+
+}
+
+.search-for-lobby-container {
+
+}
+
+.lobby-container .table-row:hover {
+    background-color: #878787; /* Light gray */
+}
