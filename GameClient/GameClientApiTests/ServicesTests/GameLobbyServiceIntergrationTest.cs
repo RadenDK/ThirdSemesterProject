@@ -48,11 +48,19 @@ namespace GameClientApiTests.ServicesTests
 		private void InsertMockGameLobbies()
 		{
 			string query = @"
+
+			SET IDENTITY_INSERT Chat ON;
+
+			INSERT INTO Chat (ChatId, ChatType) VALUES (1, 'LobbyChat'), (2, 'LobbyChat'), (3, 'LobbyChat')
+
+			SET IDENTITY_INSERT Chat OFF;
+
 			SET IDENTITY_INSERT GameLobby ON;
 
-			INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayer, InviteLink, LobbyChatId) VALUES (1, 'LobbyNameTest1' , NULL, 10, 'InviteLinkTest1', 1);
-			INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayer, InviteLink, LobbyChatId) VALUES (2, 'LobbyNameTest2' , NULL, 10, 'InviteLinkTest2', 2);
-			INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayer, InviteLink, LobbyChatId) VALUES (3, 'LobbyNameTest3' , NULL, 10, 'InviteLinkTest3', 3);
+			INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayers, InviteLink, LobbyChatId) VALUES 
+			(1, 'LobbyNameTest1' , NULL, 1, 'InviteLinkTest1', 1),
+			(2, 'LobbyNameTest2' , NULL, 2, 'InviteLinkTest2', 2),
+			(3, 'LobbyNameTest3' , NULL, 3, 'InviteLinkTest3', 3);
 							
 			SET IDENTITY_INSERT GameLobby OFF;";
 
@@ -75,12 +83,20 @@ namespace GameClientApiTests.ServicesTests
 			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
-		private void AssosiatePlayerWithGameLobbies()
+		private void AssosiatePlayersWithGameLobbies()
 		{
 			string query = @"
         UPDATE Player SET GameLobbyId = 1 WHERE PlayerId IN (1);
         UPDATE Player SET GameLobbyId = 2 WHERE PlayerId IN (2, 3);
         UPDATE Player SET GameLobbyId = 3 WHERE PlayerId IN (4,5,6);";
+
+			_testDatabaseHelper.RunTransactionQuery(query);
+		}
+
+		private void AssosiateTooManyPlayersWithGameLobby()
+		{
+			string query = @"
+        UPDATE Player SET GameLobbyId = 1 WHERE PlayerId IN (1,2,3,4,5,6);";
 
 			_testDatabaseHelper.RunTransactionQuery(query);
 		}
@@ -96,7 +112,7 @@ namespace GameClientApiTests.ServicesTests
 			_testDatabaseHelper.RunTransactionQuery(query);
 		}
 
-		private void SetInvalidOwnershipOfGameLobbie()
+		private void SetTooManyOwnershipOfGameLobbies()
 		{
 			string query = @"
 			UPDATE Player
@@ -113,7 +129,7 @@ namespace GameClientApiTests.ServicesTests
 			// Arrange
 			InsertMockGameLobbies();
 			InsertMockPlayersInGameLobbies();
-			AssosiatePlayerWithGameLobbies();
+			AssosiatePlayersWithGameLobbies();
 			SetValidOwnershipOfGameLobbies();
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -141,7 +157,7 @@ namespace GameClientApiTests.ServicesTests
 		}
 
 		[Fact]
-		public void GetAllGameLobbies_TC2_ReturnsLobbiesWithAtLeastOnePlayer()
+		public void GetAllGameLobbies_TC2_ReturnsEmptyListIfNoLobbiesCouldBeFound()
 		{
 			// Arrange
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -152,55 +168,252 @@ namespace GameClientApiTests.ServicesTests
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
+			// Assert
+			Assert.True(testResult != null, "Test result is null.");
+			Assert.True(testResult.Count() == 0, "Test result count is not 0.");
+		}
+
+
+		[Fact]
+		public void GetAllGameLobbies_TC3_AssignsAnOwnerIfNoOwnerCouldBeFound()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiatePlayersWithGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+
+			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
-			// This test will check that the GetAllGameLobbies method does not return any lobbies that have no players.
+			Assert.NotNull(testResult);
+
+			foreach (var gameLobby in testResult)
+			{
+				Assert.NotEqual(0, gameLobby.GameLobbyId);
+				Assert.NotNull(gameLobby.LobbyName);
+				Assert.NotNull(gameLobby.InviteLink);
+				Assert.NotNull(gameLobby.PlayersInLobby);
+				Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1); // Check that there is exactly one owner
+				Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName))); // Check that all players have an InGameName
+				Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers);
+			}
 		}
 
 		[Fact]
-		public void GetAllGameLobbies_TC3_ReturnsLobbiesWithOnlyOneOwner()
+		public void GetAllGameLobbies_TC3_OwnerStatusOfRandomPlayersGetsUpdatedInDatabaseIfNoOwnerWasFound()
 		{
 			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiatePlayersWithGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
-			// This test will check that the GetAllGameLobbies method only returns lobbies that have exactly one owner.
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				foreach (var gameLobby in testResult)
+				{
+					// Query below selects the amount of players who's GameLobbyId matches the current gameLobby and is an owner
+					var query = $"SELECT COUNT(*) FROM Player WHERE GameLobbyID = {gameLobby.GameLobbyId} AND IsOwner = 1";
+					var ownerCount = connection.QuerySingle<int>(query);
+
+					Assert.Equal(1, ownerCount);
+				}
+			}
 		}
 
 		[Fact]
-		public void GetAllGameLobbies_TC4_DoesNotReturnLobbiesWithTooManyOwners()
+		public void GetAllGameLobbies_TC4_RemovesOwnershipIfMultipleOwnersWasFound()
 		{
 			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiatePlayersWithGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
-			// This test will check that the GetAllGameLobbies method does not return any lobbies that have more than one owner.
+			Assert.True(testResult != null, "Test result is null.");
+
+			foreach (var gameLobby in testResult)
+			{
+				Assert.True(gameLobby.GameLobbyId != 0, "Game lobby ID is 0.");
+				Assert.True(gameLobby.LobbyName != null, "Game lobby name is null.");
+				Assert.True(gameLobby.InviteLink != null, "Game lobby invite link is null.");
+				Assert.True(gameLobby.PlayersInLobby != null, "Players in game lobby is null.");
+				Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1, "There is not exactly one owner in the game lobby.");
+				Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
+				Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
+			}
 		}
 
 		[Fact]
-		public void GetAllGameLobbies_TC5_DoesNotReturnLobbiesWithNoPlayers()
+
+		public void GetAllGameLobbies_TC4_OwnerStatusOfRandomPlayersGetsUpdatedInDatabaseIfTooManyOwnersWasFound()
 		{
 			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiatePlayersWithGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
-			// This test will check that the GetAllGameLobbies method does not return any lobbies that have no players.
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				foreach (var gameLobby in testResult)
+				{
+					// Query below selects the amount of players who's GameLobbyId matches the current gameLobby and is an owner
+					var query = $"SELECT COUNT(*) FROM Player WHERE GameLobbyID = {gameLobby.GameLobbyId} AND IsOwner = 1";
+					var ownerCount = connection.QuerySingle<int>(query);
+
+					Assert.Equal(1, ownerCount);
+				}
+			}
+		}
+
+
+		[Fact]
+		public void GetAllGameLobbies_TC5_DoesNotIncludeGameLobbiesWithNoPlayers()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+
+			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
+
+			// Assert
+			Assert.True(testResult != null, "Test result is null.");
+			Assert.True(testResult.Count() == 0, "Test result count is not 0.");
 		}
 
 		[Fact]
-		public void GetAllGameLobbies_TC6_DoesNotReturnLobbiesWithTooManyPlayers()
+		public void GetAllGameLobbies_TC5_DeletesGameLobbiesWithNoPlayers()
 		{
 			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
 
 			// Assert
-			// This test will check that the GetAllGameLobbies method does not return any lobbies that have more players than the specified capacity.
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				var query = "SELECT COUNT(*) FROM GameLobby";
+				var gameLobbiesWithoutPlayers = connection.QuerySingle<int>(query);
+
+				Assert.Equal(0, gameLobbiesWithoutPlayers);
+			}
 		}
 
+		[Fact]
+		public void GetAllGameLobbies_TC6_RemovesPlayersIfTooManyWasFound()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiateTooManyPlayersWithGameLobby();
+			SetValidOwnershipOfGameLobbies();
 
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+
+			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
+
+			// Assert
+			Assert.True(testResult != null, "Test result is null.");
+			Assert.True(testResult.Count() == 1, "Test result count is not 1.");
+
+			foreach (var gameLobby in testResult)
+			{
+				Assert.True(gameLobby.GameLobbyId != 0, "Game lobby ID is 0.");
+				Assert.True(gameLobby.LobbyName != null, "Game lobby name is null.");
+				Assert.True(gameLobby.InviteLink != null, "Game lobby invite link is null.");
+				Assert.True(gameLobby.PlayersInLobby != null, "Players in game lobby is null.");
+				Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1, "There is not exactly one owner in the game lobby.");
+				Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
+				Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
+			}
+
+		}
+
+		[Fact]
+		public void GetAllGameLobbies_TC6_UpdatesPlayersGameLobbyIdIfRemovedFromLobbyWithTooManyPlayers()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayersInGameLobbies();
+			AssosiateTooManyPlayersWithGameLobby();
+			SetValidOwnershipOfGameLobbies();
+
+			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
+			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+
+			// Act
+			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
+
+			// Assert
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				var query = @"SELECT COUNT(*) 
+                      FROM Player 
+                      WHERE GameLobbyID IS NULL";
+				var playersWithoutGameLobby = connection.QuerySingle<int>(query);
+
+				// Expects there to be five players who is not in a lobby because the inserts assosiates six
+				// players with gamelobby1 which has an AmountOfPlayers of 1
+				Assert.True(playersWithoutGameLobby == 5);
+			}
+		}
 	}
 }
