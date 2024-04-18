@@ -27,7 +27,7 @@ body {
     align-items: center;
 }
 
-.playerCount-bento-box {
+.teamSize-bento-box {
     margin: 10px 10px;
     height: 50px; /* adjust as needed */
     width: 30% !important;
@@ -48,8 +48,7 @@ body {
     height: 100px; /* adjust as needed */
     width: 100%; /* adjust as needed */
     color: white;
-    border-radius: 10px;
-    padding: 10px;
+
 }
 
 
@@ -62,6 +61,17 @@ body {
 }
 #lobby-name:hover {
     background-color: rgb(42, 42, 42);
+}
+
+#lobby-name {
+    background-color: rgba(33, 33, 33, 0.85);
+    color: white;
+    border-radius: 10px;
+    border: 1px solid rgba(46, 46, 46, 0);
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 10px;
 }
 
 #team-size {
@@ -82,11 +92,10 @@ body {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
-
 }
 
 .lobbyName-bento-box input[type="text"],
-.playerCount-bento-box input[type="number"],
+.teamSize-bento-box input[type="number"],
 .lobbyPassword-bento-box input[type="password"] {
     /* Add your styles here. For example: */
     padding: 10px;
