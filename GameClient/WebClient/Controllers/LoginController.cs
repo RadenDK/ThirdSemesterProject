@@ -60,7 +60,12 @@ namespace WebClient.Controllers
 				}
 				else
 				{
-					return View("Index");
+                    if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        ViewBag.ErrorMessage = "Username or password is incorrect.";
+                    }
+                    // If the API returned a 400 status code, return the same view
+                    return View("Index");
 				}
 			}
 			catch

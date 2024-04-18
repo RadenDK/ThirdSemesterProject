@@ -1,24 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Newtonsoft.Json;
 using System.Security.Claims;
-using System.Text;
 using WebClient.Services;
 
 namespace WebClient.BusinessLogic
 {
     public class LoginLogic : ILoginLogic
     {
-        private readonly IHttpClientService _httpClientService;
+        private readonly ILoginService _loginService;
 
-        public LoginLogic(IHttpClientService httpClientService)
+        public LoginLogic(ILoginService loginService)
         {
-            _httpClientService = httpClientService;
+            _loginService = loginService;
         }
 
         public async Task<HttpResponseMessage> VerifyCredentials(string username, string password)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(new { Username = username, Password = password }), Encoding.UTF8, "application/json");
-            return await _httpClientService.PostAsync("Player/verify", content);
+            return await _loginService.VerifyPlayerCredentials(username, password);
         }
 
         public ClaimsPrincipal CreatePrincipal(string username)
