@@ -1,6 +1,6 @@
 namespace WebClient.BusinessLogic;
 
-public class HomepageLogic
+public class HomepageLogic : IHomePageLogic
 {
     
 }

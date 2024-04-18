@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IHttpClientService, HttpClientService>();
+builder.Services.AddScoped<ILoginLogic, LoginLogic>();
+builder.Services.AddScoped<IRegistrationLogic, RegistrationLogic>();
 builder.Services.AddScoped<IGameLobbyLogic, GameLobbyLogic>();
-// builder.Services.AddScoped<ILoginLogic, LoginLogic>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

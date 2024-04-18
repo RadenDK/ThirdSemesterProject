@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Text;
 using WebClient.Models;
 using WebClient.Services;
+using WebClient.BusinessLogic;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace WebClient.Controllers
 {
@@ -13,12 +11,12 @@ namespace WebClient.Controllers
     {
 
         private readonly ILogger<RegistrationController> _logger;
-		private readonly IHttpClientService _httpClientService;
+		private readonly IRegistrationLogic _registrationLogic;
 
-		public RegistrationController(ILogger<RegistrationController> logger, IHttpClientService httpClientService)
+		public RegistrationController(ILogger<RegistrationController> logger, IRegistrationLogic registrationLogic)
         {
             _logger = logger;
-			_httpClientService = httpClientService;
+			_registrationLogic = registrationLogic;
 		}
 
         [HttpGet("Registration")]
@@ -35,7 +33,7 @@ namespace WebClient.Controllers
                 return View("Registration", newAccount);
             }
 
-            var response = await SendAccountToApi(newAccount);
+            var response = await _registrationLogic.SendAccountToApi(newAccount);
 
             if (response.IsSuccessStatusCode)
             {
@@ -46,33 +44,6 @@ namespace WebClient.Controllers
             {
                 HandleErrorResponse(response);
                 return View("Registration", newAccount);
-            }
-        }
-
-        private async Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount)
-        {
-            var apiModel = new AccountRegistrationApiModel
-            {
-                Username = newAccount.Username,
-                Password = newAccount.Password,
-                Email = newAccount.Email,
-                InGameName = newAccount.InGameName,
-                BirthDay = newAccount.BirthDay
-            };
-
-            var json = JsonConvert.SerializeObject(apiModel);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-            try
-            {
-                return await _httpClientService.PostAsync("Player/create", data);
-            }
-            catch (HttpRequestException)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while trying to create the account. Please try again later.")
-                };
             }
         }
 

@@ -1,6 +1,6 @@
 namespace WebClient.BusinessLogic;
 
-public class HomeLogic
+public class HomeLogic : IHomeLogic
 {
     
 }
