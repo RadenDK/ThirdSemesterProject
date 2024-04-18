@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace WebClient.Controllers
 {
@@ -15,14 +18,14 @@ namespace WebClient.Controllers
         public IActionResult JoinLobby()
         {
             IEnumerable<GameLobbyModel> gameLobbies = GenerateRandomGameLobbies(5);
-
-            return View(gameLobbies);
+            return View(gameLobbies.ToList());
         }
 
         private IEnumerable<GameLobbyModel> GenerateRandomGameLobbies(int amountOfLobbies)
         {
             var random = new Random();
             var gameLobbies = new List<GameLobbyModel>();
+
 
             for (int i = 0; i < amountOfLobbies; i++)
             {
@@ -31,7 +34,6 @@ namespace WebClient.Controllers
 
                 for (int j = 0; j < random.Next(1,amountOfPlayers); j++)
                 {
-
                     PlayerModel player = new PlayerModel
                     {
                         Username = $"Player{j}",
@@ -58,7 +60,6 @@ namespace WebClient.Controllers
                     LobbyChat = new LobbyChatModel { /* Initialize lobby chat model properties here */ },
                     LobbyPlayers = lobbyPlayers
                 });
-
             }
 
             return gameLobbies;
@@ -74,7 +75,5 @@ namespace WebClient.Controllers
 
             return View(gameLobby);
         }
-
-
     }
 }
