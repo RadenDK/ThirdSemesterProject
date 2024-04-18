@@ -1,10 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebClient.Controllers
 {
     public class GameLobbyController : Controller
     {
+        private readonly IGameLobbyLogic _gameLobbyLogic;
+
+        public GameLobbyController(IGameLobbyLogic gameLobbyLogic)
+        {
+            _gameLobbyLogic = gameLobbyLogic;
+        }
+
         [HttpGet]
         public IActionResult CreateLobby()
         {
@@ -12,69 +21,17 @@ namespace WebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult JoinLobby()
+        public async Task<IActionResult> JoinLobby()
         {
-            IEnumerable<GameLobbyModel> gameLobbies = GenerateRandomGameLobbies(5);
-
-            return View(gameLobbies);
-        }
-
-        private IEnumerable<GameLobbyModel> GenerateRandomGameLobbies(int amountOfLobbies)
-        {
-            var random = new Random();
-            var gameLobbies = new List<GameLobbyModel>();
-
-            for (int i = 0; i < amountOfLobbies; i++)
-            {
-                var amountOfPlayers = random.Next(1, 10);
-                var lobbyPlayers = new List<PlayerModel>();
-
-                for (int j = 0; j < random.Next(1,amountOfPlayers); j++)
-                {
-
-                    PlayerModel player = new PlayerModel
-                    {
-                        Username = $"Player{j}",
-                        Password = $"password{j}",
-                        InGameName = $"InGameName{j}",
-                        Email = $"email{j}@example.com",
-                        Birthday = DateTime.Now.AddYears(-20).AddDays(j), // Example birthday
-                        Elo = random.Next(1000, 2000),
-                        Banned = false,
-                        CurrencyAmount = random.Next(100, 1000)
-                    };
-
-                    lobbyPlayers.Add(player);
-                }
-
-                gameLobbies.Add(new GameLobbyModel
-                {
-                    GameLobbyId = random.Next(1, 1000),
-                    LobbyName = $"Test Lobby {random.Next(1, 1000)}",
-                    AmountOfPlayers = amountOfPlayers,
-                    lobbyOwner = lobbyPlayers.First(), // The first player is the owner
-                    Password = random.Next(2) == 0 ? $"password{random.Next(1, 1000)}" : null,
-                    InviteLink = $"http://example.com/invite{random.Next(1, 1000)}",
-                    LobbyChat = new LobbyChatModel { /* Initialize lobby chat model properties here */ },
-                    LobbyPlayers = lobbyPlayers
-                });
-
-            }
-
-            return gameLobbies;
+            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GenerateRandomGameLobbies(5);
+            return View(gameLobbies.ToList());
         }
 
         [HttpGet]
-        public IActionResult GameLobby(int lobbyId)
+        public async Task<IActionResult> GameLobby(int lobbyId)
         {
-            var gameLobbies = GenerateRandomGameLobbies(1);
-            var gameLobby = gameLobbies.First();
-
-            gameLobby.GameLobbyId = lobbyId;
-
+            GameLobbyModel gameLobby = await _gameLobbyLogic.GetGameLobbyById(lobbyId);
             return View(gameLobby);
         }
-
-
     }
 }
