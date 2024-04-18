@@ -23,9 +23,18 @@ namespace WebClient.BusinessLogic
 
         public ClaimsPrincipal CreatePrincipal(string username)
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            return new ClaimsPrincipal(identity);
+			//Remembers the username that is logged in with. The ClaimTypes.Name constant specifies the
+            //type of the claim (user's name), and username is the value of the claim, representing the logged-in user's username.
+			var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+
+			//The ClaimsIdentity represents the identity of the user and contains
+            //the claims associated with that identity.
+			var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+			//The ClaimsPrincipal represents the security context of the user within the application,
+            //encapsulating the user's identity and associated claims.
+            //The method then returns this ClaimsPrincipal object, which can be used for authentication and authorization purposes within the application.
+			return new ClaimsPrincipal(identity);
         }
 
         //public void StorePlayerInSession(ISession session, PlayerModel player)
