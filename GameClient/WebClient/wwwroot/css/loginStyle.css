@@ -34,9 +34,9 @@ body, .container {
     padding: 25px;
     border-radius: 10px;
     margin-left: 30px;
-    height: 60vh;
+    height: 65vh;
     overflow-y: hidden;
-    transform: translateY(-20%);
+    transform: translateY(-10%);
 }
 
 .links {
