@@ -15,10 +15,10 @@ using Azure.Identity;
 
 
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
 	[Collection("Sequential")]
-	public class GameLobbyServiceIntergrationTest : IDisposable
+	public class GameLobbyLogicIntergrationTest : IDisposable
 	{
 		private IConfiguration _configuration;
 
@@ -26,7 +26,7 @@ namespace GameClientApiTests.ServicesTests
 
 		private TestDatabaseHelper _testDatabaseHelper;
 
-		public GameLobbyServiceIntergrationTest()
+		public GameLobbyLogicIntergrationTest()
 		{
 			_configuration = new ConfigurationBuilder()
 		.SetBasePath(Directory.GetCurrentDirectory())

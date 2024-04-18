@@ -12,15 +12,15 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
-	public class PlayerServiceUnitTest
+	public class PlayerLogicUnitTest
 	{
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
-		public PlayerServiceUnitTest()
+		public PlayerLogicUnitTest()
 		{
 			_mockAccessor = new Mock<IPlayerDatabaseAccessor>();
 		}

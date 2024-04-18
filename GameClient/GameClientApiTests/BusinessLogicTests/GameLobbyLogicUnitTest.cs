@@ -12,9 +12,9 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
-	public class GameLobbyServiceUnitTest
+	public class GameLobbyLogicUnitTest
 	{
 
 		private readonly IConfiguration? _mockConfiguration;
@@ -22,7 +22,7 @@ namespace GameClientApiTests.ServicesTests
 		private readonly Mock<IPlayerLogic> _playerMockService;
 
 
-		public GameLobbyServiceUnitTest()
+		public GameLobbyLogicUnitTest()
 		{
 			_gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();
 			_playerMockService = new Mock<IPlayerLogic>();

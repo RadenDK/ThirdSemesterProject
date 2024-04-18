@@ -16,11 +16,11 @@ using Azure.Identity;
 using BC = BCrypt.Net.BCrypt;
 
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
 	[Collection("Sequential")]
 
-	public class PlayerServiceIntergrationTest : IDisposable
+	public class PlayerLogicIntergrationTest : IDisposable
     {
         private IConfiguration _configuration;
 
@@ -28,7 +28,7 @@ namespace GameClientApiTests.ServicesTests
 
         private TestDatabaseHelper _testDatabaseHelper;
 
-        public PlayerServiceIntergrationTest()
+        public PlayerLogicIntergrationTest()
         {
             _configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
