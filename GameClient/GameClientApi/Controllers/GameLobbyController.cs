@@ -1,6 +1,6 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameClientApi.Controllers
@@ -10,24 +10,24 @@ namespace GameClientApi.Controllers
 	public class GameLobbyController : Controller
 	{
 
-		private GameLobbyService _gameLobbyService;
-		private PlayerService _playerService;
+		private GameLobbyLogic _gameLobbyLogic;
+		private PlayerLogic _playerLogic;
 
 		public GameLobbyController(IConfiguration configuration,
 			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
 			IPlayerDatabaseAccessor playerDatabaseAccessor)
 		{
-			_playerService = new PlayerService(configuration, playerDatabaseAccessor);
+			_playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor);
 
-			_gameLobbyService = new GameLobbyService(configuration,
-				gameLobbyDatabaseAccessor, _playerService);
+			_gameLobbyLogic = new GameLobbyLogic(configuration,
+				gameLobbyDatabaseAccessor, _playerLogic);
 		}
 
 		public IActionResult AllGameLobbies()
 		{
 			try
 			{
-				IEnumerable<GameLobbyModel> allGameLobbies = _gameLobbyService.GetAllGameLobbies();
+				IEnumerable<GameLobbyModel> allGameLobbies = _gameLobbyLogic.GetAllGameLobbies();
 				return Ok(allGameLobbies);
 			}
 			catch (Exception ex)

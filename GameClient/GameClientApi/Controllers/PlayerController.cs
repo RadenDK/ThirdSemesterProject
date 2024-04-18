@@ -1,4 +1,4 @@
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
 using GameClientApi.DatabaseAccessors;
@@ -11,11 +11,11 @@ namespace GameClientApi.Controllers
 	public class PlayerController : Controller
 	{
 
-		private PlayerService _playerService;
+		private PlayerLogic _playerLogic;
 
 		public PlayerController(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
 		{
-			_playerService = new PlayerService(configuration, playerDatabaseAccessor);
+			_playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor);
 		}
 
 
@@ -25,10 +25,10 @@ namespace GameClientApi.Controllers
 			try
 			{
 
-				bool playerExists = _playerService.VerifyLogin(loginModel.Username, loginModel.Password);
+				bool playerExists = _playerLogic.VerifyLogin(loginModel.Username, loginModel.Password);
 				if (playerExists)
 				{
-					var player = _playerService.GetPlayer(loginModel.Username);
+					var player = _playerLogic.GetPlayer(loginModel.Username);
 					return Ok(player);
 				}
 				else
@@ -49,7 +49,7 @@ namespace GameClientApi.Controllers
 		{
 			try
 			{
-				if (_playerService.CreatePlayer(accountRegistration))
+				if (_playerLogic.CreatePlayer(accountRegistration))
 				{
 					return Ok(); // Return Ok if the player was created successfully
 				}

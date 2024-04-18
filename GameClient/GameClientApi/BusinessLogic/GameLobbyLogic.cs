@@ -1,17 +1,16 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
-using Microsoft.AspNetCore.Mvc;
 
-namespace GameClientApi.Services
+namespace GameClientApi.BusinessLogic
 {
-	public class GameLobbyService : IGameLobbyService
+	public class GameLobbyLogic : IGameLobbyLogic
 	{
 		private readonly IGameLobbyDatabaseAccessor _gameLobbyAccessor;
-		private readonly IPlayerService _playerService;
+		private readonly IPlayerLogic _playerService;
 
-		public GameLobbyService(IConfiguration configuration,
+		public GameLobbyLogic(IConfiguration configuration,
 			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
-			IPlayerService playerService)
+			IPlayerLogic playerService)
 		{
 			_gameLobbyAccessor = gameLobbyDatabaseAccessor;
 			_playerService = playerService;

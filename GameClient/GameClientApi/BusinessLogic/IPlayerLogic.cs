@@ -1,9 +1,8 @@
 ﻿using GameClientApi.Models;
-using System.Collections.Generic;
 
-namespace GameClientApi.Services
+namespace GameClientApi.BusinessLogic
 {
-	public interface IPlayerService
+	public interface IPlayerLogic
 	{
 		bool VerifyLogin(string userName, string password);
 		bool CreatePlayer(AccountRegistrationModel newPlayerAccount);

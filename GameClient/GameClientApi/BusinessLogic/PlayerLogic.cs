@@ -1,13 +1,13 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
 using BC = BCrypt.Net.BCrypt;
-namespace GameClientApi.Services
+namespace GameClientApi.BusinessLogic
 {
-	public class PlayerService : IPlayerService
+	public class PlayerLogic : IPlayerLogic
 	{
 		IPlayerDatabaseAccessor _playerAccessor;
 
-		public PlayerService(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
+		public PlayerLogic(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
 		{
 			_playerAccessor = playerDatabaseAccessor;
 		}
