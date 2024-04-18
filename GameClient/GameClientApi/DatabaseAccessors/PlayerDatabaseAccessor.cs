@@ -125,12 +125,12 @@ namespace GameClientApi.DatabaseAccessors
 				return players;
 			}
 		}
-
+        
 		public bool UpdatePlayerLobbyId(PlayerModel player)
 		{
 			bool updateSucces = false;
 
-			string deleteLobbyQuery = "UPDATE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
+			string deleteLobbyQuery = "UPDATE Player SET GameLobbyId = @GameLobbyId WHERE Username = @Username";
 
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
@@ -144,7 +144,14 @@ namespace GameClientApi.DatabaseAccessors
 
         public bool UpdatePlayerOwnership(PlayerModel player)
         {
-            throw new NotImplementedException();
+            string updateOwnershipQuery = "UPDATE Player SET IsOwner = @IsOwner WHERE PlayerId = @PlayerId";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                int rowsAffected = connection.Execute(updateOwnershipQuery, new { IsOwner = player.IsOwner, PlayerId = player });
+                return rowsAffected > 0;
+            }
         }
-	}
+    }
 }

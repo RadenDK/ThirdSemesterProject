@@ -6,14 +6,14 @@ namespace GameClientApi.BusinessLogic
 	public class GameLobbyLogic : IGameLobbyLogic
 	{
 		private readonly IGameLobbyDatabaseAccessor _gameLobbyAccessor;
-		private readonly IPlayerLogic _playerService;
+		private readonly IPlayerLogic _playerLogic;
 
 		public GameLobbyLogic(IConfiguration configuration,
 			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
-			IPlayerLogic playerService)
+			IPlayerLogic playerLogic)
 		{
 			_gameLobbyAccessor = gameLobbyDatabaseAccessor;
-			_playerService = playerService;
+			_playerLogic = playerLogic;
 		}
 
 		public IEnumerable<GameLobbyModel> GetAllGameLobbies()
@@ -24,7 +24,7 @@ namespace GameClientApi.BusinessLogic
 
 		private GameLobbyModel InitializeAndValidateGameLobby(GameLobbyModel gameLobby)
 		{
-			gameLobby.PlayersInLobby = _playerService.GetAllPlayersInLobby(gameLobby.GameLobbyId);
+			gameLobby.PlayersInLobby = _playerLogic.GetAllPlayersInLobby(gameLobby.GameLobbyId);
 
 			if (IsValidGameLobby(gameLobby))
 			{
@@ -91,7 +91,7 @@ namespace GameClientApi.BusinessLogic
 		{
 			PlayerModel firstPlayer = gameLobby.PlayersInLobby.First();
 			firstPlayer.IsOwner = true;
-			_playerService.UpdatePlayerLobbyId(firstPlayer);
+			_playerLogic.UpdatePlayerOwnership(firstPlayer);
 		}
 
 		private void KickPlayersUntilLobbyCapacityIsMet(GameLobbyModel gameLobby)
@@ -104,7 +104,7 @@ namespace GameClientApi.BusinessLogic
 			foreach (PlayerModel player in playersToKick)
 			{
 				gameLobby.PlayersInLobby.Remove(player);
-				_playerService.UpdatePlayerLobbyId(player);
+				_playerLogic.UpdatePlayerLobbyId(player);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace GameClientApi.BusinessLogic
 			foreach (PlayerModel owner in owners)
 			{
 				owner.IsOwner = false;
-				_playerService.UpdatePlayerOwnership(owner);
+				_playerLogic.UpdatePlayerOwnership(owner);
 			}
 		}
 	}

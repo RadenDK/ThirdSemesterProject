@@ -58,14 +58,14 @@ namespace GameClientApi.BusinessLogic
 
 		public List<PlayerModel> GetAllPlayersInLobby(int lobbyId)
 		{
-			throw new NotImplementedException();
+			return _playerAccessor.GetAllPlayersInLobby(lobbyId);
 
 		}
 
 		public void UpdatePlayerLobbyId(PlayerModel player)
-		{
-			throw new NotImplementedException();
-		}
+        {
+            _playerAccessor.UpdatePlayerLobbyId(player);
+        }
 
 		public void UpdatePlayerOwnership(PlayerModel player)
 		{
