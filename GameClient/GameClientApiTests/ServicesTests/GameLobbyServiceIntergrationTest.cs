@@ -1,5 +1,5 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -134,8 +134,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -162,8 +162,8 @@ namespace GameClientApiTests.ServicesTests
 			// Arrange
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -184,8 +184,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -215,8 +215,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -247,8 +247,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -279,8 +279,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -311,8 +311,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -331,8 +331,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -360,8 +360,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -394,8 +394,8 @@ namespace GameClientApiTests.ServicesTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerService playerService = new PlayerService(_configuration, playerDatabaseAccessor);
-			GameLobbyService SUT = new GameLobbyService(_configuration, gameLobbyDatabaseAccessor, playerService);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();

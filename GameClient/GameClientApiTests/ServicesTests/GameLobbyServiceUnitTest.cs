@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
@@ -19,13 +19,13 @@ namespace GameClientApiTests.ServicesTests
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IGameLobbyDatabaseAccessor> _gameLobbyMockAccessor;
-		private readonly Mock<IPlayerService> _playerMockService;
+		private readonly Mock<IPlayerLogic> _playerMockService;
 
 
 		public GameLobbyServiceUnitTest()
 		{
 			_gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();
-			_playerMockService = new Mock<IPlayerService>();
+			_playerMockService = new Mock<IPlayerLogic>();
 		}
 
 
@@ -57,7 +57,7 @@ namespace GameClientApiTests.ServicesTests
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(2)).Returns(expectedPlayersGameLobby2);
 
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -88,7 +88,7 @@ namespace GameClientApiTests.ServicesTests
 			_gameLobbyMockAccessor.Setup(a => a.GetAllGameLobbies())
 				.Returns(expectedGameLobbies);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -118,7 +118,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -158,7 +158,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 			
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -194,7 +194,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -226,7 +226,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act

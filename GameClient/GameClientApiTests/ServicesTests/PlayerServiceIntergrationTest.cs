@@ -1,5 +1,5 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -53,7 +53,7 @@ namespace GameClientApiTests.ServicesTests
         {
             // Arrange
             IPlayerDatabaseAccessor playerTestDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-            PlayerService SUT = new PlayerService(_configuration, playerTestDatabaseAccessor);
+            PlayerLogic SUT = new PlayerLogic(_configuration, playerTestDatabaseAccessor);
 
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel
             {
