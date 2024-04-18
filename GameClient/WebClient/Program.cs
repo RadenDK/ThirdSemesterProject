@@ -7,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IHttpClientService, HttpClientService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<IGameLobbyService, GameLobbyService>();
+
+// Register Logic to the container.
 builder.Services.AddScoped<ILoginLogic, LoginLogic>();
 builder.Services.AddScoped<IRegistrationLogic, RegistrationLogic>();
 builder.Services.AddScoped<IGameLobbyLogic, GameLobbyLogic>();

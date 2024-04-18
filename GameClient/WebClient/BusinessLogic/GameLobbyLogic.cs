@@ -8,11 +8,11 @@ using System.Linq;
 
 public class GameLobbyLogic : IGameLobbyLogic
 {
-    private readonly IHttpClientService _httpClientService;
+    private readonly IGameLobbyService _gameLobbyService;
 
-    public GameLobbyLogic(IHttpClientService httpClientService)
+    public GameLobbyLogic(IGameLobbyService gameLobbyService)
     {
-        _httpClientService = httpClientService;
+        _gameLobbyService = gameLobbyService;
     }
 
     public async Task<IEnumerable<GameLobbyModel>> GenerateRandomGameLobbies(int amountOfLobbies)
@@ -60,6 +60,6 @@ public class GameLobbyLogic : IGameLobbyLogic
 
     public async Task<GameLobbyModel> GetGameLobbyById(int lobbyId)
     {
-        return new GameLobbyModel();
+        return await _gameLobbyService.GetGameLobbyById(lobbyId);
     }
 }
