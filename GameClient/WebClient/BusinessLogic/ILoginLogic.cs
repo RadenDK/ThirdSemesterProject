@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
+using WebClient.Models;
 
 namespace WebClient.BusinessLogic
 {
     public interface ILoginLogic
     {
         Task<HttpResponseMessage> VerifyCredentials(string username, string password);
-        ClaimsPrincipal CreatePrincipal(string username);
-        // void StorePlayerInSession(ISession session, PlayerModel player); // Uncomment this if you need it
+        ClaimsPrincipal CreatePrincipal(PlayerModel player);
+        Task<ClaimsPrincipal> GetPlayerFromResponse(HttpResponseMessage response);
     }
 }

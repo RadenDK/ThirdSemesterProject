@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using WebClient.Models;
 
 namespace WebClient.Services
 {
@@ -18,5 +19,5 @@ namespace WebClient.Services
             var content = new StringContent(JsonConvert.SerializeObject(new { Username = username, Password = password }), Encoding.UTF8, "application/json");
             return await _httpClientService.PostAsync("Player/verify", content);
         }
-    }
+	}
 }
