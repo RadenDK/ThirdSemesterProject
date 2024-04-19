@@ -22,7 +22,7 @@ namespace GameClientApi.Controllers
 			_gameLobbyLogic = new GameLobbyLogic(configuration,
 				gameLobbyDatabaseAccessor, _playerLogic);
 		}
-
+		[HttpGet("AllGameLobbies")]
 		public IActionResult AllGameLobbies()
 		{
 			try
