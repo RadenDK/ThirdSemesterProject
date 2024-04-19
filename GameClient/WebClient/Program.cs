@@ -15,6 +15,7 @@ builder.Services.AddScoped<IGameLobbyService, GameLobbyService>();
 builder.Services.AddScoped<ILoginLogic, LoginLogic>();
 builder.Services.AddScoped<IRegistrationLogic, RegistrationLogic>();
 builder.Services.AddScoped<IGameLobbyLogic, GameLobbyLogic>();
+builder.Services.AddScoped<IHomePageLogic, HomePageLogic>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
