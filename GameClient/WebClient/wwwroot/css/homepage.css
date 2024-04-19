@@ -45,25 +45,33 @@ header h1 {
         width: 40%;
     }
 
-header button {
-    font-family: "Poppins", sans-serif;
-    font-size: 12px;
-    background-color: #007bff;
-    color: #f4f4f4;
-    border: none;
-    padding: 5px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    header button {
+        font-family: "Poppins", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        background-color: rgb(128, 128, 128, 0.5);
+        color: #f4f4f4;
+        border: none;
+        padding: 5px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.4s ease-in-out;
+    }
+
+        header button:hover {
+            background-color: #606060;
+            cursor: pointer;
+            transform: scale(1.02);
+            transition: transform 0.4s ease-in-out;
+        }
 
 /* Main section styles */
 main {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 85px;
 }
 
 img {
-    background-color: aliceblue;
     max-width: 100%;
     height: auto;
     display: block;
@@ -78,26 +86,43 @@ img {
     .small-image-container .image-wrapper {
         position: relative;
         width: calc(100% / 3);
+        height: auto;
         margin: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        transition: transform 0.4s ease-in-out;
     }
+
+        .small-image-container .image-wrapper:hover {
+            transform: scale(1.02);
+            transition: transform 0.4s ease-in-out;
+        }
 
         .small-image-container .image-wrapper img {
             width: 100%;
             height: 200px;
         }
 
-            .small-image-container .image-wrapper img:hover {
-                cursor: pointer;
-                transform: scale(1.01);
-                transition: transform 0.3s ease-in-out;
-            }
-
         .small-image-container .image-wrapper .image-text {
+            background-color: rgb(0, 0, 0, 0.8);
+            font-size: 13px;
+            font-weight: 700;
             position: absolute;
             bottom: 0;
             width: 100%;
-            text-align: center;
-            color: black;
+            text-align: left;
+            color: white;
+            padding: 10px 0;
+        }
+
+        .small-image-container .image-wrapper .image-small-text {
+            font-size: 10px;
+            position: absolute;
+            bottom: -18px; 
+            width: 100%;
+            text-align: left;
+            color: white;
+            padding: 10px 0;
         }
 
 
