@@ -1,17 +1,21 @@
 
 /* ---- MAIN CONTENT TIL HOMEPAGE */
-.main-content-container {
-    flex: 1;
 
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-image: url('/assets/homePicture.jpg');
+    background-repeat:no-repeat;
+    background-position: left;
+    overflow: hidden;
 }
 
-.main-content {
+.welcome-banner {
     padding: 25px;
     font-weight: 400;
 }
 
-.main-content h1 {
+.welcome-banner h1 {
     font-size: 25px;
 }
 
@@ -19,3 +23,81 @@
     font-size: 30px;
     font-weight: 900;
 }
+
+
+/* Header styles */
+header {
+    margin-top: 100px;
+    padding: 20px;
+    text-align: Left;
+}
+
+header h1 {
+    font-size: 40px;
+    font-weight: 900;
+    color: #f4f4f4;
+}
+
+    header p {
+        font-size: 16px;
+        font-weight: 300;
+        color: #f4f4f4;
+        width: 40%;
+    }
+
+header button {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    background-color: #007bff;
+    color: #f4f4f4;
+    border: none;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Main section styles */
+main {
+    text-align: center;
+    margin-top: 100px;
+}
+
+img {
+    background-color: aliceblue;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.small-image-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .small-image-container .image-wrapper {
+        position: relative;
+        width: calc(100% / 3);
+        margin: 10px;
+    }
+
+        .small-image-container .image-wrapper img {
+            width: 100%;
+            height: 200px;
+        }
+
+            .small-image-container .image-wrapper img:hover {
+                cursor: pointer;
+                transform: scale(1.01);
+                transition: transform 0.3s ease-in-out;
+            }
+
+        .small-image-container .image-wrapper .image-text {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: black;
+        }
+
+
