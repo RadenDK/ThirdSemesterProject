@@ -2,7 +2,7 @@
 {
 	public class GameLobbyModel
 	{
-		public int GameLobbyId { get; set; }
+		public int? GameLobbyId { get; set; }
 		public string LobbyName { get; set; }
 		public int AmountOfPlayers { get; set; }
 		public string Password { get; set; }

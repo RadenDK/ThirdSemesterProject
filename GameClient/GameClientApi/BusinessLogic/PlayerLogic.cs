@@ -56,20 +56,20 @@ namespace GameClientApi.BusinessLogic
 			return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
 		}
 
-		public List<PlayerModel> GetAllPlayersInLobby(int lobbyId)
+		public List<PlayerModel> GetAllPlayersInLobby(int? lobbyId)
 		{
 			return _playerAccessor.GetAllPlayersInLobby(lobbyId);
 
 		}
 
-		public void UpdatePlayerLobbyId(PlayerModel player)
+		public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
         {
-            _playerAccessor.UpdatePlayerLobbyId(player);
+            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel);
         }
 
 		public void UpdatePlayerOwnership(PlayerModel player)
 		{
-			throw new NotImplementedException();
+			_playerAccessor.UpdatePlayerOwnership(player);
 
 		}
 

@@ -48,26 +48,37 @@ namespace GameClientApiTests.BusinessLogicTests
         private void InsertMockGameLobbies()
         {
             string query = @"
-    SET IDENTITY_INSERT Chat ON;
-    INSERT INTO Chat (ChatId, ChatType) VALUES (1, 'LobbyChat'), (2, 'LobbyChat');
-    SET IDENTITY_INSERT Chat OFF;
-    SET IDENTITY_INSERT GameLobby ON;
-    INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayers, InviteLink, LobbyChatId) VALUES 
-    (1, 'LobbyNameTest1' , NULL, 1, 'InviteLinkTest1', 1),
-    (2, 'LobbyNameTest2' , NULL, 2, 'InviteLinkTest2', 2);
-    SET IDENTITY_INSERT GameLobby OFF;";
+
+			SET IDENTITY_INSERT Chat ON;
+
+			INSERT INTO Chat (ChatId, ChatType) VALUES (1, 'LobbyChat'), (2, 'LobbyChat'), (3, 'LobbyChat')
+
+			SET IDENTITY_INSERT Chat OFF;
+
+			SET IDENTITY_INSERT GameLobby ON;
+
+			INSERT INTO GameLobby (GameLobbyId, LobbyName, PasswordHash, AmountOfPlayers, InviteLink, LobbyChatId) VALUES 
+			(1, 'LobbyNameTest1' , NULL, 1, 'InviteLinkTest1', 1),
+			(2, 'LobbyNameTest2' , NULL, 2, 'InviteLinkTest2', 2),
+			(3, 'LobbyNameTest3' , NULL, 3, 'InviteLinkTest3', 3);
+							
+			SET IDENTITY_INSERT GameLobby OFF;";
 
             _testDatabaseHelper.RunTransactionQuery(query);
         }
 
-        private void InsertMockPlayersInGameLobbies()
+        private void InsertMockPlayers()
         {
             string query = @"
-    SET IDENTITY_INSERT Player ON;
-    INSERT INTO Player (PlayerId, Username, PasswordHash, InGameName, Birthday)
-    VALUES (1, 'Player1', 'PasswordHash1', 'InGameName1', '2022-01-01'),
-           (2, 'Player2', 'PasswordHash2', 'InGameName2', '2022-01-02'),
-           (3, 'Player3', 'PasswordHash3', 'InGameName3', '2022-01-03');";
+			SET IDENTITY_INSERT Player ON;
+
+        INSERT INTO Player (PlayerId, Username, PasswordHash, InGameName, Birthday)
+        VALUES (1, 'Player1', 'PasswordHash1', 'InGameName1', '2022-01-01'),
+               (2, 'Player2', 'PasswordHash2', 'InGameName2', '2022-01-02'),
+               (3, 'Player3', 'PasswordHash3', 'InGameName3', '2022-01-03'),
+               (4, 'Player4', 'PasswordHash4', 'InGameName4', '2022-01-04'),
+               (5, 'Player5', 'PasswordHash5', 'InGameName5', '2022-01-05'),
+               (6, 'Player6', 'PasswordHash6', 'InGameName6', '2022-01-06');";
 
             _testDatabaseHelper.RunTransactionQuery(query);
         }
@@ -75,8 +86,9 @@ namespace GameClientApiTests.BusinessLogicTests
         private void AssosiatePlayersWithGameLobbies()
         {
             string query = @"
-    UPDATE Player SET GameLobbyId = 1 WHERE PlayerId IN (1);
-    UPDATE Player SET GameLobbyId = 2 WHERE PlayerId IN (2, 3);";
+        UPDATE Player SET GameLobbyId = 1 WHERE PlayerId IN (1);
+        UPDATE Player SET GameLobbyId = 2 WHERE PlayerId IN (2, 3);
+        UPDATE Player SET GameLobbyId = 3 WHERE PlayerId IN (4,5,6);";
 
             _testDatabaseHelper.RunTransactionQuery(query);
         }
@@ -95,7 +107,7 @@ namespace GameClientApiTests.BusinessLogicTests
             string query = @"
     UPDATE Player
     SET IsOwner = 1
-    WHERE PlayerId IN (1, 2)";
+    WHERE PlayerId IN (1, 2, 4)";
 
             _testDatabaseHelper.RunTransactionQuery(query);
         }
@@ -116,7 +128,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiatePlayersWithGameLobbies();
             SetValidOwnershipOfGameLobbies();
 
@@ -130,7 +142,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
             // Assert
             Assert.True(testResult != null, "Test result is null.");
-            Assert.True(testResult.Count() == 2, "Test result count is not 2.");
+            Assert.True(testResult.Count() == 3, "Test result count is not 3.");
 
             foreach (var gameLobby in testResult)
             {
@@ -167,7 +179,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiatePlayersWithGameLobbies();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -198,7 +210,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiatePlayersWithGameLobbies();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -230,7 +242,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiatePlayersWithGameLobbies();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -262,7 +274,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiatePlayersWithGameLobbies();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
@@ -295,7 +307,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
             PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
@@ -315,7 +327,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
 
             GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
             PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
@@ -342,7 +354,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiateTooManyPlayersWithGameLobby();
             SetValidOwnershipOfGameLobbies();
 
@@ -376,7 +388,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             InsertMockGameLobbies();
-            InsertMockPlayersInGameLobbies();
+            InsertMockPlayers();
             AssosiateTooManyPlayersWithGameLobby();
             SetValidOwnershipOfGameLobbies();
 

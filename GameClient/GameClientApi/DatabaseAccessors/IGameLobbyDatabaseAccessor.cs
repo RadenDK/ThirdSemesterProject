@@ -7,6 +7,6 @@ namespace GameClientApi.DatabaseAccessors
 		List<GameLobbyModel> GetAllGameLobbies ();
 
 
-		bool DeleteGameLobby(int gameLobbyId);
+		bool DeleteGameLobby(int? gameLobbyId);
 	}
 }

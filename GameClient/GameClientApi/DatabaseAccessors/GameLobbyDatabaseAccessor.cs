@@ -24,7 +24,7 @@ namespace GameClientApi.DatabaseAccessors
 			return gameLobbies;
 		}
 
-		public bool DeleteGameLobby(int gameLobbyId)
+		public bool DeleteGameLobby(int? gameLobbyId)
 		{
 			bool deletionSucces = false;
 
