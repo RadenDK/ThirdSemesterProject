@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Numerics;
 using System.Security.Claims;
+using System.Text.Json;
+using WebClient.Models;
 using WebClient.Services;
 
 namespace WebClient.BusinessLogic
@@ -18,26 +21,38 @@ namespace WebClient.BusinessLogic
             return await _loginService.VerifyPlayerCredentials(username, password);
         }
 
-        public ClaimsPrincipal CreatePrincipal(string username)
+        public ClaimsPrincipal CreatePrincipal(PlayerModel player)
         {
-			//Remembers the username that is logged in with. The ClaimTypes.Name constant specifies the
+
+            //Remembers the username that is logged in with. The ClaimTypes.Name constant specifies the
             //type of the claim (user's name), and username is the value of the claim, representing the logged-in user's username.
-			var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+            var claims = new List<Claim> {
+                new Claim("Username", player.Username),
+                new Claim("InGameName", player.InGameName),
+                new Claim("Elo", player.Elo.ToString()),
+                new Claim("Banned", player.Banned.ToString()),
+                new Claim("CurrencyAmount", player.CurrencyAmount.ToString()),
+                new Claim("OnlineStatus", player.OnlineStatus.ToString())
+            };
 
-			//The ClaimsIdentity represents the identity of the user and contains
+            //The ClaimsIdentity represents the identity of the user and contains
             //the claims associated with that identity.
-			var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-			//The ClaimsPrincipal represents the security context of the user within the application,
+            //The ClaimsPrincipal represents the security context of the user within the application,
             //encapsulating the user's identity and associated claims.
             //The method then returns this ClaimsPrincipal object, which can be used for authentication and authorization purposes within the application.
-			return new ClaimsPrincipal(identity);
+            return new ClaimsPrincipal(identity);
         }
 
-        //public void StorePlayerInSession(ISession session, PlayerModel player)
-        //{
-        //    session.SetString("Player", JsonSerializer.Serialize(player));
-        //    session.SetString("InGameName", player.InGameName);
-        //}
+        public async Task<ClaimsPrincipal> GetPlayerFromResponse(HttpResponseMessage response)
+        {
+            var playerData = await response.Content.ReadAsStringAsync();
+            var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
+
+            //Passes the username as a parameter to create a ClaimsPrincipal object representing the authenticated user's identity.
+            var principal = CreatePrincipal(player);
+            return principal;
+        }
     }
 }
