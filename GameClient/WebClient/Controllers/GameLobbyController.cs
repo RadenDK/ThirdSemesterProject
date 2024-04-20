@@ -23,8 +23,10 @@ namespace WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> JoinLobby()
         {
-            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GenerateRandomGameLobbies(5);
-            return View(gameLobbies.ToList());
+            //IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GenerateRandomGameLobbies(5);
+			IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
+
+			return View(gameLobbies.ToList());
         }
 
         [HttpGet]
