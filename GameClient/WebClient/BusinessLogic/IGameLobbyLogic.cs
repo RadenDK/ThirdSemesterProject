@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 public interface IGameLobbyLogic
 {
-    Task<IEnumerable<GameLobbyModel>> GenerateRandomGameLobbies(int amountOfLobbies);
     Task<GameLobbyModel> GetGameLobbyById(int lobbyId);
+
+    Task<List<GameLobbyModel>> GetAllGameLobbies();
 }
