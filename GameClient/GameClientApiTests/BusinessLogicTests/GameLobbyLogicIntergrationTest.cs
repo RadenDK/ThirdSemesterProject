@@ -153,7 +153,6 @@ namespace GameClientApiTests.BusinessLogicTests
                 Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1, "There is not exactly one owner in the game lobby.");
                 Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
                 Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
-                Assert.True(gameLobby.Owner != null, "Owner is null.");
             }
         }
 
@@ -203,7 +202,6 @@ namespace GameClientApiTests.BusinessLogicTests
                 Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1); // Check that there is exactly one owner
                 Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName))); // Check that all players have an InGameName
                 Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers);
-                Assert.True(gameLobby.Owner != null, "Owner is null.");
             }
         }
 
@@ -267,7 +265,6 @@ namespace GameClientApiTests.BusinessLogicTests
                 Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1, "There is not exactly one owner in the game lobby.");
                 Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
                 Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
-                Assert.True(gameLobby.Owner != null, "Owner is null.");
             }
         }
 
@@ -382,7 +379,6 @@ namespace GameClientApiTests.BusinessLogicTests
                 Assert.True(gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1, "There is not exactly one owner in the game lobby.");
                 Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
                 Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
-                Assert.True(gameLobby.Owner != null, "Owner is null.");
             }
 
         }

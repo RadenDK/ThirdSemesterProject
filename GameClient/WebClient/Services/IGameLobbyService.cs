@@ -6,5 +6,7 @@ namespace WebClient.Services
     public interface IGameLobbyService
     {
         Task<GameLobbyModel> GetGameLobbyById(int lobbyId);
+
+        Task<List<GameLobbyModel>> GetAllGameLobbies();
     }
 }

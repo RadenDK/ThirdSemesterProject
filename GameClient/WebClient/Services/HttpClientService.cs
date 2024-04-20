@@ -30,5 +30,11 @@ namespace WebClient.Services
         {
             return await _httpClient.PostAsync(url, content);
         }
+
+        public async Task<HttpResponseMessage> GetAsync(string url)
+        {
+            return await _httpClient.GetAsync(url);
+        }
+
     }
 }

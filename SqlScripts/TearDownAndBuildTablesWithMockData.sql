@@ -153,10 +153,27 @@
     INSERT INTO Chat (chatType) VALUES ('Friend');
     INSERT INTO Chat (chatType) VALUES ('Friend');
     INSERT INTO Chat (chatType) VALUES ('Friend');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
+    INSERT INTO Chat (chatType) VALUES ('GameLobby');
 
 
     -- Insert data into GameLobby
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby1', NULL, 'link1', 1);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby1', 'Test', 'link1', 1);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby2', NULL, 'link2', 2);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby3', 'Test', 'link3', 3);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby4', NULL, 'link4', 4);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby5', NULL, 'link5', 5);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby6', 'Test', 'link6', 6);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby7', NULL, 'link7', 7);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby8', NULL, 'link8', 8);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby9', 'Test', 'link9', 9);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby10', NULL, 'link10', 10);
 
 
     -- Insert data into Player
@@ -169,6 +186,15 @@
     INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player6', '$2a$11$8nKGqpk2d4SRpXo2Nn13Z.E1nvCzoPBph79pD/pYgc.62mB3vP/a.', 'InGameName6', GETDATE(), 'player6@example.com', 1); -- Password is a hashed version of "Player6"
     INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player7', '$2a$11$o0ZNk3a0JBhXjqSzUP0ZQOlMFBVjwqsLkaxFhJhihWOhgyQHErwyK', 'InGameName7', GETDATE(), 'player7@example.com'); -- Password is a hashed version of "Player7"
     INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player8', '$2a$11$3Y.Pqf9.U4ydTMEYvr4QFuAiWx6P9pQHAI1M/31pcXTsHa3pbHIHC', 'InGameName8', GETDATE(), 'player8@example.com'); -- Password is a hashed version of "Player8"
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player9', '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i', 'InGameName9', GETDATE(), 'player9@example.com', 2);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player10', 'CannotBeLoggedInTo', 'InGameName10', GETDATE(), 'player10@example.com', 3);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player11', 'CannotBeLoggedInTo', 'InGameName11', GETDATE(), 'player11@example.com', 4);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player12', 'CannotBeLoggedInTo', 'InGameName12', GETDATE(), 'player12@example.com', 5);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player13', 'CannotBeLoggedInTo', 'InGameName13', GETDATE(), 'player13@example.com', 6);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player14', 'CannotBeLoggedInTo', 'InGameName14', GETDATE(), 'player14@example.com', 7);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player15', 'CannotBeLoggedInTo', 'InGameName15', GETDATE(), 'player15@example.com', 8);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player16', 'CannotBeLoggedInTo', 'InGameName16', GETDATE(), 'player16@example.com', 9);
+    INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player17', 'CannotBeLoggedInTo', 'InGameName17', GETDATE(), 'player17@example.com', 10);
 
     -- Insert data into Message
 
