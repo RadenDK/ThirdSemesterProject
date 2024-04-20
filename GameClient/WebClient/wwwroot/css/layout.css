@@ -38,12 +38,13 @@ body {
         color: white;
     }
 
-.section {
+.section-1 {
     margin-bottom: 20px;
     text-decoration: none; /* Removes underline */
 }
 
 .section-2 {
+   margin-bottom: 0px;
 }
 
 .bento-box {
@@ -126,8 +127,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
 /* Style for the friend list */
 .friend-list {
-    list-style-type: none;
-    padding-left: 0;
+    flex-grow: 1;
 }
 
 .friend img {
@@ -138,10 +138,12 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 }
 
 .friends {
-    display: flex;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: center;
-    overflow-y: scroll;
+    overflow-y: auto;
+
+
 }
 
 .friend {
@@ -251,4 +253,28 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
 .header-join-lobby {
     display: flex;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px black;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 123, 255);
+    border-radius: 10px;
+    box-shadow: #0a53be;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 103, 255);
 }
