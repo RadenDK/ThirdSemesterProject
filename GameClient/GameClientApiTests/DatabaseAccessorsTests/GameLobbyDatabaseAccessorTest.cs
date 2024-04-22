@@ -100,5 +100,80 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			Assert.NotNull(testResult);
 			Assert.False(testResult.Any());
 		}
+
+		[Fact]
+		public void CreateGameLobby_TC1_InsertsANewGameLobbyAndReturnsSuccessful()
+		{
+			// Arrange
+			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
+
+			LobbyChatModel mockLobbyChat = new LobbyChatModel { ChatId = 1, ChatType = "Type1" };
+			GameLobbyModel mockGameLobby = new GameLobbyModel
+			{
+				LobbyName = "TestLobby",
+				PasswordHash = "passwordHash",
+				InviteLink = "inviteLinkTest",
+				LobbyChat = mockLobbyChat
+			};
+
+			// Act
+			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+
+			// Assert
+			Assert.True(testResult);
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = "SELECT 1 FROM GameLobby WHERE LobbyName = @LobbyName";
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { LobbyName = mockGameLobby.LobbyName });
+				Assert.True(queryResult.Any(), "Expected a mock game lobby to be inserted in the database but could not find it");
+			}
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC2_MethodDoesNotInsertGameLobbyWithMissingInformation()
+		{
+			// Arrange
+			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
+
+			GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "TestLobby" };
+
+			// Act
+			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+
+			// Assert
+			Assert.False(testResult);
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = "SELECT 1 FROM GameLobby WHERE LobbyName = @LobbyName";
+				IEnumerable<string> queryResult = connection.Query<string>(query, new { LobbyName = mockGameLobby.LobbyName });
+				Assert.False(queryResult.Any(), "Expected not to find mock game lobby in the database but found one");
+			}
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC3_MethodDoesNotInsertGameLobbyWhenGameLobbyIsNull()
+		{
+			// Arrange
+			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
+
+			GameLobbyModel mockGameLobby = null;
+
+			// Act
+			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+
+			// Assert
+			Assert.False(testResult);
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = "SELECT 1 FROM GameLobby";
+				IEnumerable<string> queryResult = connection.Query<string>(query);
+				Assert.False(queryResult.Any(), "Expected not to find mock game lobby in the database but found one");
+			}
+		}
+
+
 	}
 }
