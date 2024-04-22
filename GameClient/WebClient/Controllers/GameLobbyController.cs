@@ -40,10 +40,14 @@ namespace WebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
         {
-            var userPrincipal = HttpContext.User;
-            string username = _gameLobbyLogic.GetUsername(userPrincipal);
-            GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
-            return RedirectToAction("Homepage", "Homepage");
+            if(ModelState.IsValid)
+            {
+                var userPrincipal = HttpContext.User;
+                string username = _gameLobbyLogic.GetUsername(userPrincipal);
+                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
+                return RedirectToAction("Homepage", "Homepage");
+            }
+            return View("CreateLobby");
         }
     }
 }
