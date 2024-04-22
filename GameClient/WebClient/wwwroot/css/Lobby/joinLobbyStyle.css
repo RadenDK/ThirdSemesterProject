@@ -7,43 +7,42 @@
 }
 
 .lobby-container .table-row:hover {
-    background-color: #878787; /* Light gray */
+    background-color: #2e2e2e; /* Light gray */
+}
+
+.table-responsive {
+    margin: 20px; /* Add some space around the table */
 }
 
 
-.tbody {
-    border-radius: 10px;
-    overflow: hidden; /* This is necessary for the border-radius to take effect on child elements */
-    background-color: black;
+.table-responsive table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #fff; /* White text */
+    background-color: #212121; /* White background */
+    border-radius: 15px;
 }
 
-.table-dark {
-    /* Add your custom styles here. For example: */
-    border: 1px solid #000;
-    font-size: 16px;
-    color: #fff;
+.table-responsive th, .table-responsive td {
+    padding: 15px; /* Padding inside cells */
+    text-align: left; /* Align text to the left */
+}
+.table-responsive th {
+    background-color: #121212; /* Dark gray */
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    font-size: 18px; /* Larger font size */
+    text-transform: uppercase; /* Uppercase text */
 }
 
-.table-dark thead {
-    /* Styles for the table header */
-    background-color: #333;
+.table-responsive tr {
+    border-bottom: 1px solid rgba(16, 15, 15, 0.85); /* Border between rows */
 }
 
-.table-dark tbody {
-    /* Styles for the table body */
-    background-color: #222;
+.table-responsive tr:last-child {
+    border-bottom: none; /* Remove border from last row */
 }
 
-.table-dark tbody tr:hover {
-    /* Styles for a table row on hover */
-    background-color: #555;
-}
-
-.table-dark td, .table-dark th {
-    /* Styles for table cells */
-    padding: 10px;
-    border: 1px solid #444;
-}
 .modal {
     display: none;
     position: fixed;

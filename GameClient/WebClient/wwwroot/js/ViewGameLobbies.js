@@ -30,65 +30,40 @@
         }
         window.location.href = url;
     });
-});
 
-$(document).ready(function() {
-    // Attach click event handlers
-    $('#lockHeader').click(function() {
-        sortTable(0);
+
+// Attach a click event listener to each table header
+    $('th').click(function() {
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+
+        // If this.asc is not true, reverse the array
+        if (!this.asc) {
+            rows = rows.reverse();
+        }
+
+        // Replace existing rows with sorted rows
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i]);
+        }
     });
-    $('#lobbyNameHeader').click(function() {
-        sortTable(1);
-    });
-    $('#ownerHeader').click(function() {
-        sortTable(2);
-    });
-    $('#playersHeader').click(function() {
-        sortTable(3);
-    });
 
-    var lastSortedColumn = -1;
-    var lastSortOrderAsc = true;
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index);
+            var valB = getCellValue(b, index);
 
-    // Function to sort table
-    function sortTable(columnIndex) {
-        var table = $('.table');
-        var rows = table.find('tr:gt(0)').toArray();
-
-        // Determine sort order (asc or desc)
-        var sortOrderAsc = lastSortedColumn !== columnIndex || !lastSortOrderAsc;
-        lastSortedColumn = columnIndex;
-        lastSortOrderAsc = sortOrderAsc;
-
-        // Sort rows array
-        rows.sort(function(a, b) {
-            var A, B;
-            if (columnIndex === 0) { // lock column
-                A = $(a).children('td').eq(columnIndex).has('i').length;
-                B = $(b).children('td').eq(columnIndex).has('i').length;
-            } else if (columnIndex === 3) { // players column
-                A = Number($(a).children('td').eq(columnIndex).text().split('/')[0]);
-                B = Number($(b).children('td').eq(columnIndex).text().split('/')[0]);
-            } else { // lobby name and owner columns
-                A = $(a).children('td').eq(columnIndex).text().toUpperCase();
-                B = $(b).children('td').eq(columnIndex).text().toUpperCase();
+            // If numeric values are being compared, parse them to float
+            if($.isNumeric(valA) && $.isNumeric(valB)) {
+                return parseFloat(valA) > parseFloat(valB) ? 1 : -1;
+            } else {
+                return valA.toString().localeCompare(valB);
             }
-
-            if (A < B) {
-                return sortOrderAsc ? -1 : 1;
-            }
-            if (A > B) {
-                return sortOrderAsc ? 1 : -1;
-            }
-            return 0;
-        });
-
-        // Remove current rows (except header)
-        table.find('tr:gt(0)').remove();
-
-        // Add sorted rows
-        $.each(rows, function(index, row) {
-            table.append(row);
-        });
+        }
     }
-});
+
+    function getCellValue(row, index) {
+        return $(row).children('td').eq(index).text();
+    }
+}   );
