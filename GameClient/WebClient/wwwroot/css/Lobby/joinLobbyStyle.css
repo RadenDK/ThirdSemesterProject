@@ -44,3 +44,51 @@
     padding: 10px;
     border: 1px solid #444;
 }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7); /* Darker background */
+}
+
+.modal-content {
+    background-color: #333; /* Dark gray */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #444; /* Slightly lighter gray for the border */
+    width: 30%;
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    text-align: center; /* Center the text */
+}
+
+    .modal-content h2 {
+        margin-bottom: 20px; /* Add some space below the title */
+    }
+
+    .modal-content input {
+        width: 100%; /* Make the input field take up the full width of the modal */
+        padding: 10px; /* Add some padding inside the input field */
+        margin-bottom: 20px; /* Add some space below the input field */
+        border: none; /* Remove the default border */
+        background-color: #444; /* Slightly lighter gray for the input field */
+        color: #fff; /* White text */
+    }
+
+    .modal-content button {
+        padding: 10px 20px; /* Add some padding inside the button */
+        border: none; /* Remove the default border */
+        background-color: #555; /* Slightly lighter gray for the button */
+        color: #fff; /* White text */
+        cursor: pointer; /* Change the cursor when hovering over the button */
+    }
+
+        .modal-content button:hover {
+            background-color: #666; /* Even lighter gray when hovering over the button */
+        }
+
