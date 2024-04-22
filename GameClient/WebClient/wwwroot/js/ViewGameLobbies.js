@@ -8,8 +8,27 @@
 
     $(".table-row").click(function () {
         var lobbyId = $(this).data("lobby-id");
-        // Redirect to the GameLobby action in the GameLobbyController with the lobbyId
-        window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+
+        // Check if the lobby is private
+        if ($(this).find('.bi-lock-fill').length > 0) {
+            // Show the password modal
+            $("#passwordModal").show();
+        } else {
+            // If the lobby is not private, redirect immediately
+            window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+        }
+    });
+
+    $("#submitPassword").click(function () {
+        var lobbyId = $(".table-row").data("lobby-id");
+        var password = $("#passwordInput").val();
+
+        // Redirect to the GameLobby action in the GameLobbyController with the lobbyId and password
+        var url = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+        if (password !== null) {
+            url += "&password=" + encodeURIComponent(password);
+        }
+        window.location.href = url;
     });
 });
 
