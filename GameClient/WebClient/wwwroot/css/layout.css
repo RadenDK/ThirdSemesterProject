@@ -35,9 +35,9 @@ body {
     background-color: rgb(16, 16, 16, 0);
 }
 
-    .main-content-container h1 {
-        color: white;
-    }
+.main-content-container h1 {
+    color: white;
+}
 
 .section-1 {
     margin-bottom: 20px;
@@ -45,7 +45,7 @@ body {
 }
 
 .section-2 {
-   margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 .bento-box {
@@ -60,18 +60,23 @@ body {
 
 #bento-box-1 {
     padding: 20px 20px;
+    background-color: rgb(12, 12, 12, 0.6);
+    margin: 10px 0px;
 }
 
 #bento-box-2 {
     padding: 20px 20px;
+    margin: 10px 0px;
 }
 
 #bento-box-3 {
     padding: 20px 20px;
+    margin: 10px 0px
 }
 
 #bento-box-4 {
     padding: 20px 20px;
+    margin: 10px 0px;
 }
 
 #bento-box-6 {
@@ -153,32 +158,37 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     align-items: center;
 }
 
-    .friend div {
-        display: flex;
-        flex-direction: column;
-    }
+.friend div {
+    display: flex;
+    flex-direction: column;
+}
 
-    .friend p {
-        margin: 0;
-        padding-top: 0;
-        padding-bottom: 7px;
-        font-size: 12px;
-        font-weight: 500;
-        color: white;
-    }
+.friend p {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+}
 
-    .friend span {
-        font-size: 11px;
-        color: #878787;
-    }
+.friend span {
+    font-size: 11px;
+    color: #878787;
+}
 
 #online {
     font-size: 11px;
     color: #e3e3e3;
 }
 
-
-
+#play-text {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-weight: 650;
+    font-size: 30px;
+    position: relative;
+}
 
 #store-text {
     color: #f4f4f4;
@@ -198,7 +208,6 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     font-weight: 450;
 }
 
-
 .menu-item {
     display: flex;
     align-items: center;
@@ -208,11 +217,11 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     text-decoration: none;
 }
 
-    .menu-item img {
-        width: 15px;
-        height: 15px;
-        margin-right: 10px;
-    }
+.menu-item img {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
 
 .bento-box img {
     width: 30px;
@@ -232,16 +241,16 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     padding-top: 20px;
 }
 
-    .header-layout-lobby a {
-        padding: 20px;
-        color: #ffffff; /* Default color */
-        text-decoration: none; /* Removes underline */
-    }
+.header-layout-lobby a {
+    padding: 20px;
+    color: #ffffff; /* Default color */
+    text-decoration: none; /* Removes underline */
+}
 
-        .header-layout-lobby a:hover {
-            color: #ff0000; /* Color on hover */
-            text-decoration: none; /* Removes underline */
-        }
+.header-layout-lobby a:hover {
+    color: #3884f1; /* Color on hover */
+    text-decoration: none; /* Removes underline */
+}
 
 
 .search-for-lobby-container {
@@ -276,15 +285,10 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     background: rgba(0, 103, 255);
 }
 
-#play-text {
-    color: #f4f4f4;
-    text-decoration: none;
-    font-weight: 650;
-    font-size: 30px;
-    position: relative;
-}
 
 
 .menu-item:hover {
     text-decoration: none;
 }
+
+

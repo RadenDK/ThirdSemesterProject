@@ -7,7 +7,7 @@ body {
     background-image: url('/assets/homePicture.jpg');
     background-repeat:no-repeat;
     background-position: right;
-    background-size: 85%;
+    background-size: cover;
     overflow: hidden;
 }
 
