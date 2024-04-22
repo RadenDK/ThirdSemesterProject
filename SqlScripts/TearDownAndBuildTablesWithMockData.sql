@@ -30,7 +30,7 @@
         GameLobbyID INT IDENTITY(1,1) PRIMARY KEY,
         LobbyName NVARCHAR (50) NOT NULL,
         AmountOfPlayers INT DEFAULT 10,
-        PasswordHash NVARCHAR (50) DEFAULT NULL,
+        PasswordHash NVARCHAR (MAX) DEFAULT NULL,
         InviteLink VARCHAR (50) NOT NULL,
         LobbyChatId INT NOT NULL,
         FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID)
@@ -40,7 +40,7 @@
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR (50) NOT NULL,
-        PasswordHash NVARCHAR (200) NOT NULL,
+        PasswordHash NVARCHAR (MAX) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
         Email VARCHAR (50) DEFAULT NULL,
         Birthday DATETIME NOT NULL,
@@ -166,7 +166,7 @@
     -- Insert data into GameLobby
     INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby1', 'Test', 'link1', 1);
     INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby2', NULL, 'link2', 2);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby3', 'Test', 'link3', 3);
+    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('MyLobbu', 'Test', 'link3', 3);
     INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby4', NULL, 'link4', 4);
     INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby5', NULL, 'link5', 5);
     INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby6', 'Test', 'link6', 6);
