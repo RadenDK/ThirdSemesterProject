@@ -20,16 +20,16 @@
 
 	<div class="lobby-container">
 		<div class="table-responsive">
-			<table class="table table-dark">
-				<thead>
+				<table class="table table-dark">
+					<thead>
 					<tr>
-						<th></th>
-						<th>Lobby Name</th>
-						<th>Owner</th>
-						<th>Players</th>
+						<th id="lockHeader"><i class="bi bi-lock-fill"></i></th>
+						<th id="lobbyNameHeader">Lobby Name</th>
+						<th id="ownerHeader">Owner</th>
+						<th id="playersHeader">Players</th>
 					</tr>
-				</thead>
-				<tbody>
+					</thead>
+					<tbody>
 					@foreach (GameLobbyModel lobby in Model)
 					{
 						<tr class="table-row" data-lobby-id="@lobby.GameLobbyId">
@@ -44,8 +44,8 @@
 							<td>@lobby.PlayersInLobby.Count()/@lobby.AmountOfPlayers</td>
 						</tr>
 					}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
 		</div>
 	</div>
 </div>

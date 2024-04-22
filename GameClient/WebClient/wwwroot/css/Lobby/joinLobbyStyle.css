@@ -9,3 +9,38 @@
 .lobby-container .table-row:hover {
     background-color: #878787; /* Light gray */
 }
+
+
+.tbody {
+    border-radius: 10px;
+    overflow: hidden; /* This is necessary for the border-radius to take effect on child elements */
+    background-color: black;
+}
+
+.table-dark {
+    /* Add your custom styles here. For example: */
+    border: 1px solid #000;
+    font-size: 16px;
+    color: #fff;
+}
+
+.table-dark thead {
+    /* Styles for the table header */
+    background-color: #333;
+}
+
+.table-dark tbody {
+    /* Styles for the table body */
+    background-color: #222;
+}
+
+.table-dark tbody tr:hover {
+    /* Styles for a table row on hover */
+    background-color: #555;
+}
+
+.table-dark td, .table-dark th {
+    /* Styles for table cells */
+    padding: 10px;
+    border: 1px solid #444;
+}
