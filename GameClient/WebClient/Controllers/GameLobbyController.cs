@@ -25,9 +25,9 @@ namespace WebClient.Controllers
         public async Task<IActionResult> JoinLobby()
         {
             //IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GenerateRandomGameLobbies(5);
-			IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
+            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
 
-			return View(gameLobbies.ToList());
+            return View(gameLobbies.ToList());
         }
 
         [HttpGet]
@@ -40,14 +40,10 @@ namespace WebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
         {
-            if(ModelState.IsValid) 
-            {
-                var userPrincipal = HttpContext.User;
-                string username = _gameLobbyLogic.GetUsername(userPrincipal);
-                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
-                return RedirectToAction("GameLobby", new { lobbyId = gameLobby.GameLobbyId });
-            }
-            return View(newLobby);
+            var userPrincipal = HttpContext.User;
+            string username = _gameLobbyLogic.GetUsername(userPrincipal);
+            GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
+            return RedirectToAction("Homepage", "Homepage");
         }
     }
 }
