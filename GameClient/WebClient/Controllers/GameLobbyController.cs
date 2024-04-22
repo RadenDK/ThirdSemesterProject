@@ -35,5 +35,16 @@ namespace WebClient.Controllers
             GameLobbyModel gameLobby = await _gameLobbyLogic.GetGameLobbyById(lobbyId);
             return View(gameLobby);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
+        {
+            if(ModelState.IsValid) 
+            {
+                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby);
+                return RedirectToAction("GameLobby", new { lobbyId = gameLobby.GameLobbyId });
+            }
+            return View(newLobby);
+        }
     }
 }

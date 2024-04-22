@@ -34,4 +34,9 @@ public class GameLobbyLogic : IGameLobbyLogic
 	{
 		return await _gameLobbyService.GetGameLobbyById(lobbyId);
 	}
+
+	public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby)
+	{
+		return await _gameLobbyService.CreateGameLobby(newLobby);
+	}
 }

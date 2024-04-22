@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Text;
 using WebClient.Models;
 
 namespace WebClient.Services
@@ -30,11 +31,26 @@ namespace WebClient.Services
 			}
 		}
 
-
-
 		public async Task<GameLobbyModel> GetGameLobbyById(int lobbyId)
 		{
 			return new GameLobbyModel();
+		}
+
+		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby)
+		{
+			string endpoint = "GameLobby/CreateGameLobby";
+			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(newLobby), Encoding.UTF8, "application/json");
+			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
+			if (response.IsSuccessStatusCode)
+			{
+				string responseBody = await response.Content.ReadAsStringAsync();
+				GameLobbyModel gameLobby = JsonConvert.DeserializeObject<GameLobbyModel>(responseBody);
+				return gameLobby;
+			}
+			else 
+			{ 
+				throw new Exception($"Failed to create game lobby. HTTP response code: {response.StatusCode}"); 
+			}
 		}
 	}
 }
