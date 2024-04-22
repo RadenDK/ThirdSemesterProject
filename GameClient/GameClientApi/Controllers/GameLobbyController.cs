@@ -35,5 +35,25 @@ namespace GameClientApi.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("GameLobby/join")]
+		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
+		{
+			try
+			{
+				GameLobbyModel gameLobby = _gameLobbyLogic.GetGameLobby(joinRequest.GameLobbyId, joinRequest.Password);
+				return Ok(gameLobby);
+
+			} 
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }

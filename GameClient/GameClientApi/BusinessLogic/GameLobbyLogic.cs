@@ -1,134 +1,156 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
+using System.IdentityModel.Tokens.Jwt;
+using BC = BCrypt.Net.BCrypt;
+
 
 namespace GameClientApi.BusinessLogic
 {
-    public class GameLobbyLogic : IGameLobbyLogic
-    {
-        private readonly IGameLobbyDatabaseAccessor _gameLobbyAccessor;
-        private readonly IPlayerLogic _playerLogic;
+	public class GameLobbyLogic : IGameLobbyLogic
+	{
+		private readonly IGameLobbyDatabaseAccessor _gameLobbyAccessor;
+		private readonly IPlayerLogic _playerLogic;
 
-        public GameLobbyLogic(IConfiguration configuration,
-            IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
-            IPlayerLogic playerLogic)
-        {
-            _gameLobbyAccessor = gameLobbyDatabaseAccessor;
-            _playerLogic = playerLogic;
-        }
+		public GameLobbyLogic(IConfiguration configuration,
+			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
+			IPlayerLogic playerLogic)
+		{
+			_gameLobbyAccessor = gameLobbyDatabaseAccessor;
+			_playerLogic = playerLogic;
+		}
 
-        public IEnumerable<GameLobbyModel> GetAllGameLobbies()
-        {
-            List<GameLobbyModel> gameLobbies = _gameLobbyAccessor.GetAllGameLobbies();
-            List<GameLobbyModel> validGameLobbies = new List<GameLobbyModel>();
+		public IEnumerable<GameLobbyModel> GetAllGameLobbies()
+		{
+			List<GameLobbyModel> gameLobbies = _gameLobbyAccessor.GetAllGameLobbies();
+			List<GameLobbyModel> validGameLobbies = new List<GameLobbyModel>();
 
-            foreach (GameLobbyModel gameLobby in gameLobbies)
+			foreach (GameLobbyModel gameLobby in gameLobbies)
 
-            {
-                GameLobbyModel initializeGameLobbyModel = InitializeAndValidateGameLobby(gameLobby);
-                if (initializeGameLobbyModel != null)
-                {
-                    validGameLobbies.Add(initializeGameLobbyModel);
-                }
-            }
+			{
+				GameLobbyModel initializeGameLobbyModel = InitializeAndValidateGameLobby(gameLobby);
+				if (initializeGameLobbyModel != null)
+				{
+					validGameLobbies.Add(initializeGameLobbyModel);
+				}
+			}
 
-            return validGameLobbies;
-        }
+			return validGameLobbies;
+		}
 
-        private GameLobbyModel InitializeAndValidateGameLobby(GameLobbyModel gameLobby)
-        {
-            gameLobby.PlayersInLobby = _playerLogic.GetAllPlayersInLobby(gameLobby.GameLobbyId);
+		private GameLobbyModel InitializeAndValidateGameLobby(GameLobbyModel gameLobby)
+		{
+			gameLobby.PlayersInLobby = _playerLogic.GetAllPlayersInLobby(gameLobby.GameLobbyId);
 
-            if (IsValidGameLobby(gameLobby))
-            {
-                return gameLobby;
-            }
+			if (IsValidGameLobby(gameLobby))
+			{
+				return gameLobby;
+			}
 
-            return MakeGameLobbyValid(gameLobby);
-        }
+			return MakeGameLobbyValid(gameLobby);
+		}
 
-        private bool IsValidGameLobby(GameLobbyModel gameLobby)
-        {
-            return HasPlayers(gameLobby) &&
-                   HasSingleOwner(gameLobby) &&
-                   HasValidPlayerCount(gameLobby);
-        }
+		private bool IsValidGameLobby(GameLobbyModel gameLobby)
+		{
+			return HasPlayers(gameLobby) &&
+				   HasSingleOwner(gameLobby) &&
+				   HasValidPlayerCount(gameLobby);
+		}
 
-        private bool HasPlayers(GameLobbyModel gameLobby)
-        {
-            return gameLobby.PlayersInLobby.Any();
-        }
+		private bool HasPlayers(GameLobbyModel gameLobby)
+		{
+			return gameLobby.PlayersInLobby.Any();
+		}
 
-        private bool HasSingleOwner(GameLobbyModel gameLobby)
-        {
-            return gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1;
-        }
+		private bool HasSingleOwner(GameLobbyModel gameLobby)
+		{
+			return gameLobby.PlayersInLobby.Count(player => player.IsOwner) == 1;
+		}
 
-        private bool HasValidPlayerCount(GameLobbyModel gameLobby)
-        {
-            return gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers;
-        }
+		private bool HasValidPlayerCount(GameLobbyModel gameLobby)
+		{
+			return gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers;
+		}
 
-        private GameLobbyModel MakeGameLobbyValid(GameLobbyModel gameLobby)
-        {
-            if (!HasPlayers(gameLobby))
-            {
-                _gameLobbyAccessor.DeleteGameLobby(gameLobby.GameLobbyId);
-                return null;
-            }
+		private GameLobbyModel MakeGameLobbyValid(GameLobbyModel gameLobby)
+		{
+			if (!HasPlayers(gameLobby))
+			{
+				_gameLobbyAccessor.DeleteGameLobby(gameLobby.GameLobbyId);
+				return null;
+			}
 
-            if (!HasSingleOwner(gameLobby))
-            {
-                AssignOwnerToLobbyAndUpdateDatabase(gameLobby);
-            }
+			if (!HasSingleOwner(gameLobby))
+			{
+				AssignOwnerToLobbyAndUpdateDatabase(gameLobby);
+			}
 
-            if (HasTooManyOwners(gameLobby))
-            {
-                RemoveOwnersUntilOneIsLeftAndUpdateDatabase(gameLobby);
-            }
+			if (HasTooManyOwners(gameLobby))
+			{
+				RemoveOwnersUntilOneIsLeftAndUpdateDatabase(gameLobby);
+			}
 
-            if (!HasValidPlayerCount(gameLobby))
-            {
-                gameLobby.GameLobbyId = null; 
-                KickPlayersUntilLobbyCapacityIsMet(gameLobby);
-            }
+			if (!HasValidPlayerCount(gameLobby))
+			{
+				gameLobby.GameLobbyId = null;
+				KickPlayersUntilLobbyCapacityIsMet(gameLobby);
+			}
 
-            return gameLobby;
-        }
+			return gameLobby;
+		}
 
-        private bool HasTooManyOwners(GameLobbyModel gameLobby)
-        {
-            return gameLobby.PlayersInLobby.Count(player => player.IsOwner) > 1;
-        }
+		private bool HasTooManyOwners(GameLobbyModel gameLobby)
+		{
+			return gameLobby.PlayersInLobby.Count(player => player.IsOwner) > 1;
+		}
 
-        private void AssignOwnerToLobbyAndUpdateDatabase(GameLobbyModel gameLobby)
-        {
-            PlayerModel firstPlayer = gameLobby.PlayersInLobby.First();
-            firstPlayer.IsOwner = true;
-            _playerLogic.UpdatePlayerOwnership(firstPlayer);
-        }
+		private void AssignOwnerToLobbyAndUpdateDatabase(GameLobbyModel gameLobby)
+		{
+			PlayerModel firstPlayer = gameLobby.PlayersInLobby.First();
+			firstPlayer.IsOwner = true;
+			_playerLogic.UpdatePlayerOwnership(firstPlayer);
+		}
 
-        private void KickPlayersUntilLobbyCapacityIsMet(GameLobbyModel gameLobby)
-        {
-            List<PlayerModel> playersToKick = gameLobby.PlayersInLobby
-                .Where(player => !player.IsOwner)
-                .Take(gameLobby.PlayersInLobby.Count - gameLobby.AmountOfPlayers)
-                .ToList();
+		private void KickPlayersUntilLobbyCapacityIsMet(GameLobbyModel gameLobby)
+		{
+			List<PlayerModel> playersToKick = gameLobby.PlayersInLobby
+				.Where(player => !player.IsOwner)
+				.Take(gameLobby.PlayersInLobby.Count - gameLobby.AmountOfPlayers)
+				.ToList();
 
-            foreach (PlayerModel player in playersToKick)
-            {
-                gameLobby.PlayersInLobby.Remove(player);
-                _playerLogic.UpdatePlayerLobbyId(player, gameLobby);
-            }
-        }
+			foreach (PlayerModel player in playersToKick)
+			{
+				gameLobby.PlayersInLobby.Remove(player);
+				_playerLogic.UpdatePlayerLobbyId(player, gameLobby);
+			}
+		}
 
-        private void RemoveOwnersUntilOneIsLeftAndUpdateDatabase(GameLobbyModel gameLobby)
-        {
-            List<PlayerModel> owners = gameLobby.PlayersInLobby.Where(player => player.IsOwner).Skip(1).ToList();
-            foreach (PlayerModel owner in owners)
-            {
-                owner.IsOwner = false;
-                _playerLogic.UpdatePlayerOwnership(owner);
-            }
-        }
-    }
+		private void RemoveOwnersUntilOneIsLeftAndUpdateDatabase(GameLobbyModel gameLobby)
+		{
+			List<PlayerModel> owners = gameLobby.PlayersInLobby.Where(player => player.IsOwner).Skip(1).ToList();
+			foreach (PlayerModel owner in owners)
+			{
+				owner.IsOwner = false;
+				_playerLogic.UpdatePlayerOwnership(owner);
+			}
+		}
+
+		public GameLobbyModel GetGameLobby(int gameLobbyId, string password)
+		{
+			GameLobbyModel gameLobby = _gameLobbyAccessor.GetGameLobby(gameLobbyId);
+
+			if (gameLobby == null)
+			{
+				throw new ArgumentException("Game lobby not found");
+			}
+
+			if (!string.IsNullOrEmpty(gameLobby.PasswordHash) && !BC.Verify(password, gameLobby.PasswordHash))
+			{
+				throw new UnauthorizedAccessException("Password does not match");
+			}
+
+			return gameLobby;
+		}
+
+
+	}
 }
