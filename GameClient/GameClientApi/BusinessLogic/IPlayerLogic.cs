@@ -9,5 +9,6 @@ namespace GameClientApi.BusinessLogic
 		List<PlayerModel> GetAllPlayersInLobby(int? lobbyId);
 		void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel);
 		void UpdatePlayerOwnership(PlayerModel player);
+		PlayerModel GetPlayer(string username);
 	}
 }

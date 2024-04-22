@@ -35,5 +35,26 @@ namespace GameClientApi.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+
+		[HttpPost("CreateGameLobby")]
+		public IActionResult CreateGameLobby([FromBody] GameLobbyModel gameLobby, string username)
+		{
+			try
+			{
+				GameLobbyModel createdGameLobby = _gameLobbyLogic.CreateGameLobby(gameLobby, username);
+                if (createdGameLobby.GameLobbyId.HasValue)
+				{
+					return Ok(createdGameLobby);
+				}
+				else
+				{
+					return BadRequest("Failed to create game lobby.");
+				}
+            }
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }

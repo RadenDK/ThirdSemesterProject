@@ -8,5 +8,9 @@ namespace GameClientApi.DatabaseAccessors
 
 
 		bool DeleteGameLobby(int? gameLobbyId);
+
+		int CreateGameLobby(GameLobbyModel gameLobby);
+
+		int CreateLobbyChat();
 	}
 }
