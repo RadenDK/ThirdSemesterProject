@@ -36,9 +36,9 @@ namespace WebClient.Services
 			return new GameLobbyModel();
 		}
 
-		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby)
+		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username)
 		{
-			string endpoint = "GameLobby/CreateGameLobby";
+			string endpoint = $"GameLobby/CreateGameLobby?username={username}";
 			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(newLobby), Encoding.UTF8, "application/json");
 			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
 			if (response.IsSuccessStatusCode)

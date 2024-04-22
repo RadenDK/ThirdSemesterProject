@@ -1,6 +1,7 @@
 using WebClient.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 public interface IGameLobbyLogic
 {
@@ -8,5 +9,7 @@ public interface IGameLobbyLogic
 
     Task<List<GameLobbyModel>> GetAllGameLobbies();
 
-    Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby);
+    Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username);
+
+    string GetUsername(ClaimsPrincipal userPrincipal);
 }

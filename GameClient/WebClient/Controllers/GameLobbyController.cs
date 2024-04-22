@@ -2,6 +2,7 @@
 using WebClient.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClient.Controllers
 {
@@ -41,7 +42,9 @@ namespace WebClient.Controllers
         {
             if(ModelState.IsValid) 
             {
-                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby);
+                var userPrincipal = HttpContext.User;
+                string username = _gameLobbyLogic.GetUsername(userPrincipal);
+                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
                 return RedirectToAction("GameLobby", new { lobbyId = gameLobby.GameLobbyId });
             }
             return View(newLobby);

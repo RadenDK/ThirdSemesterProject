@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using System.Security.Claims;
 
 public class GameLobbyLogic : IGameLobbyLogic
 {
@@ -35,8 +36,15 @@ public class GameLobbyLogic : IGameLobbyLogic
 		return await _gameLobbyService.GetGameLobbyById(lobbyId);
 	}
 
-	public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby)
+	public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username)
 	{
-		return await _gameLobbyService.CreateGameLobby(newLobby);
+		return await _gameLobbyService.CreateGameLobby(newLobby, username);
 	}
+
+	//Dette skal nok tilføjes til en Player klasse
+	public string GetUsername(ClaimsPrincipal userPrincipal)
+	{
+        var usernameClaim = userPrincipal.FindFirst("Username");
+        return usernameClaim?.Value;
+    }
 }
