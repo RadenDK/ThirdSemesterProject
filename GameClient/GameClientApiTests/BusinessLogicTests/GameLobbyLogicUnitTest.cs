@@ -246,7 +246,64 @@ namespace GameClientApiTests.BusinessLogicTests
 				Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
 				Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
 			}
+		}
 
+		[Fact]
+		public void CreateGameLobby_TC1_CreatesGameLobbyAndReturnsIt()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+
+			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
+			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+			
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+			
+			// Assert
+			Assert.NotNull(testResult);
+			Assert.Equal(expectedGameLobby.LobbyName, testResult.LobbyName);
+			Assert.Equal(expectedGameLobby.AmountOfPlayers, testResult.AmountOfPlayers);
+			Assert.NotNull(testResult.InviteLink);
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC2_returnsNullIfGameLobbyCouldNotBeCreated()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(0);
+
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+
+			// Assert
+			Assert.Null(testResult);
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC3_HashesPasswordBeforeCreatingGameLobby()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1", PasswordHash = "password" }; ;
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+
+			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
+			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+
+			// Assert
+			Assert.NotNull(testResult);
+			Assert.True(BCrypt.Net.BCrypt.Verify("password", testResult.PasswordHash));
 		}
 	}
 }

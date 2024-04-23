@@ -58,16 +58,23 @@ namespace GameClientApi.DatabaseAccessors
 
             string createGameLobbyQuery = "INSERT INTO GameLobby (LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId) OUTPUT INSERTED.GameLobbyID VALUES (@LobbyName, @AmountOfPlayers, @PasswordHash, @InviteLink, @LobbyChatId)";
 
-            if (GameLobbyHasValues(gameLobby))
+            try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
-                    int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId });
-                    return gameLobbyId;
-                }
+				if (GameLobbyHasValues(gameLobby))
+				{
+					using (SqlConnection connection = new SqlConnection(_connectionString))
+					{
+						connection.Open();
+						int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId });
+						return gameLobbyId;
+					}
+				}
+				return 0;
+			}
+            catch (Exception ex)
+            {
+                throw new Exception("Not saved in database", ex);
             }
-            return 0;
         }
 
         private bool GameLobbyHasValues(GameLobbyModel gameLobby)
