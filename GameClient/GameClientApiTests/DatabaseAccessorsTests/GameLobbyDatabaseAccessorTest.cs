@@ -110,17 +110,18 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			LobbyChatModel mockLobbyChat = new LobbyChatModel { ChatId = 1, ChatType = "Type1" };
 			GameLobbyModel mockGameLobby = new GameLobbyModel
 			{
-				LobbyName = "TestLobby",
-				PasswordHash = "passwordHash",
-				InviteLink = "inviteLinkTest",
+				GameLobbyId = 1,
+				LobbyName = "LobbyNameTest1",
+				PasswordHash = "passwordHash1",
+				InviteLink = "inviteLinkTest1",
 				LobbyChat = mockLobbyChat
 			};
 
 			// Act
-			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.True(testResult);
+			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
@@ -139,10 +140,10 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "TestLobby" };
 
 			// Act
-			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
@@ -161,10 +162,10 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			GameLobbyModel mockGameLobby = null;
 
 			// Act
-			bool testResult = SUT.CreateGameLobby(mockGameLobby);
+			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.False(testResult);
+			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
