@@ -24,8 +24,8 @@ namespace WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> JoinLobby()
         {
-            //IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GenerateRandomGameLobbies(5);
-            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
+        
+			IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
 
             return View(gameLobbies.ToList());
         }
@@ -33,6 +33,7 @@ namespace WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> GameLobby(int lobbyId)
         {
+
             GameLobbyModel gameLobby = await _gameLobbyLogic.GetGameLobbyById(lobbyId);
             return View(gameLobby);
         }

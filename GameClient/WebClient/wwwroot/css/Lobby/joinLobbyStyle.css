@@ -7,5 +7,87 @@
 }
 
 .lobby-container .table-row:hover {
-    background-color: #878787; /* Light gray */
+    background-color: #2e2e2e; /* Light gray */
 }
+
+.table-responsive {
+    margin: 20px; /* Add some space around the table */
+}
+
+
+.table-responsive table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #fff; /* White text */
+    background-color: #212121; /* White background */
+    border-radius: 15px;
+}
+
+.table-responsive th, .table-responsive td {
+    padding: 15px; /* Padding inside cells */
+    text-align: left; /* Align text to the left */
+}
+.table-responsive th {
+    background-color: #121212; /* Dark gray */
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    font-size: 18px; /* Larger font size */
+    text-transform: uppercase; /* Uppercase text */
+}
+
+.table-responsive tr {
+    border-bottom: 1px solid rgba(16, 15, 15, 0.85); /* Border between rows */
+}
+
+.table-responsive tr:last-child {
+    border-bottom: none; /* Remove border from last row */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7); /* Darker background */
+}
+
+.modal-content {
+    background-color: #333; /* Dark gray */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #444; /* Slightly lighter gray for the border */
+    width: 30%;
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    text-align: center; /* Center the text */
+}
+
+    .modal-content h2 {
+        margin-bottom: 20px; /* Add some space below the title */
+    }
+
+    .modal-content input {
+        width: 100%; /* Make the input field take up the full width of the modal */
+        padding: 10px; /* Add some padding inside the input field */
+        margin-bottom: 20px; /* Add some space below the input field */
+        border: none; /* Remove the default border */
+        background-color: #444; /* Slightly lighter gray for the input field */
+        color: #fff; /* White text */
+    }
+
+    .modal-content button {
+        padding: 10px 20px; /* Add some padding inside the button */
+        border: none; /* Remove the default border */
+        background-color: #555; /* Slightly lighter gray for the button */
+        color: #fff; /* White text */
+        cursor: pointer; /* Change the cursor when hovering over the button */
+    }
+
+        .modal-content button:hover {
+            background-color: #666; /* Even lighter gray when hovering over the button */
+        }
+
