@@ -137,16 +137,16 @@ body {
 }
 
 .fas.fa-folder {
-    color: rgb(251, 88, 88); /* Default color */
-    font-size: 22px; /* Adjust size as needed */
+    color: rgb(255, 255, 255); /* Default color */
+    font-size: 20px; /* Adjust size as needed */
     padding: 5px 5px;
     vertical-align: middle; /* Aligns the icon vertically in the middle */
 
 }
 
 .fas.fa-user-plus {
-    color: rgb(251, 88, 88); /* Default color */
-    font-size: 20px; /* Adjust size as needed */
+    color: rgb(255, 255, 255); /* Default color */
+    font-size: 18px; /* Adjust size as needed */
     padding: 5px 5px;
     vertical-align: middle; /* Aligns the icon vertically in the middle */
     transform: translateY(-1px);
