@@ -15,7 +15,7 @@ body {
 .wrapper {
     display: flex;
     height: 100%;
-    overflow-y: hidden;
+    overflow: hidden; /* Prevents scrollbars, also on Lobby pages */
 }
 
 .sidebar {
@@ -37,6 +37,13 @@ body {
 
 .main-content-container h1 {
     color: white;
+}
+.main-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .section-1 {
