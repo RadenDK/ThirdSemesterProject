@@ -60,14 +60,29 @@ body {
     align-items: center;
     padding: 10px;
     cursor: pointer;
-    transition: background-color 0.2s;
     border-radius: 10px;
+    transition: background-color 0.2s ease-in-out; /* Add transition for smooth color change */
+}
+
+.text-wrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
 }
 
 
 #bento-box-1 {
     padding: 20px 20px;
     margin: 10px 0px;
+    background-color: rgb(232, 92, 92);
+}
+
+#bento-box-1:hover {
+    background-color: rgb(199, 51, 51);
+}
+
+#bento-box-2:hover, #bento-box-3:hover, #bento-box-4:hover {
+    background-color: rgb(42, 42, 42);
 }
 
 #bento-box-2 {
@@ -77,12 +92,13 @@ body {
 
 #bento-box-3 {
     padding: 20px 20px;
-    margin: 10px 0px
+    margin: 10px 0px;
 }
 
 #bento-box-4 {
     padding: 20px 20px;
     margin: 10px 0px;
+
 }
 
 #bento-box-6 {
@@ -95,10 +111,21 @@ body {
     background-color: rgb(42, 42, 42);
 }
 
+
+/* Default styling */
+.fas.fa-fire {
+    color: rgba(230, 3, 3, 0.61); /* Default color */
+    font-size: 35px; /* Adjust size as needed */
+    padding: 5px 15px;
+}
+
+/* Hover effect */
+.fas.fa-fire:hover {
+
+}
+
 .icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+
 }
 
 .text {
@@ -191,27 +218,26 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 #play-text {
     color: #f4f4f4;
     text-decoration: none;
-    font-weight: 650;
+    font-weight: 900;
     font-size: 30px;
-    position: relative;
 }
 
 #store-text {
     color: #f4f4f4;
     text-decoration: none;
-    font-weight: 450;
+    font-weight: 650;
 }
 
 #collection-text {
     color: #f4f4f4;
     text-decoration: none;
-    font-weight: 450;
+    font-weight: 650;
 }
 
 #profile-text {
     color: #f4f4f4;
     text-decoration: none;
-    font-weight: 450;
+    font-weight: 650;
 }
 
 .menu-item {
@@ -296,5 +322,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 .menu-item:hover {
     text-decoration: none;
 }
+
+
 
 
