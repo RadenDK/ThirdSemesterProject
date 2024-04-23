@@ -134,7 +134,7 @@ namespace GameClientApi.BusinessLogic
 			}
 		}
 
-		public GameLobbyModel GetGameLobby(int gameLobbyId, string password)
+		public GameLobbyModel JoinGameLobby(int playerId, int gameLobbyId, string password)
 		{
 			GameLobbyModel gameLobby = _gameLobbyAccessor.GetGameLobby(gameLobbyId);
 
@@ -143,10 +143,22 @@ namespace GameClientApi.BusinessLogic
 				throw new ArgumentException("Game lobby not found");
 			}
 
+			InitializeAndValidateGameLobby(gameLobby);
+
 			if (!string.IsNullOrEmpty(gameLobby.PasswordHash) && !BC.Verify(password, gameLobby.PasswordHash))
 			{
 				throw new UnauthorizedAccessException("Password does not match");
 			}
+
+
+			if (gameLobby.PlayersInLobby.Count >= gameLobby.AmountOfPlayers)
+			{
+				throw new ArgumentException("Too many players in lobby");
+			}
+
+			PlayerModel player = new PlayerModel { PlayerId = playerId, IsOwner = false };
+
+			_playerLogic.UpdatePlayerLobbyId(player, gameLobby);
 
 			return gameLobby;
 		}

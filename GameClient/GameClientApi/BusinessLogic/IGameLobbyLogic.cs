@@ -6,6 +6,6 @@ namespace GameClientApi.BusinessLogic
 	{
 		IEnumerable<GameLobbyModel> GetAllGameLobbies();
 
-		GameLobbyModel GetGameLobby(int gameLobbyId, string password);
+		GameLobbyModel JoinGameLobby(int playerId, int gameLobbyId, string password);
 	}
 }

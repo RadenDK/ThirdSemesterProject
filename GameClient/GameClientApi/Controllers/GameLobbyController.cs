@@ -42,10 +42,11 @@ namespace GameClientApi.Controllers
 		{
 			try
 			{
-				GameLobbyModel gameLobby = _gameLobbyLogic.GetGameLobby(joinRequest.GameLobbyId, joinRequest.Password);
+				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.Password);
+
 				return Ok(gameLobby);
 
-			} 
+			}
 			catch (ArgumentException ex)
 			{
 				return BadRequest(ex.Message);
