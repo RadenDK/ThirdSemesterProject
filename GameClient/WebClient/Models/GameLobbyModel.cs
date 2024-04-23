@@ -1,17 +1,22 @@
-﻿namespace WebClient.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebClient.Models
 {
 	public class GameLobbyModel
 	{
 		public int GameLobbyId { get; set; }
+		[Required]
 		public string LobbyName { get; set; }
-
+		[Range(2, 10)]
 		public int AmountOfPlayers { get; set; }
 
-		public string PasswordHash { get; set; }
-		public string InviteLink { get; set; }
-		public LobbyChatModel LobbyChat { get; set; }
+		public string? PasswordHash { get; set; }
 
-		public IEnumerable<PlayerModel> PlayersInLobby { get; set; }
+		public string? InviteLink { get; set; }
+
+		public LobbyChatModel? LobbyChat { get; set; }
+
+		public IEnumerable<PlayerModel>? PlayersInLobby { get; set; }
 
 		public bool IsPrivate()
 		{
@@ -21,13 +26,16 @@
 		public string GetInGameNameOfLobbyOwner()
 		{
 			string inGameNameOfLobbyOwner = "Not Found";
-			foreach (PlayerModel player in PlayersInLobby)
+			if (PlayersInLobby != null)
 			{
-				if (player.IsOwner)
-				{
-					inGameNameOfLobbyOwner = player.InGameName;
-				}
-			}
+                foreach (PlayerModel player in PlayersInLobby)
+                {
+                    if (player.IsOwner)
+                    {
+                        inGameNameOfLobbyOwner = player.InGameName;
+                    }
+                }
+            }
 			return inGameNameOfLobbyOwner;
 		}
 	}

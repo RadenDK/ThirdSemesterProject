@@ -39,6 +39,32 @@ namespace GameClientApi.DatabaseAccessors
 
 			return deletionSucces;
 		}
+
+		public int CreateLobbyChat()
+		{
+			string createLobbyQuery = "INSERT INTO Chat (CreatedDate, ChatType) OUTPUT INSERTED.ChatID VALUES (@CreatedDate, @ChatType)";
+
+			using(SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				int chatId = connection.QuerySingle<int>(createLobbyQuery, new { CreatedDate = DateTime.UtcNow, ChatType = "Lobby"});
+				return chatId;
+			}
+		}
+
+		public int CreateGameLobby(GameLobbyModel gameLobby)
+		{
+			int lobbyChatId = CreateLobbyChat();
+
+			string createGameLobbyQuery = "INSERT INTO GameLobby (LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId) OUTPUT INSERTED.GameLobbyID VALUES (@LobbyName, @AmountOfPlayers, @PasswordHash, @InviteLink, @LobbyChatId)";
+
+			using(SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId });
+				return gameLobbyId;
+			}
+		}
 	}
 
 

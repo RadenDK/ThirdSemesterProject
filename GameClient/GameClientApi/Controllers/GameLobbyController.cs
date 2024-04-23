@@ -2,6 +2,8 @@
 using GameClientApi.Models;
 using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace GameClientApi.Controllers
 {
@@ -33,6 +35,30 @@ namespace GameClientApi.Controllers
 			catch (Exception ex)
 			{
 				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpPost("CreateGameLobby")]
+		public IActionResult CreateGameLobby([FromBody] dynamic data)
+		{
+			var payload = JsonConvert.DeserializeObject<CreateGameLobbyModel>(data.ToString());
+			GameLobbyModel gameLobby = payload.newLobby;
+			string username = payload.username;
+			try
+			{
+				GameLobbyModel createdGameLobby = _gameLobbyLogic.CreateGameLobby(gameLobby, username);
+                if (createdGameLobby.GameLobbyId.HasValue)
+				{
+					return Ok(createdGameLobby);
+				}
+				else
+				{
+					return BadRequest("Failed to create game lobby.");
+				}
+            }
+			catch (Exception ex)
+			{
+				return BadRequest("The wrong data was provided");
 			}
 		}
 	}

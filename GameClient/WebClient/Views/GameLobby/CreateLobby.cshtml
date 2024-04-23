@@ -1,21 +1,23 @@
-﻿
-@{
-	Layout = "_LayoutLobby";
+﻿@{
+    Layout = "_LayoutLobby";
 }
-<div class="main-content-container">
-    <div class="main-content">
-        <div class="bento-box-create-lobby">
-            <div class="lobbyName-bento-box">
-                <input type="text" id="lobby-name" placeholder="Enter lobby name">
-            </div>
-            <div class="bento-box-row">
-              <div class="teamSize-bento-box">
-                  <input type="number" id="team-size" min="2" max="10" placeholder="Enter team size">
-              </div>
-                <div class="lobbyPassword-bento-box">
-                    <input type="password" id="lobby-password" placeholder="Optional: Enter password">
+<form method="post" asp-controller="GameLobby" asp-action="CreateGameLobby">
+    <div class="main-content-container">
+        <div class="main-content">
+            <div class="bento-box-create-lobby">
+                <div class="lobbyName-bento-box">
+                    <input type="text" id="lobby-name" name="LobbyName" placeholder="Enter lobby name">
                 </div>
+                <div class="bento-box-row">
+                    <div class="teamSize-bento-box">
+                        <input type="number" id="team-size" name="AmountOfPlayers" min="2" max="10" placeholder="Enter team size">
+                    </div>
+                    <div class="lobbyPassword-bento-box">
+                        <input type="password" id="lobby-password" name="PasswordHash" placeholder="Optional: Enter password">
+                    </div>
+                </div>
+                <input type="submit" value="Create Lobby">
             </div>
         </div>
     </div>
-</div>
+</form>

@@ -1,5 +1,6 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
+using BC = BCrypt.Net.BCrypt;
 
 namespace GameClientApi.BusinessLogic
 {
@@ -129,6 +130,42 @@ namespace GameClientApi.BusinessLogic
                 owner.IsOwner = false;
                 _playerLogic.UpdatePlayerOwnership(owner);
             }
+        }
+
+        public GameLobbyModel CreateGameLobby(GameLobbyModel gameLobby, string username)
+        {
+            if (!string.IsNullOrEmpty(gameLobby.PasswordHash))
+            {
+                gameLobby.PasswordHash = HashPassword(gameLobby.PasswordHash);
+            }
+
+            gameLobby.InviteLink = GenerateInviteLink();
+
+            int gameLobbyId = _gameLobbyAccessor.CreateGameLobby(gameLobby);
+            gameLobby.GameLobbyId = gameLobbyId;
+
+            PlayerModel player = _playerLogic.GetPlayer(username);
+            player.IsOwner = true;
+            player.GameLobbyId = gameLobbyId;
+            _playerLogic.UpdatePlayerOwnership(player);
+
+            return gameLobby;
+        }
+
+        private string HashPassword(string password)
+        {
+            return BC.HashPassword(password);
+        }
+
+
+        //This method will be changed later when InviteLink is implemented
+        private string GenerateInviteLink()
+        {
+            int length = 10;
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

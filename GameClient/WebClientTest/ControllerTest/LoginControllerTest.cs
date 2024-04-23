@@ -6,79 +6,100 @@
     using WebClient.Controllers;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
     using System.Security.Claims;
-    using Microsoft.AspNetCore.Authentication;
-    using WebClient.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.AspNetCore.Mvc.Routing;
+	using System.Net;
+	using WebClient.BusinessLogic;
+	using WebClient.Models;
+	using Microsoft.AspNetCore.Http;
+	using Microsoft.AspNetCore.Authentication;
+	using Microsoft.AspNetCore.Mvc.ViewFeatures;
+	using Microsoft.AspNetCore.Mvc.Routing;
 
-    public class LoginControllerTests
+	public class LoginControllerTests
     {
-        [Fact]
-        public async Task LoginToProfile_ReturnsRedirectToActionResult_WhenResponseIsSuccessStatusCode()
-        {
-            // Arrange
-            var mockHttpClientService = new Mock<IHttpClientService>();
-            mockHttpClientService.Setup(service => service.PostAsync(It.IsAny<string>(), It.IsAny<StringContent>()))
-                .ReturnsAsync(new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.OK });
+		[Fact]
+		public async Task LoginToProfile_ReturnsRedirectToActionResult_WhenResponseIsSuccessStatusCode()
+		{
+			// Arrange
+			var mockLoginLogic = new Mock<ILoginLogic>();
+			mockLoginLogic.Setup(logic => logic.VerifyCredentials(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.OK });
 
-            var mockAuthenticationService = new Mock<IAuthenticationService>();
-            mockAuthenticationService
-                .Setup(service => service.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
-                .Returns(Task.CompletedTask);
+			var mockPlayer = new PlayerModel { 
+				Username = "testuser", 
+				InGameName = "testname", 
+				Elo = 0, 
+				Banned = false, 
+				CurrencyAmount = 0, 
+				OnlineStatus = false 
+			};
 
-            var mockUrlHelperFactory = new Mock<IUrlHelperFactory>();
-            mockUrlHelperFactory
-                .Setup(factory => factory.GetUrlHelper(It.IsAny<ActionContext>()))
-                .Returns(Mock.Of<IUrlHelper>());
+			var mockClaims = new List<Claim> { 
+				new Claim("Username", mockPlayer.Username),
+                new Claim("InGameName", mockPlayer.InGameName),
+                new Claim("Elo", mockPlayer.Elo.ToString()),
+                new Claim("Banned", mockPlayer.Banned.ToString()),
+                new Claim("CurrencyAmount", mockPlayer.CurrencyAmount.ToString()),
+                new Claim("OnlineStatus", mockPlayer.OnlineStatus.ToString())
+			};
 
-            var serviceProvider = new ServiceCollection()
-                .AddSingleton<IHttpClientService>(mockHttpClientService.Object)
-                .AddSingleton<IAuthenticationService>(mockAuthenticationService.Object)
-                .AddSingleton<IUrlHelperFactory>(mockUrlHelperFactory.Object)
-                .BuildServiceProvider();
+			var mockIdentity = new ClaimsIdentity(mockClaims, "TestAuthType");
+			var mockPrincipal = new ClaimsPrincipal(mockIdentity);
 
-            var controller = new LoginController(mockHttpClientService.Object)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        RequestServices = serviceProvider
-                    }
-                }
-            };
+			mockLoginLogic.Setup(logic => logic.GetPlayerFromResponse(It.IsAny<HttpResponseMessage>()))
+				.ReturnsAsync(mockPrincipal);
 
-            // Act
-            var result = await controller.LoginToProfile("testuser", "testpassword");
+			var controller = new LoginController(mockLoginLogic.Object);
 
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Blank", redirectToActionResult.ActionName);
-        }
+			var mockHttpContext = new Mock<HttpContext>();
+			var mockAuthenticationManager = new Mock<IAuthenticationService>();
+			mockAuthenticationManager
+				.Setup(m => m.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
+				.Returns(Task.CompletedTask);
+			mockHttpContext
+				.Setup(m => m.RequestServices.GetService(typeof(IAuthenticationService)))
+				.Returns(mockAuthenticationManager.Object);
 
-        [Fact]
-        public async Task LoginToProfile_ReturnsViewResult_WhenResponseIsNotSuccessStatusCode()
-        {
-            // Arrange
-            var mockHttpClientService = new Mock<IHttpClientService>();
-            mockHttpClientService.Setup(service => service.PostAsync(It.IsAny<string>(), It.IsAny<StringContent>()))
-                .ReturnsAsync(new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest });
+			var mockUrlHelper = new Mock<IUrlHelper>();
+			mockUrlHelper
+				.Setup(u => u.Action(It.IsAny<UrlActionContext>()))
+				.Returns("callbackUrl");
+			var mockUrlHelperFactory = new Mock<IUrlHelperFactory>();
+			mockUrlHelperFactory
+				.Setup(f => f.GetUrlHelper(It.IsAny<ActionContext>()))
+				.Returns(mockUrlHelper.Object);
+			mockHttpContext
+				.Setup(m => m.RequestServices.GetService(typeof(IUrlHelperFactory)))
+				.Returns(mockUrlHelperFactory.Object);
 
-            var controller = new LoginController(mockHttpClientService.Object);
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
+			controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            // Act
-            var result = await controller.LoginToProfile("testuser", "testpassword");
+			// Act
+			var result = await controller.LoginToProfile("testuser", "testpassword");
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Index", viewResult.ViewName);
-        }
-    }
+			// Assert
+			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+			Assert.Equal("HomePage", redirectToActionResult.ActionName);
+			Assert.Equal("Homepage", redirectToActionResult.ControllerName);
+		}
+
+		[Fact]
+		public async Task LoginToProfile_ReturnsViewResult_WhenResponseIsNotSuccessStatusCode()
+		{
+			// Arrange
+			var mockLoginLogic = new Mock<ILoginLogic>();
+			mockLoginLogic.Setup(logic => logic.VerifyCredentials(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest });
+
+			var controller = new LoginController(mockLoginLogic.Object);
+
+			// Act
+			var result = await controller.LoginToProfile("testuser", "testpassword");
+
+			// Assert
+			var viewResult = Assert.IsType<ViewResult>(result);
+			Assert.Equal("Index", viewResult.ViewName);
+		}
+	}
 
 }

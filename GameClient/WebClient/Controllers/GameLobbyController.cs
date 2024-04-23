@@ -2,6 +2,7 @@
 using WebClient.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClient.Controllers
 {
@@ -23,9 +24,10 @@ namespace WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> JoinLobby()
         {
+        
 			IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
 
-			return View(gameLobbies.ToList());
+            return View(gameLobbies.ToList());
         }
 
         [HttpGet]
@@ -34,6 +36,19 @@ namespace WebClient.Controllers
 
             GameLobbyModel gameLobby = await _gameLobbyLogic.GetGameLobbyById(lobbyId);
             return View(gameLobby);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
+        {
+            if(ModelState.IsValid)
+            {
+                var userPrincipal = HttpContext.User;
+                string username = _gameLobbyLogic.GetUsername(userPrincipal);
+                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
+                return RedirectToAction("Homepage", "Homepage");
+            }
+            return View("CreateLobby");
         }
     }
 }

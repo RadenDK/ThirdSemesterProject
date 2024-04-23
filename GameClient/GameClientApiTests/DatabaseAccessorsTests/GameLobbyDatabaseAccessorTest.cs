@@ -173,7 +173,5 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 				Assert.False(queryResult.Any(), "Expected not to find mock game lobby in the database but found one");
 			}
 		}
-
-
 	}
 }
