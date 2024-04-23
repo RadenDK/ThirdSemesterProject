@@ -52,6 +52,13 @@ body {
 
 }
 
+.submit-button {
+    background-color: rgba(33, 33, 33, 0.85);
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(46, 46, 46, 0);
+}
+
 
 
 #team-size:hover {

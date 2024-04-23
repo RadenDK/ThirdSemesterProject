@@ -110,18 +110,18 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			LobbyChatModel mockLobbyChat = new LobbyChatModel { ChatId = 1, ChatType = "Type1" };
 			GameLobbyModel mockGameLobby = new GameLobbyModel
 			{
-				GameLobbyId = 1,
 				LobbyName = "LobbyNameTest1",
 				PasswordHash = "passwordHash1",
 				InviteLink = "inviteLinkTest1",
-				LobbyChat = mockLobbyChat
+				LobbyChat = mockLobbyChat,
+				AmountOfPlayers = 3
 			};
 
 			// Act
 			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
+			Assert.Equal(testResult, 1);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
@@ -143,7 +143,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
+			Assert.Equal(testResult, 0);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
@@ -165,7 +165,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			int testResult = SUT.CreateGameLobby(mockGameLobby);
 
 			// Assert
-			Assert.Equal(testResult, mockGameLobby.GameLobbyId);
+			Assert.Equal(testResult, 0);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();

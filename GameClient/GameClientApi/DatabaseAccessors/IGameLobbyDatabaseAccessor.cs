@@ -12,5 +12,6 @@ namespace GameClientApi.DatabaseAccessors
 		int CreateGameLobby(GameLobbyModel gameLobby);
 
 		int CreateLobbyChat();
-	}
+
+    }
 }
