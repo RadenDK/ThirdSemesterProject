@@ -56,7 +56,7 @@ namespace GameClientApi.Controllers
 					return BadRequest("Failed to create game lobby.");
 				}
             }
-			catch (Exception ex)
+			catch
 			{
 				return BadRequest("The wrong data was provided");
 			}
