@@ -44,6 +44,7 @@ body {
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .section-1 {
@@ -52,6 +53,9 @@ body {
 }
 
 .section-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-bottom: 0px;
 }
 
@@ -86,6 +90,8 @@ body {
 }
 
 #bento-box-2 {
+    align-items: right;
+    align-content: right;
     padding: 20px 20px;
     margin: 10px 0px;
 }
@@ -101,12 +107,20 @@ body {
 
 }
 
+#bento-box-5 {
+    padding: 10px 10px;
+}
+
 #bento-box-6 {
 }
 
 #bento-box-7 {
 }
 
+.bento-social {
+    display: flex;
+    justify-content: space-between;
+}
 .bento-box:hover {
     background-color: rgb(42, 42, 42);
 }
@@ -116,13 +130,29 @@ body {
 .fas.fa-fire {
     color: rgb(251, 88, 88); /* Default color */
     font-size: 30px; /* Adjust size as needed */
-    padding: 5px 25px;
 }
 
 /* Hover effect */
 .fas.fa-fire:hover {
+}
+
+.fas.fa-folder {
+    color: rgb(251, 88, 88); /* Default color */
+    font-size: 22px; /* Adjust size as needed */
+    padding: 5px 5px;
+    vertical-align: middle; /* Aligns the icon vertically in the middle */
 
 }
+
+.fas.fa-user-plus {
+    color: rgb(251, 88, 88); /* Default color */
+    font-size: 20px; /* Adjust size as needed */
+    padding: 5px 5px;
+    vertical-align: middle; /* Aligns the icon vertically in the middle */
+    transform: translateY(-1px);
+}
+
+
 
 .icon {
 
@@ -133,7 +163,6 @@ body {
 }
 
 .input {
-    background-color: rgb(42, 42, 42);
 }
 
 /* Styles for input[type="text"] not inside any of the bento box classes in createLobbyStyle, maybe there is better way to do this? */
@@ -141,29 +170,99 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     width: 100%;
     padding: 5px;
     border: none;
-    background-color: rgba(23, 23, 23);
+   /* background-color: rgba(23, 23, 23);*/ /* Adjust color to match the sidebar */
     color: #ffffff;
     font-size: 14px;
 }
 
 
-
-.person::before {
-    content: "\1F465"; /* Unicode social icon */
-    padding-right: 5px;
+/* Search bar styling */
+#friendSearch{
+    padding-left: 10px;
 }
 
-.search::before {
-    content: "\1F50D"; /* Unicode magnifying glass icon */
-    padding-right: 5px;
+/* Search bar icon animation */
+.search {
+    display: table;
+    align-self: flex-start;
+    input {
+        background: none;
+        border: none;
+        outline: none;
+        width: 100%; /* Adjust width to fit within the sidebar */
+        min-width: 0;
+        padding: 0;
+        z-index: 1;
+        position: relative;
+        line-height: 18px;
+        margin: 5px 0;
+        font-size: 14px;
+        -webkit-appearance: none;
+        font-family: inherit;
+        transition: all .6s ease;
+        cursor: pointer;
+        color: #ffffff; /* Adjust color to match the sidebar */
+        & + div {
+            position: relative;
+            height: 28px;
+            width: 100%;
+            margin: -28px 0 0 0;
+            svg {
+                display: block;
+                position: absolute;
+                height: 28px;
+                width: 100%; /* Adjust width to fit within the sidebar */
+                left: -75%;
+                top: -10%;
+                fill: none;
+                stroke: #ffffff; /* Adjust color to match the sidebar */
+                stroke-width: 1.5px;
+                stroke-dashoffset: 212.908 + 59;
+                stroke-dasharray: 59 212.908;
+                transition: all .6s ease;
+            }
+        }
+    }
 }
 
-.library::before {
-    content: "\1F4C1"; /* Unicode folder icon */
-    padding-right: 5px;
+@keyframes slideAndDraw {
+    0% {
+        left: -75%;
+        stroke-dasharray: 59 212.908;
+        stroke-dashoffset: 212.908 + 59;
+    }
+    50% {
+        left: 0;
+    }
+    100% {
+        left: 0;
+        stroke-dasharray: 150 212.908;
+        stroke-dashoffset: 300;
+    }
 }
 
+@keyframes slideAndDrawReverse {
+    0% {
+        left: 0;
+        stroke-dasharray: 150 212.908;
+        stroke-dashoffset: 300;
+    }
+    50% {
+        left: -85%;
+    }
+    100% {
+        stroke-dasharray: 59 212.908;
+        stroke-dashoffset: 212.908 + 59;
+    }
+}
 
+.search input.focused + div svg {
+    animation: slideAndDraw 1.2s forwards;
+}
+
+.search input:not(.focused) + div svg {
+    animation: slideAndDrawReverse 1.2s forwards;
+}
 
 /* Style for the friend list */
 .friend-list {
@@ -182,8 +281,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
-
-
+    margin-top: 10px;
 }
 
 .friend {
@@ -242,10 +340,22 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
 .menu-item {
     display: flex;
-    align-items: center;
+    justify-content: center; /* Aligns items horizontally in the center */
+    align-items: center; /* Aligns items vertically in the center */
+    width: 100%; /* Takes up the full width available */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
     cursor: pointer;
     transition: background-color 0.2s;
     border-radius: 10px;
+    text-decoration: none;
+}
+
+.menu-item i, .menu-item img {
+    margin-right: 10px; /* Adds some space to the right of the icon */
+}
+
+.menu-item:hover {
     text-decoration: none;
 }
 
@@ -260,7 +370,6 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     height: 30px;
     margin-right: 10px;
 }
-
 
 .footer-layout-lobby {
     display: flex;
@@ -293,10 +402,10 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     display: flex;
 }
 
-/* width */
+/* SCROLLBAR STYLING, CURRENTLY AFFECTS ALL SCROLLBARS. WILL HAVE TO SPECIFY IF MORE SCROLLBARS ARE PROMINENT*/
+/* width for scrollbar*/
 ::-webkit-scrollbar {
     width: 8px;
-
 }
 
 /* Track */
@@ -315,12 +424,6 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 103, 255);
-}
-
-
-
-.menu-item:hover {
-    text-decoration: none;
 }
 
 
