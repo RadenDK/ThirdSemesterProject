@@ -12,6 +12,7 @@
 
 .chat-container {
     position: fixed;
+    margin: 5px 20px;
     bottom: 0;
     right: 0;
     width: 300px;
@@ -53,12 +54,14 @@
 .chat-input {
     display: flex;
     padding: 10px;
+
     border-top: 1px solid #e3e3e3;
     color: black;
 }
 
 .Lobbychat-input input {
     flex-grow: 1;
+    color: black;
     margin-right: 10px;
     color: black;
 }

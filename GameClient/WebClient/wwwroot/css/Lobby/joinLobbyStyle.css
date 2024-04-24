@@ -7,7 +7,9 @@ body {
 }
 
 
+.header-layout-lobby {
 
+}
 .search-for-lobby-container {
 
 }
@@ -34,6 +36,8 @@ h1 {
 #searchField {
  margin: 10px 15px;
 }
+
+
 
 .lobby-container .table-row:hover {
     background-color: #2e2e2e; /* Light gray */
@@ -145,6 +149,10 @@ h1 {
 }
 
 .noselect {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 150px;
     height: 50px;
     cursor: pointer;
