@@ -6,7 +6,7 @@
         });
     });
 
-    $(".table-row").click(function () {
+    $(".table-row").click(function (event) {
         var lobbyId = $(this).data("lobby-id");
 
         // Check if the lobby is private
@@ -14,22 +14,72 @@
             // Show the password modal
             $("#passwordModal").show();
         } else {
-            // If the lobby is not private, redirect immediately
-            window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+            // If the lobby is not private, send a POST request with a null password
+            var requestBody = {
+                gameLobbyId: lobbyId,
+                lobbyPassword: null
+            };
+
+            fetch("https://localhost:7292/GameLobby/GameLobby", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            }).then(response => {
+                if (response.ok) {
+                    // Parse the response body as text
+                    response.text().then(html => {
+                        // Insert the HTML into your page
+                        document.body.innerHTML = html;
+                    });
+                } else {
+                    // Handle errors
+                    console.error("Error:", response);
+                }
+            });
         }
+
+        // Prevent the default action
+        event.preventDefault();
     });
 
-    $("#submitPassword").click(function () {
+
+    $("#submitPassword").click(function (event) {
         var lobbyId = $(".table-row").data("lobby-id");
         var password = $("#passwordInput").val();
 
-        // Redirect to the GameLobby action in the GameLobbyController with the lobbyId and password
-        var url = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
-        if (password !== null) {
-            url += "&password=" + encodeURIComponent(password);
-        }
-        window.location.href = url;
+        // Create the request body
+        var requestBody = {
+            gameLobbyId: lobbyId,
+            lobbyPassword: password
+        };
+
+        // Send a POST request to the GameLobby action
+        fetch("https://localhost:7292/GameLobby/GameLobby", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+        }).then(response => {
+            if (response.ok) {
+                // Parse the response body as text
+                response.text().then(html => {
+                    // Insert the HTML into your page
+                    document.body.innerHTML = html;
+                });
+            } else {
+                // Handle errors
+                console.error("Error:", response);
+            }
+        });
+
+        // Prevent the default action
+        event.preventDefault();
     });
+
+
 });
 
 $(document).ready(function() {
