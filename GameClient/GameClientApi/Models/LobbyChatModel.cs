@@ -2,7 +2,9 @@
 {
 	public class LobbyChatModel
 	{
-		public int ChatId { get; set; }
+		public int LobbyChatId { get; set; }
 		public string ChatType { get; set; }
+
+		public IEnumerable<ChatMessageModel> ChatMessages { get; set;}
 	}
 }

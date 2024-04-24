@@ -30,7 +30,7 @@ use [DMA-CSD-V23_10478735];
         GameLobbyID INT IDENTITY(1,1) PRIMARY KEY,
         LobbyName NVARCHAR (50) NOT NULL,
         AmountOfPlayers INT DEFAULT 10,
-        PasswordHash NVARCHAR (50) DEFAULT NULL,
+        PasswordHash NVARCHAR (MAX) DEFAULT NULL,
         InviteLink VARCHAR (50) NOT NULL,
         LobbyChatId INT NOT NULL,
         FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID)
@@ -40,7 +40,7 @@ use [DMA-CSD-V23_10478735];
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR (50) NOT NULL,
-        PasswordHash NVARCHAR (200) NOT NULL,
+        PasswordHash NVARCHAR (MAX) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
         Email VARCHAR (50) DEFAULT NULL,
         Birthday DATETIME NOT NULL,

@@ -5,7 +5,7 @@ namespace WebClient.Services
 {
     public interface IGameLobbyService
     {
-        Task<GameLobbyModel> GetGameLobbyById(int lobbyId);
+        Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request);
 
         Task<List<GameLobbyModel>> GetAllGameLobbies();
         Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username);

@@ -24,24 +24,30 @@ namespace WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> JoinLobby()
         {
-        
-			IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
+
+            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
 
             return View(gameLobbies.ToList());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GameLobby(int lobbyId)
+        [HttpPost]
+        public async Task<IActionResult> GameLobby([FromBody] JoinGameLobbyRequest request)
         {
+            // TODO get the players id to pass along
+            // request.playerId = PLAYERS ACTUALLY ID
 
-            GameLobbyModel gameLobby = await _gameLobbyLogic.GetGameLobbyById(lobbyId);
+            request.PlayerId = 1;
+
+            GameLobbyModel gameLobby = await _gameLobbyLogic.JoinGameLobby(request);
+
+
             return View(gameLobby);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var userPrincipal = HttpContext.User;
                 string username = _gameLobbyLogic.GetUsername(userPrincipal);
@@ -52,3 +58,9 @@ namespace WebClient.Controllers
         }
     }
 }
+
+
+
+
+
+

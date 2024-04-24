@@ -13,5 +13,6 @@ namespace GameClientApi.DatabaseAccessors
 
 		int CreateLobbyChat();
 
-    }
+		GameLobbyModel GetGameLobby(int gameLobbyId);
+	}
 }

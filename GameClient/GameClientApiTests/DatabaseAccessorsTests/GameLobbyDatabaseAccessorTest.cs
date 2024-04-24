@@ -107,7 +107,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Arrange
 			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
 
-			LobbyChatModel mockLobbyChat = new LobbyChatModel { ChatId = 1, ChatType = "Type1" };
+			LobbyChatModel mockLobbyChat = new LobbyChatModel { LobbyChatId = 1, ChatType = "Type1" };
 			GameLobbyModel mockGameLobby = new GameLobbyModel
 			{
 				LobbyName = "LobbyNameTest1",
@@ -174,5 +174,44 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 				Assert.False(queryResult.Any(), "Expected not to find mock game lobby in the database but found one");
 			}
 		}
+
+		[Fact]
+		public void GetGameLobby_TC1_MethodReturnsAValidLobbyInDatabase()
+		{
+			// Arrange
+			InsertMockGameLobbiesWithChatsInTestDatabase(); 
+
+			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
+
+
+			// Act
+			GameLobbyModel testResult = SUT.GetGameLobby(1);
+
+			// Assert
+			Assert.True(testResult != null, "Expected a GameLobbyModel, but got null");
+			Assert.True(testResult.GameLobbyId == 1, $"Expected GameLobbyId to be 1, but got {testResult.GameLobbyId}");
+			Assert.True(testResult.LobbyName == "LobbyNameTest1", $"Expected LobbyName to be 'LobbyNameTest1', but got {testResult.LobbyName}");
+			Assert.True(testResult.PasswordHash == null, $"Expected PasswordHash to be null, but got {testResult.PasswordHash}");
+			Assert.True(testResult.InviteLink == "InviteLinkTest1", $"Expected InviteLink to be 'InviteLinkTest1', but got {testResult.InviteLink}");
+			Assert.True(testResult.LobbyChat != null, "Expected a LobbyChatModel, but got null");
+			Assert.True(testResult.LobbyChat.LobbyChatId == 1, $"Expected LobbyChat.ChatId to be 1, but got {testResult.LobbyChat.LobbyChatId}");
+		}
+
+		[Fact]
+		public void GetGameLobby_TC2_MethodThrowsExpectionIfLobbyCouldNotBeFound()
+		{
+			// Arrange
+			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
+
+			// Assert
+
+			Assert.Throws<Exception>(() =>
+			{
+				// Act
+
+				GameLobbyModel testResult = SUT.GetGameLobby(1);
+			});
+		}
+
 	}
 }

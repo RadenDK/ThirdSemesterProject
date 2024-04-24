@@ -11,5 +11,10 @@
 		public string InviteLink { get; set; }
 		public LobbyChatModel LobbyChat { get; set; }
 		public List<PlayerModel> PlayersInLobby { get; set; }
+
+		public bool IsPrivate()
+		{
+			return !String.IsNullOrEmpty(PasswordHash);
+		}
 	}
 }

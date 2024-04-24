@@ -57,6 +57,23 @@ namespace GameClientApi.Controllers
 			catch
 			{
 				return BadRequest("The wrong data was provided");
+		[HttpPost("join")]
+		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
+		{
+			try
+			{
+				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.LobbyPassword);
+
+				return Ok(gameLobby);
+
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				return BadRequest(ex.Message);
 			}
 		}
 	}

@@ -6,7 +6,7 @@
         });
     });
 
-    $(".table-row").click(function () {
+    $(".table-row").click(function (event) {
         var lobbyId = $(this).data("lobby-id");
 
         // Check if the lobby is private
@@ -14,26 +14,74 @@
             // Show the password modal
             $("#passwordModal").show();
         } else {
-            // If the lobby is not private, redirect immediately
-            window.location.href = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
+            // If the lobby is not private, send a POST request with a null password
+            var requestBody = {
+                gameLobbyId: lobbyId,
+                lobbyPassword: null
+            };
+
+            fetch("https://localhost:7292/GameLobby/GameLobby", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            }).then(response => {
+                if (response.ok) {
+                    // Parse the response body as text
+                    response.text().then(html => {
+                        // Insert the HTML into your page
+                        document.body.innerHTML = html;
+                    });
+                } else {
+                    // Handle errors
+                    console.error("Error:", response);
+                }
+            });
         }
+
+        // Prevent the default action
+        event.preventDefault();
     });
 
-    $("#submitPassword").click(function () {
+
+    $("#submitPassword").click(function (event) {
         var lobbyId = $(".table-row").data("lobby-id");
         var password = $("#passwordInput").val();
 
-        // Redirect to the GameLobby action in the GameLobbyController with the lobbyId and password
-        var url = "http://localhost:5028/GameLobby/GameLobby?lobbyId=" + lobbyId;
-        if (password !== null) {
-            url += "&password=" + encodeURIComponent(password);
-        }
-        window.location.href = url;
+        // Create the request body
+        var requestBody = {
+            gameLobbyId: lobbyId,
+            lobbyPassword: password
+        };
+
+        // Send a POST request to the GameLobby action
+        fetch("https://localhost:7292/GameLobby/GameLobby", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+        }).then(response => {
+            if (response.ok) {
+                // Parse the response body as text
+                response.text().then(html => {
+                    // Insert the HTML into your page
+                    document.body.innerHTML = html;
+                });
+            } else {
+                // Handle errors
+                console.error("Error:", response);
+            }
+        });
+
+        // Prevent the default action
+        event.preventDefault();
     });
 
 
-// Attach a click event listener to each table header
-    $('th').click(function() {
+    // Attach a click event listener to each table header
+    $('th').click(function () {
         var table = $(this).parents('table').eq(0);
         var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
         this.asc = !this.asc;
@@ -50,12 +98,12 @@
     });
 
     function comparer(index) {
-        return function(a, b) {
+        return function (a, b) {
             var valA = getCellValue(a, index);
             var valB = getCellValue(b, index);
 
             // If numeric values are being compared, parse them to float
-            if($.isNumeric(valA) && $.isNumeric(valB)) {
+            if ($.isNumeric(valA) && $.isNumeric(valB)) {
                 return parseFloat(valA) > parseFloat(valB) ? 1 : -1;
             } else {
                 return valA.toString().localeCompare(valB);
@@ -66,4 +114,4 @@
     function getCellValue(row, index) {
         return $(row).children('td').eq(index).text();
     }
-}   );
+});

@@ -180,5 +180,35 @@ namespace GameClientApi.BusinessLogic
 			return new string(Enumerable.Repeat(chars, length)
 				.Select(s => s[random.Next(s.Length)]).ToArray());
 		}
+		public GameLobbyModel JoinGameLobby(int playerId, int gameLobbyId, string password)
+		{
+			GameLobbyModel gameLobby = _gameLobbyAccessor.GetGameLobby(gameLobbyId);
+
+			if (gameLobby == null)
+			{
+				throw new ArgumentException("Game lobby not found");
+			}
+
+			InitializeAndValidateGameLobby(gameLobby);
+
+			if (!string.IsNullOrEmpty(gameLobby.PasswordHash) && !BC.Verify(password, gameLobby.PasswordHash))
+			{
+				throw new UnauthorizedAccessException("Password does not match");
+			}
+
+
+			if (gameLobby.PlayersInLobby.Count >= gameLobby.AmountOfPlayers)
+			{
+				throw new ArgumentException("Too many players in lobby");
+			}
+
+			PlayerModel player = new PlayerModel { PlayerId = playerId, IsOwner = false };
+
+			_playerLogic.UpdatePlayerLobbyId(player, gameLobby);
+
+			return gameLobby;
+		}
+
+
 	}
 }
