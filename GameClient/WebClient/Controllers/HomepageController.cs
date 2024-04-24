@@ -22,14 +22,10 @@ public class HomePageController: Controller
 
 	[Authorize]
     [HttpGet("Homepage")]
-    public ActionResult Homepage()
+    public ActionResult Homepage(PlayerModel player)
     {
-        // Get the user's in-game name from the claims
-		var userPrincipal = HttpContext.User;
-		var inGameNameClaim = _HomePageLogic.GetInGameName(userPrincipal);
-
         // Pass the in-game name to the view
-        ViewBag.InGameName = inGameNameClaim;
+        ViewBag.InGameName = player.InGameName;
         // Return the HomePageTest (Homepage) view
         return View("~/Views/HomePage/Homepage.cshtml");
     }
