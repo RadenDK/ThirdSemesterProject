@@ -13,12 +13,6 @@ namespace WebClient.Controllers;
 
 public class HomePageController: Controller
 {
-	private readonly IHomePageLogic _HomePageLogic;
-
-	public HomePageController(IHomePageLogic homePageLogic)
-	{
-		_HomePageLogic = homePageLogic;
-	}
 
 	[Authorize]
     [HttpGet("Homepage")]
