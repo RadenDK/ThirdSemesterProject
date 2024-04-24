@@ -37,17 +37,15 @@ namespace WebClient.BusinessLogic
             //The ClaimsPrincipal represents the security context of the user within the application,
             //encapsulating the user's identity and associated claims.
             //The method then returns this ClaimsPrincipal object, which can be used for authentication and authorization purposes within the application.
-            return new ClaimsPrincipal(identity);
-        }
-
-        public async Task<ClaimsPrincipal> GetPlayerFromResponse(HttpResponseMessage response)
-        {
-            var playerData = await response.Content.ReadAsStringAsync();
-            var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
-
-            //Passes the username as a parameter to create a ClaimsPrincipal object representing the authenticated user's identity.
-            var principal = CreatePrincipal(player);
+            var principal = new ClaimsPrincipal(identity);
             return principal;
         }
-    }
+
+		public async Task<PlayerModel> GetPlayerFromResponse(HttpResponseMessage response)
+		{
+			var playerData = await response.Content.ReadAsStringAsync();
+			var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
+			return player;
+		}
+	}
 }

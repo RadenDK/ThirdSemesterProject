@@ -45,12 +45,13 @@ namespace WebClient.Controllers
 				var response = await _loginLogic.VerifyCredentials(username, password);
 				if (response.IsSuccessStatusCode)
 				{
-					var principal = await _loginLogic.GetPlayerFromResponse(response);
+					var player = await _loginLogic.GetPlayerFromResponse(response);
+					var principal = _loginLogic.CreatePrincipal(player);
 
 					//Creates an encrypted authentication ticket(cookie) containing the user's principal (identity) information and adds it to the current response.
 					await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-					return RedirectToAction("HomePage", "Homepage");
+					return RedirectToAction("HomePage", "Homepage", player);
 				}
 				else
 				{

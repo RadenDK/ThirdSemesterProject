@@ -7,6 +7,6 @@ namespace WebClient.BusinessLogic
     {
         Task<HttpResponseMessage> VerifyCredentials(string username, string password);
         ClaimsPrincipal CreatePrincipal(PlayerModel player);
-        Task<ClaimsPrincipal> GetPlayerFromResponse(HttpResponseMessage response);
+        Task<PlayerModel> GetPlayerFromResponse(HttpResponseMessage response);
     }
 }
