@@ -252,7 +252,7 @@ namespace GameClientApiTests.BusinessLogicTests
 		public void CreateGameLobby_TC1_CreatesGameLobbyAndReturnsIt()
 		{
 			// Arrange
-			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" };
 			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
 
 			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };

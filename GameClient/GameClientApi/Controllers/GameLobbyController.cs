@@ -2,7 +2,6 @@
 using GameClientApi.Models;
 using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace GameClientApi.Controllers
@@ -39,11 +38,10 @@ namespace GameClientApi.Controllers
 		}
 
 		[HttpPost("CreateGameLobby")]
-		public IActionResult CreateGameLobby([FromBody] dynamic data)
+		public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
 		{
-			var payload = JsonConvert.DeserializeObject<CreateGameLobbyModel>(data.ToString());
-			GameLobbyModel gameLobby = payload.newLobby;
-			string username = payload.username;
+			GameLobbyModel gameLobby = data.newLobby;
+			string username = data.username;
 			try
 			{
 				GameLobbyModel createdGameLobby = _gameLobbyLogic.CreateGameLobby(gameLobby, username);
