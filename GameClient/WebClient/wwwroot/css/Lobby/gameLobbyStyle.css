@@ -54,9 +54,45 @@
     display: flex;
     padding: 10px;
     border-top: 1px solid #e3e3e3;
+    color: black;
 }
 
-.chat-input input {
+.Lobbychat-input input {
     flex-grow: 1;
     margin-right: 10px;
+    color: black;
+}
+
+/* styling teams view in game lobby */
+.teams-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.team {
+    width: 45%; /* Adjust as needed */
+     
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+}
+
+.team h2 {
+    text-align: center;
+    color: white;
+}
+
+.team-members {
+    list-style-type: none;
+    padding: 0;
+}
+
+.team-members li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.team-members li:last-child {
+    border-bottom: none;
 }
