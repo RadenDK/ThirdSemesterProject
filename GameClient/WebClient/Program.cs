@@ -23,6 +23,19 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Login/AccessDenied";
     });
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAllOrigins",
+		builder =>
+		{
+			builder
+				.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader();
+		});
+});
+
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -42,6 +55,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("AllowAllOrigins");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -55,6 +70,11 @@ if (!string.IsNullOrEmpty(port))
     // If the PORT environment variable is set, use it to configure the app's URLs
     app.Urls.Clear();
     app.Urls.Add($"http://*:{port}");
+}
+else
+{
+	// If the PORT environment variable is not set, use the default URLs
+	builder.WebHost.UseUrls("http://localhost:5028;https://localhost:7292");
 }
 
 app.Run();
