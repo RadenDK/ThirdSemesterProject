@@ -115,36 +115,47 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-		public List<PlayerModel> GetAllPlayersInLobby(int lobbyID)
-		{
-			string getAllPlayersInLobbyQuery = "SELECT PlayerID, InGameName, IsOwner FROM Player WHERE GameLobbyID = @LobbyID";
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				List<PlayerModel> players = connection.Query<PlayerModel>(getAllPlayersInLobbyQuery, new { LobbyID = lobbyID }).ToList();
-				return players;
-			}
-		}
+        public List<PlayerModel> GetAllPlayersInLobby(int? lobbyID)
+        {
+            string getAllPlayersInLobbyQuery = "SELECT PlayerID, InGameName, IsOwner FROM Player WHERE GameLobbyID = @LobbyID";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                List<PlayerModel> players = connection.Query<PlayerModel>(getAllPlayersInLobbyQuery, new { LobbyID = lobbyID }).ToList();
+                return players;
+            }
+        }
 
-		public bool UpdatePlayerLobbyId(PlayerModel player)
-		{
-			bool updateSucces = false;
+        public bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
+        {
+            bool updateSucces = false;
 
-			string deleteLobbyQuery = "UPDATE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
+            string updatePlayerLobbyIdQuery = "UPDATE Player SET GameLobbyId = @GameLobbyId WHERE PlayerId = @PlayerId";
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-                int rowsAffected = 1;
-				if (rowsAffected > 0) updateSucces = true;
-			}
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                int rowsAffected = connection.Execute(updatePlayerLobbyIdQuery, new
+                {
+                    GameLobbyId = newGameLobbyModel.GameLobbyId,
+                    PlayerId = player.PlayerId
+                });
+                if (rowsAffected > 0) updateSucces = true;
+            }
 
-			return updateSucces;
-		}
+            return updateSucces;
+        }
 
         public bool UpdatePlayerOwnership(PlayerModel player)
         {
-            throw new NotImplementedException();
+            string updateOwnershipQuery = "UPDATE Player SET IsOwner = @IsOwner WHERE PlayerId = @PlayerId";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                int rowsAffected = connection.Execute(updateOwnershipQuery, new { IsOwner = player.IsOwner, PlayerId = player.PlayerId });
+                return rowsAffected > 0;
+            }
         }
-	}
+    }
 }

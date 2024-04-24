@@ -5,8 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPlayerDatabaseAccessor, PlayerDatabaseAccessor>();
+builder.Services.AddScoped<IGameLobbyDatabaseAccessor, GameLobbyDatabaseAccessor>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 // Add CORS services
 builder.Services.AddCors(options =>

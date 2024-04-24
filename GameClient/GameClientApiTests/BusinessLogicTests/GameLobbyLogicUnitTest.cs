@@ -5,27 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
-	public class GameLobbyServiceUnitTest
+	public class GameLobbyLogicUnitTest
 	{
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IGameLobbyDatabaseAccessor> _gameLobbyMockAccessor;
-		private readonly Mock<IPlayerService> _playerMockService;
+		private readonly Mock<IPlayerLogic> _playerMockService;
 
 
-		public GameLobbyServiceUnitTest()
+		public GameLobbyLogicUnitTest()
 		{
 			_gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();
-			_playerMockService = new Mock<IPlayerService>();
+			_playerMockService = new Mock<IPlayerLogic>();
 		}
 
 
@@ -57,7 +57,7 @@ namespace GameClientApiTests.ServicesTests
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(2)).Returns(expectedPlayersGameLobby2);
 
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -88,7 +88,7 @@ namespace GameClientApiTests.ServicesTests
 			_gameLobbyMockAccessor.Setup(a => a.GetAllGameLobbies())
 				.Returns(expectedGameLobbies);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -118,7 +118,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -158,7 +158,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 			
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -194,7 +194,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -226,7 +226,7 @@ namespace GameClientApiTests.ServicesTests
 
 			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
 
-			GameLobbyService SUT = new GameLobbyService(_mockConfiguration,
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
 				_gameLobbyMockAccessor.Object, _playerMockService.Object);
 
 			// Act
@@ -246,7 +246,64 @@ namespace GameClientApiTests.ServicesTests
 				Assert.True(gameLobby.PlayersInLobby.All(player => !string.IsNullOrEmpty(player.InGameName)), "One or more players in the game lobby do not have an InGameName.");
 				Assert.True(gameLobby.PlayersInLobby.Count <= gameLobby.AmountOfPlayers, "The number of players in the game lobby exceeds the amount of players.");
 			}
+		}
 
+		[Fact]
+		public void CreateGameLobby_TC1_CreatesGameLobbyAndReturnsIt()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" };
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+
+			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
+			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+			
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+			
+			// Assert
+			Assert.NotNull(testResult);
+			Assert.Equal(expectedGameLobby.LobbyName, testResult.LobbyName);
+			Assert.Equal(expectedGameLobby.AmountOfPlayers, testResult.AmountOfPlayers);
+			Assert.NotNull(testResult.InviteLink);
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC2_returnsNullIfGameLobbyCouldNotBeCreated()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(0);
+
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+
+			// Assert
+			Assert.Null(testResult);
+		}
+
+		[Fact]
+		public void CreateGameLobby_TC3_HashesPasswordBeforeCreatingGameLobby()
+		{
+			// Arrange
+			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1", PasswordHash = "password" }; ;
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+
+			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
+			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+
+			// Act
+			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
+
+			// Assert
+			Assert.NotNull(testResult);
+			Assert.True(BCrypt.Net.BCrypt.Verify("password", testResult.PasswordHash));
 		}
 	}
 }

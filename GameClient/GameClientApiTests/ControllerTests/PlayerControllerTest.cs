@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using GameClientApiTests.TestHelpers;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 
 namespace GameClientApiTests.PlayerControllerTests
 {

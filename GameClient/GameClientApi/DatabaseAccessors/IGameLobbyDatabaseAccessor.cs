@@ -7,6 +7,12 @@ namespace GameClientApi.DatabaseAccessors
 		List<GameLobbyModel> GetAllGameLobbies ();
 
 
-		bool DeleteGameLobby(int gameLobbyId);
+		bool DeleteGameLobby(int? gameLobbyId);
+
+		int CreateGameLobby(GameLobbyModel gameLobby);
+
+		int CreateLobbyChat();
+
+		GameLobbyModel GetGameLobby(int gameLobbyId);
 	}
 }

@@ -2,10 +2,212 @@
 
 }
 
+body {
+
+}
+
+
+.header-layout-lobby {
+
+}
 .search-for-lobby-container {
 
 }
 
+.header-join-lobby {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-join-lobby h1 {
+    order: 1;
+    padding: 10px 20px;
+    font-weight: 900;
+}
+
+.search-for-lobby-container {
+    order: 2;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+#searchField {
+ margin: 10px 15px;
+}
+
+
+
 .lobby-container .table-row:hover {
-    background-color: #878787; /* Light gray */
+    background-color: #2e2e2e; /* Light gray */
+}
+
+.table-responsive {
+    margin: 20px; /* Add some space around the table */
+}
+
+.table-responsive table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #fff; /* White text */
+    background-color: #212121; /* White background */
+    border-radius: 15px;
+}
+
+.table-responsive th, .table-responsive td {
+    padding: 15px; /* Padding inside cells */
+    text-align: left; /* Align text to the left */
+}
+.table-responsive th {
+    background-color: #121212; /* Dark gray */
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    font-size: 18px; /* Larger font size */
+    text-transform: uppercase; /* Uppercase text */
+}
+
+.table-responsive tr {
+    border-bottom: 1px solid rgba(16, 15, 15, 0.85); /* Border between rows */
+}
+
+.table-responsive tr:last-child {
+    border-bottom: none; /* Remove border from last row */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7); /* Darker background */
+}
+
+.modal-content {
+    background-color: #333; /* Dark gray */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #444; /* Slightly lighter gray for the border */
+    width: 30%;
+    color: #fff; /* White text */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    text-align: center; /* Center the text */
+}
+
+    .modal-content h2 {
+        margin-bottom: 20px; /* Add some space below the title */
+    }
+
+    .modal-content input {
+        width: 100%; /* Make the input field take up the full width of the modal */
+        padding: 10px; /* Add some padding inside the input field */
+        margin-bottom: 20px; /* Add some space below the input field */
+        border: none; /* Remove the default border */
+        background-color: #444; /* Slightly lighter gray for the input field */
+        color: #fff; /* White text */
+    }
+
+    .modal-content button {
+        padding: 10px 20px; /* Add some padding inside the button */
+        border: none; /* Remove the default border */
+        background-color: #555; /* Slightly lighter gray for the button */
+        color: #fff; /* White text */
+        cursor: pointer; /* Change the cursor when hovering over the button */
+    }
+
+        .modal-content button:hover {
+            background-color: #666; /* Even lighter gray when hovering over the button */
+        }
+
+
+.btn-dark {
+    background-color: #333; /* Dark gray */
+    color: #fff; /* White text */
+    padding: 10px 20px; /* Add some padding inside the button */
+    border: 1px solid #444; /* Slightly lighter gray for the border */
+    cursor: pointer;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+    .btn-dark:hover {
+        background-color: #444; /* Slightly lighter gray when hovering over the button */
+    }
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.noselect {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #e62222;
+    position: fixed;
+    bottom: 15px;
+
+}
+
+.noselect, .noselect span {
+    transition: 200ms;
+}
+
+.noselect .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+.noselect .icon {
+    position: absolute;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.noselect svg {
+    width: 15px;
+    fill: #eee;
+}
+
+.noselect:hover {
+    background: #ff3636;
+}
+
+.noselect:hover .text {
+    color: transparent;
+}
+
+.noselect:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+}
+
+.noselect:focus {
+    outline: none;
 }

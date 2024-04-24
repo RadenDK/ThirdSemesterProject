@@ -1,13 +1,13 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
 using BC = BCrypt.Net.BCrypt;
-namespace GameClientApi.Services
+namespace GameClientApi.BusinessLogic
 {
-	public class PlayerService : IPlayerService
+	public class PlayerLogic : IPlayerLogic
 	{
 		IPlayerDatabaseAccessor _playerAccessor;
 
-		public PlayerService(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
+		public PlayerLogic(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
 		{
 			_playerAccessor = playerDatabaseAccessor;
 		}
@@ -56,20 +56,20 @@ namespace GameClientApi.Services
 			return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
 		}
 
-		public List<PlayerModel> GetAllPlayersInLobby(int lobbyId)
+		public List<PlayerModel> GetAllPlayersInLobby(int? lobbyId)
 		{
-			throw new NotImplementedException();
+			return _playerAccessor.GetAllPlayersInLobby(lobbyId);
 
 		}
 
-		public void UpdatePlayerLobbyId(PlayerModel player)
-		{
-			throw new NotImplementedException();
-		}
+		public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
+        {
+            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel);
+        }
 
 		public void UpdatePlayerOwnership(PlayerModel player)
 		{
-			throw new NotImplementedException();
+			_playerAccessor.UpdatePlayerOwnership(player);
 
 		}
 

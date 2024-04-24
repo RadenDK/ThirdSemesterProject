@@ -5,22 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
-	public class PlayerServiceUnitTest
+	public class PlayerLogicUnitTest
 	{
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IPlayerDatabaseAccessor> _mockAccessor;
 
-		public PlayerServiceUnitTest()
+		public PlayerLogicUnitTest()
 		{
 			_mockAccessor = new Mock<IPlayerDatabaseAccessor>();
 		}
@@ -35,7 +35,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
 				.Returns(testPassword);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
@@ -54,7 +54,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.GetPassword("invalidUsername"))
 				.Returns("");
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 		
 			// Act
 			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
@@ -73,7 +73,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.GetPassword("Username"))
 				.Returns("");
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
@@ -92,7 +92,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
 				.Returns(testPassword);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
@@ -111,7 +111,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
 				.Returns("null");
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
@@ -140,7 +140,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(true);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.CreatePlayer(mockPlayer);
@@ -169,7 +169,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentException>(() =>
@@ -200,7 +200,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentException>(() =>
@@ -231,7 +231,7 @@ namespace GameClientApiTests.ServicesTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerService playerService = new PlayerService(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
 			bool testResult = playerService.CreatePlayer(mockPlayer);

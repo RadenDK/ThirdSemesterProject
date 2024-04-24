@@ -3,115 +3,133 @@
 <head>
 	<title>@ViewData["Title"]</title>
 	@RenderSection("Styles", required: false)
-	<link rel="stylesheet" href="~/css/homepage.css" asp-append-version="true" />
-	<link rel="stylesheet" type="text/css" href="~/css/gameLobbyStyle.css" />
+	<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/Lobby/gameLobbyStyle.css" asp-append-version="true" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-	<div class="wrapper">
-		<div class="sidebar">
-			<div class="section" id="section-1">
-				<div class="bento-box" id="bento-box-1">
-					<a asp-controller="GameLobby" asp-action="JoinLobby" class="menu-item">
-						<img src="~/assets/maskot.png" alt="Play">
-						<div class="text" id="play-text">PLAY</div>
-					</a>
-				</div>
-				<div class="bento-box" id="bento-box-2">
-					<a href="profile.html" class="menu-item">
-						<img src="~/assets/maskot.png" alt="Profile">
-						<div class="text" id="profile-text">PROFILE</div>
-					</a>
-				</div>
-				<div class="bento-box" id="bento-box-3">
-					<a href="collection.html" class="menu-item">
-						<img src="~/assets/maskot.png" alt="Collection">
-						<div class="text" id="collection-text">COLLECTION</div>
-					</a>
-				</div>
-				<div class="bento-box" id="bento-box-4">
-					<a href="store.html" class="menu-item">
-						<img src="~/assets/maskot.png" alt="Store">
-						<div class="text" id="store-text">STORE</div>
-					</a>
-				</div>
+<div id="loading-overlay" class="@ViewData["LoadingClass"]">
+    <span class="loader"></span>
+</div>
+<div class="wrapper">
+	<div class="sidebar">
+		<div class="section" id="section-1">
+			<div class="bento-box" id="bento-box-1">
+				<a asp-controller="GameLobby" asp-action="JoinLobby" class="menu-item">
+                    <i class='fas fa-fire'></i>
+                    <span class="text" id="play-text">PLAY</span>
+                </a>
 			</div>
-			<div class="section" id="section-2">
-				<div class="bento-box social" id="bento-social">
-					<div class="icon library"></div>
-					<div class="icon person"></div>
-					<div class="icon search"></div>
-					<label>
-						<input type="text" placeholder="SEARCH">
-					</label>
-				</div>
+			<div class="bento-box" id="bento-box-2">
+				<a href="profile.html" class="menu-item">
+					<img src="~/assets/maskot.png" alt="Profile">
+					<div class="text" id="profile-text">PROFILE</div>
+				</a>
 			</div>
-			<div class="friends">
-				<div class="friend-list">
-					<div class="bento-box" id="bento-box-6">
-						<li class="friend">
-							<img src="~/assets/maskot.png" alt="friend-img" id="friendPic1">
-							<div>
-								<p>Hydra</p>
-								<span id="online">Online</span>
-							</div>
-						</li>
-					</div>
-				</div>
-				<div class="bento-box" id="bento-box-7">
-					<div class="friend">
-						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic2">
-						<div>
-							<p>ap144</p>
-							<span>Offline</span>
-						</div>
-					</div>
-				</div>
-				<div class="bento-box" id="bento-box-8">
-					<div class="friend">
-						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic3">
-						<div>
-							<p>Cesse</p>
-							<span>Offline</span>
-						</div>
-					</div>
-				</div>
-				<div class="bento-box" id="bento-box-9">
-					<div class="friend">
-						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic4">
-						<div>
-							<p>niko</p>
-							<span>Offline</span>
-						</div>
-					</div>
-				</div>
-				<div class="bento-box" id="bento-box-10">
-					<div class="friend">
-						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic5">
-						<div>
-							<p>Raden</p>
-							<span>Offline</span>
-						</div>
-					</div>
-				</div>
-				<div class="bento-box" id="bento-box-11">
-					<div class="friend">
-						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic6">
-						<div>
-							<p>Kimbokastekniv</p>
-							<span>Offline</span>
-						</div>
-					</div>
-				</div>
+			<div class="bento-box" id="bento-box-3">
+				<a href="collection.html" class="menu-item">
+					<img src="~/assets/maskot.png" alt="Collection">
+					<div class="text" id="collection-text">COLLECTION</div>
+				</a>
+			</div>
+			<div class="bento-box" id="bento-box-4">
+				<a href="store.html" class="menu-item">
+					<img src="~/assets/maskot.png" alt="Store">
+					<div class="text" id="store-text">STORE</div>
+				</a>
 			</div>
 		</div>
-		<div class="main-content-container">
-			<div class="main-content">
-				@RenderBody()
+		<div class="section" id="section-2">
+			<div class="bento-box social" id="bento-social">
+				<div class="search">
+					<input type="text" placeholder="" id="friendSearch">
+					<div>
+						<svg>
+							<use xlink:href="#path"/>
+						</svg>
+					</div>
+				</div>
+				<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+					<symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 28" id="path">
+						<path d="M32.9418651,-20.6880772 C37.9418651,-20.6880772 40.9418651,-16.6880772 40.9418651,-12.6880772 C40.9418651,-8.68807717 37.9418651,-4.68807717 32.9418651,-4.68807717 C27.9418651,-4.68807717 24.9418651,-8.68807717 24.9418651,-12.6880772 C24.9418651,-16.6880772 27.9418651,-20.6880772 32.9418651,-20.6880772 L32.9418651,-29.870624 C32.9418651,-30.3676803 33.3448089,-30.770624 33.8418651,-30.770624 C34.08056,-30.770624 34.3094785,-30.6758029 34.4782612,-30.5070201 L141.371843,76.386562" transform="translate(83.156854, 22.171573) rotate(-225.000000) translate(-83.156854, -22.171573)"></path>
+					</symbol>
+				</svg>
+				<i class='fas fa-folder'></i>
+				<i class='fas fa-user-plus'></i>
+			</div>
+
+
+		</div>
+		<div class="friends">
+			<div class="friend-list">
+				<div class="bento-box" id="bento-box-6">
+					<li class="friend">
+						<img src="~/assets/maskot.png" alt="friend-img" id="friendPic1">
+						<div>
+							<p>Hydra</p>
+							<span id="online">Online</span>
+						</div>
+					</li>
+				</div>
+			</div>
+			<div class="bento-box" id="bento-box-7">
+				<div class="friend">
+					<img src="~/assets/maskot.png" alt="friend-img" id="friendPic2">
+					<div>
+						<p>ap144</p>
+						<span>Offline</span>
+					</div>
+				</div>
+			</div>
+			<div class="bento-box" id="bento-box-8">
+				<div class="friend">
+					<img src="~/assets/maskot.png" alt="friend-img" id="friendPic3">
+					<div>
+						<p>Cesse</p>
+						<span>Offline</span>
+					</div>
+				</div>
+			</div>
+			<div class="bento-box" id="bento-box-9">
+				<div class="friend">
+					<img src="~/assets/maskot.png" alt="friend-img" id="friendPic4">
+					<div>
+						<p>niko</p>
+						<span>Offline</span>
+					</div>
+				</div>
+			</div>
+			<div class="bento-box" id="bento-box-10">
+				<div class="friend">
+					<img src="~/assets/maskot.png" alt="friend-img" id="friendPic5">
+					<div>
+						<p>Raden</p>
+						<span>Offline</span>
+					</div>
+				</div>
+			</div>
+			<div class="bento-box" id="bento-box-11">
+				<div class="friend">
+					<img src="~/assets/maskot.png" alt="friend-img" id="friendPic6">
+					<div>
+						<p>Kimbokastekniv</p>
+						<span>Offline</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div class="main-content-container">
+		<div class="main-content">
+			@RenderBody()
+		</div>
+	</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="~/js/NavBar/navbar.js"></script>
+
 </body>
+
 </html>

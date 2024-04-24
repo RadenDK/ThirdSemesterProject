@@ -1,10 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebClient.Controllers
 {
     public class GameLobbyController : Controller
     {
+        private readonly IGameLobbyLogic _gameLobbyLogic;
+
+        public GameLobbyController(IGameLobbyLogic gameLobbyLogic)
+        {
+            _gameLobbyLogic = gameLobbyLogic;
+        }
+
         [HttpGet]
         public IActionResult CreateLobby()
         {
@@ -12,69 +22,45 @@ namespace WebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult JoinLobby()
+        public async Task<IActionResult> JoinLobby()
         {
-            IEnumerable<GameLobbyModel> gameLobbies = GenerateRandomGameLobbies(5);
 
-            return View(gameLobbies);
+            IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
+
+            return View(gameLobbies.ToList());
         }
 
-        private IEnumerable<GameLobbyModel> GenerateRandomGameLobbies(int amountOfLobbies)
+        [HttpPost]
+        public async Task<IActionResult> GameLobby([FromBody] JoinGameLobbyRequest request)
         {
-            var random = new Random();
-            var gameLobbies = new List<GameLobbyModel>();
+            // TODO get the players id to pass along
+            // request.playerId = PLAYERS ACTUALLY ID
 
-            for (int i = 0; i < amountOfLobbies; i++)
-            {
-                var amountOfPlayers = random.Next(1, 10);
-                var lobbyPlayers = new List<PlayerModel>();
+            request.PlayerId = 1;
 
-                for (int j = 0; j < random.Next(1,amountOfPlayers); j++)
-                {
+            GameLobbyModel gameLobby = await _gameLobbyLogic.JoinGameLobby(request);
 
-                    PlayerModel player = new PlayerModel
-                    {
-                        Username = $"Player{j}",
-                        Password = $"password{j}",
-                        InGameName = $"InGameName{j}",
-                        Email = $"email{j}@example.com",
-                        Birthday = DateTime.Now.AddYears(-20).AddDays(j), // Example birthday
-                        Elo = random.Next(1000, 2000),
-                        Banned = false,
-                        CurrencyAmount = random.Next(100, 1000)
-                    };
-
-                    lobbyPlayers.Add(player);
-                }
-
-                gameLobbies.Add(new GameLobbyModel
-                {
-                    GameLobbyId = random.Next(1, 1000),
-                    LobbyName = $"Test Lobby {random.Next(1, 1000)}",
-                    AmountOfPlayers = amountOfPlayers,
-                    lobbyOwner = lobbyPlayers.First(), // The first player is the owner
-                    Password = random.Next(2) == 0 ? $"password{random.Next(1, 1000)}" : null,
-                    InviteLink = $"http://example.com/invite{random.Next(1, 1000)}",
-                    LobbyChat = new LobbyChatModel { /* Initialize lobby chat model properties here */ },
-                    LobbyPlayers = lobbyPlayers
-                });
-
-            }
-
-            return gameLobbies;
-        }
-
-        [HttpGet]
-        public IActionResult GameLobby(int lobbyId)
-        {
-            var gameLobbies = GenerateRandomGameLobbies(1);
-            var gameLobby = gameLobbies.First();
-
-            gameLobby.GameLobbyId = lobbyId;
 
             return View(gameLobby);
         }
 
-
+        [HttpPost]
+        public async Task<IActionResult> CreateGameLobby(GameLobbyModel newLobby)
+        {
+            if (ModelState.IsValid)
+            {
+                var userPrincipal = HttpContext.User;
+                string username = _gameLobbyLogic.GetUsername(userPrincipal);
+                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
+                return RedirectToAction("Homepage", "Homepage");
+            }
+            return View("CreateLobby");
+        }
     }
 }
+
+
+
+
+
+

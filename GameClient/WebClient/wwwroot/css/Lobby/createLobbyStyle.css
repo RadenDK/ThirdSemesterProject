@@ -1,5 +1,5 @@
-. {
-
+* {
+    box-sizing: content-box;
 }
 body {
     background-color: rgb(16, 16, 16);
@@ -8,8 +8,11 @@ body {
 
 .bento-box-create-lobby {
     border: 1px solid #2e2e2e;
+    margin: 40px 10px;
     padding: 10px;
     display: flex;
+    width: 100%;
+    flex-direction: column;
     background-color: rgb(23, 23, 23);
     justify-content: space-between;
     align-items: center;
@@ -17,25 +20,86 @@ body {
     border-radius: 10px;
 }
 
+.bento-box-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.teamSize-bento-box {
+    margin: 10px 10px;
+    height: 50px; /* adjust as needed */
+    width: 30% !important;
+    color: white;
+}
+
 .lobbyPassword-bento-box {
     flex: 1;
     margin: 10px 10px;
+    height: 50px; /* adjust as needed */
+    width: 70% !important;
+    color: white;
 }
+
 .lobbyName-bento-box {
     flex: 1;
     margin: 10px 10px;
+    height: 100px; /* adjust as needed */
+    width: 100%; /* adjust as needed */
+    color: white;
+
 }
-.playerCount-bento-box {
-    flex: 1;
+
+.submit-button {
+    background-color: rgba(33, 33, 33, 0.85);
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(46, 46, 46, 0);
+}
+
+
+
+#team-size:hover {
+    background-color: rgb(42, 42, 42);
+}
+#lobby-password:hover {
+    background-color: rgb(42, 42, 42);
+}
+#lobby-name:hover {
+    background-color: rgb(42, 42, 42);
+}
+
+#lobby-name {
+    background-color: rgba(33, 33, 33, 0.85);
+    color: white;
+    border-radius: 10px;
+    border: 1px solid rgba(46, 46, 46, 0);
+    padding: 10px;
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: -moz-available;  /* Opera-based browsers will ignore this. */
+    box-sizing: border-box;
     margin: 10px 10px;
 }
 
-.playerCount-bento-box:hover {
-    background-color: rgb(42, 42, 42);
+#team-size {
+    background-color: rgba(33, 33, 33, 0.85);
+    border-radius: 10px;
+    border: 1px solid rgba(46, 46, 46, 0);
+    padding: 10px;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
 }
-.lobbyPassword-bento-box:hover {
-    background-color: rgb(42, 42, 42);
+
+#lobby-password {
+    background-color: rgba(33, 33, 33, 0.85);
+    color: white;
+    border-radius: 10px;
+    border: 1px solid rgba(46, 46, 46, 0);
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
-.lobbyName-bento-box:hover {
-    background-color: rgb(42, 42, 42);
-}
+

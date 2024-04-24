@@ -30,5 +30,9 @@ namespace WebClient.Models
 
         [JsonPropertyName("birthday")]
         public DateTime Birthday { get; set; }
+
+        [JsonPropertyName("isOwner")]
+        public bool IsOwner { get; set; }
+
     }
 }
