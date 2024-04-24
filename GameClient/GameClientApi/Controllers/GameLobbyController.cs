@@ -37,27 +37,30 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-		[HttpPost("CreateGameLobby")]
-		public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
-		{
-			GameLobbyModel gameLobby = data.newLobby;
-			string username = data.username;
-			try
-			{
-				GameLobbyModel createdGameLobby = _gameLobbyLogic.CreateGameLobby(gameLobby, username);
+        [HttpPost("CreateGameLobby")]
+        public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
+        {
+            GameLobbyModel gameLobby = data.newLobby;
+            string username = data.username;
+            try
+            {
+                GameLobbyModel createdGameLobby = _gameLobbyLogic.CreateGameLobby(gameLobby, username);
                 if (createdGameLobby.GameLobbyId.HasValue)
-				{
-					return Ok(createdGameLobby);
-				}
-				else
-				{
-					return BadRequest("Failed to create game lobby.");
-				}
+                {
+                    return Ok(createdGameLobby);
+                }
+                else
+                {
+                    return BadRequest("Failed to create game lobby.");
+                }
             }
-			catch
-			{
-				return BadRequest("The wrong data was provided");
-		[HttpPost("join")]
+            catch
+            {
+                return BadRequest("The wrong data was provided");
+            }
+        }
+
+        [HttpPost("join")]
 		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
 		{
 			try

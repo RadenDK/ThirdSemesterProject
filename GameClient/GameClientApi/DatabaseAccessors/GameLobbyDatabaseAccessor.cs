@@ -69,7 +69,9 @@ namespace GameClientApi.DatabaseAccessors
 						return gameLobbyId;
 					}
 				}
-			}
+
+                return 0;
+            }
             catch (Exception ex)
             {
                 throw new Exception("Not saved in database", ex);
@@ -106,21 +108,7 @@ namespace GameClientApi.DatabaseAccessors
     
 
 
-		public bool DeleteGameLobby(int? gameLobbyId)
-		{
-			bool deletionSucces = false;
-
-			string deleteLobbyQuery = "DELETE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
-
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				int rowsAffected = connection.Execute(deleteLobbyQuery, new { GameLobbyId = gameLobbyId });
-				if (rowsAffected > 0) deletionSucces = true;
-			}
-
-			return deletionSucces;
-		}
+		
 
 		public GameLobbyModel GetGameLobby(int gameLobbyId)
 		{
