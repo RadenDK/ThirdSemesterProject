@@ -36,13 +36,12 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-		[HttpPost]
-		[Route("GameLobby/join")]
+		[HttpPost("join")]
 		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
 		{
 			try
 			{
-				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.Password);
+				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.LobbyPassword);
 
 				return Ok(gameLobby);
 

@@ -98,7 +98,7 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 6,
 				GameLobbyId = 2,
-				Password = null
+				LobbyPassword = null
 			};
 
 			// Act
@@ -141,7 +141,7 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 6,
 				GameLobbyId = 3,
-				Password = "password"
+				LobbyPassword = "password"
 			};
 
 			// Act
@@ -178,7 +178,7 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 6,
 				GameLobbyId = 999,
-				Password = null
+				LobbyPassword = null
 			};
 
 			// Act
@@ -215,7 +215,7 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 6,
 				GameLobbyId = 3, // Game lobby ID with a password
-				Password = "wrongpassword" // Incorrect password
+				LobbyPassword = "wrongpassword" // Incorrect password
 			};
 
 			// Act
@@ -241,7 +241,7 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 6,
 				GameLobbyId = 1,
-				Password = null
+				LobbyPassword = null
 			};
 
 			// Act
@@ -279,14 +279,14 @@ namespace GameClientApiTests.ControllerTests
 			{
 				PlayerId = 1,
 				GameLobbyId = 3,
-				Password = "password"
+				LobbyPassword = "password"
 			};
 
 			JoinGameLobbyRequest joinRequestPlayer2 = new JoinGameLobbyRequest
 			{
 				PlayerId = 2,
 				GameLobbyId = 3,
-				Password = "password"
+				LobbyPassword = "password"
 			};
 
 			// Act

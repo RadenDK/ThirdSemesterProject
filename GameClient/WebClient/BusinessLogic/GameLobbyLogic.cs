@@ -30,8 +30,8 @@ public class GameLobbyLogic : IGameLobbyLogic
 		return allGameLobbies;
 	}
 
-	public async Task<GameLobbyModel> GetGameLobbyById(int lobbyId)
+	public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request)
 	{
-		return await _gameLobbyService.GetGameLobbyById(lobbyId);
+		return await _gameLobbyService.JoinGameLobby(request);
 	}
 }

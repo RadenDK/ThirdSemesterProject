@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public interface IGameLobbyLogic
 {
-    Task<GameLobbyModel> GetGameLobbyById(int lobbyId);
+    Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request);
 
     Task<List<GameLobbyModel>> GetAllGameLobbies();
 }
