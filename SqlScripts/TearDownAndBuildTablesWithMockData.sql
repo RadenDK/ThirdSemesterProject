@@ -163,20 +163,19 @@
     INSERT INTO Chat (chatType) VALUES ('GameLobby');
 
 
-    -- Insert data into GameLobby
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby1', 'Test', 'link1', 1);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby2', NULL, 'link2', 2);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('MyLobbu', 'Test', 'link3', 3);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby4', NULL, 'link4', 4);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby5', NULL, 'link5', 5);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby6', 'Test', 'link6', 6);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby7', NULL, 'link7', 7);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby8', NULL, 'link8', 8);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby9', 'Test', 'link9', 9);
-    INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby10', NULL, 'link10', 10);
+-- Insert data into GameLobby
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby1', '$2a$11$GKvgzKXgwSzYug.moJPTw.DN.vw5ZgM.nSaZkw212GTuDUu8lyXL6', 'link1', 1); -- Password is 'password'
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby2', NULL, 'link2', 2);
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('MyLobbu', '$2a$11$GKvgzKXgwSzYug.moJPTw.DN.vw5ZgM.nSaZkw212GTuDUu8lyXL6', 'link3', 3); -- Password is 'password'
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby4', NULL, 'link4', 4);
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby5', NULL, 'link5', 5);
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby6', '$2a$11$GKvgzKXgwSzYug.moJPTw.DN.vw5ZgM.nSaZkw212GTuDUu8lyXL6', 'link6', 6); -- Password is 'password'
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby7', NULL, 'link7', 7);
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby8', NULL, 'link8', 8);
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby9', '$2a$11$GKvgzKXgwSzYug.moJPTw.DN.vw5ZgM.nSaZkw212GTuDUu8lyXL6', 'link9', 9); -- Password is 'password'
+INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES ('Lobby10', NULL, 'link10', 10);
 
-
-    -- Insert data into Player
+    
     -- Insert data into Player
     INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player1', '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i', 'InGameName1', GETDATE(), 'player1@example.com', 1); -- Password is a hashed version of "Player1"
     INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email, GameLobbyID) VALUES ('Player2', '$2a$11$j3D2bz5NUgeivWNZOc0dyOmSlfsHkMgmmcXK5cJTxUg6xZAZTZbKe', 'InGameName2', GETDATE(), 'player2@example.com', 1); -- Password is a hashed version of "Player2"
