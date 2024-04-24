@@ -5,67 +5,24 @@
 @{
     Layout = "_LayoutLobby";
 }
-
-<div class="lobby-container">
-    <div class="lobby-header">
-        <label for="lobbyName">Lobby Name:</label>
-        <input type="text" id="lobbyName" name="lobbyName" />
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Group Chat</h2>
     </div>
-
-    <div class="teams-container">
-        <div class="team1" id="teamOne">
-            <h2>TEAM ONE</h2>
-            <input type="text" placeholder="InGameName1 text field box" />
-            <input type="text" placeholder="Player 2" />
-            <input type="text" placeholder="Player 3" />
-           
+    <div class="chat-messages">
+        <div class="message">
+            <span class="timestamp">10:30 AM</span>
+            <span class="sender">User1</span>
+            <p class="text">Hello, this is a placeholder message.</p>
         </div>
-
-        <div class="team2" id="teamTwo">
-            <h2>TEAM TWO</h2>
-            <input type="text" placeholder="InGameName" />
-            
+        <div class="message">
+            <span class="timestamp">10:31 AM</span>
+            <span class="sender">User2</span>
+            <p class="text">This is another placeholder message.</p>
         </div>
     </div>
-
-    <div class="lobby-actions">
-        <button type="button" id="inviteButton">INVITE</button>
-        <button type="button" id="cancelButton">CANCEL</button>
-        <button type="button" id="startButton">START</button>
-    </div>
-
-    <div class="lobby-chat">
-        <h2>Lobby Chat</h2>
-        <p>The actual chat with other players here</p>
-        <input type="text" placeholder="Chat Text box here" />
+    <div class="chat-input">
+        <input type="text" placeholder="Type your message here..." />
+        <button>Send</button>
     </div>
 </div>
-
-<style>
-    .lobby-container {
-        /* Tilføj dine generelle stilarter her */
-    }
-
-    .lobby-header {
-        /* Stilarter for lobbyens header */
-    }
-
-    .teams-container {
-        /* Stilarter for holdenes container */
-    }
-
-    .team {
-        /* Stilarter for hvert hold */
-    }
-
-    .lobby-actions {
-        /* Stilarter for knapperne i bunden */
-    }
-
-    .lobby-chat {
-        /* Stilarter for chatområdet */
-    }
-</style>
-
-
-
