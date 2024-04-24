@@ -28,11 +28,6 @@ namespace WebClient.BusinessLogic
             //type of the claim (user's name), and username is the value of the claim, representing the logged-in user's username.
             var claims = new List<Claim> {
                 new Claim("Username", player.Username),
-                new Claim("InGameName", player.InGameName),
-                new Claim("Elo", player.Elo.ToString()),
-                new Claim("Banned", player.Banned.ToString()),
-                new Claim("CurrencyAmount", player.CurrencyAmount.ToString()),
-                new Claim("OnlineStatus", player.OnlineStatus.ToString())
             };
 
             //The ClaimsIdentity represents the identity of the user and contains
