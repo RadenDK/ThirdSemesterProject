@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GameClientApi.DatabaseAccessors
 {
@@ -92,17 +93,10 @@ namespace GameClientApi.DatabaseAccessors
             {
                 return false;
             }
-            {
-                return false;
-            }
-            {
-                return false;
-            }
             if (string.IsNullOrEmpty(gameLobby.InviteLink))
             {
                 return false;
             }
-
             return true;
         }
     

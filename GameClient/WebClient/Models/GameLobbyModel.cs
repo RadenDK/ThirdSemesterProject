@@ -4,7 +4,7 @@ namespace WebClient.Models
 {
 	public class GameLobbyModel
 	{
-		public int GameLobbyId { get; set; }
+		public int? GameLobbyId { get; set; }
 		[Required]
 		public string LobbyName { get; set; }
 		[Range(2, 10)]
@@ -16,14 +16,14 @@ namespace WebClient.Models
 
 		public LobbyChatModel? LobbyChat { get; set; }
 
-		public IEnumerable<PlayerModel>? PlayersInLobby { get; set; }
+		public List<PlayerModel>? PlayersInLobby { get; set; }
 
 		public bool IsPrivate()
 		{
 			return !String.IsNullOrEmpty(PasswordHash);
 		}
 
-		public string GetInGameNameOfLobbyOwner()
+		public string? GetInGameNameOfLobbyOwner()
 		{
 			string inGameNameOfLobbyOwner = "Not Found";
 			if (PlayersInLobby != null)

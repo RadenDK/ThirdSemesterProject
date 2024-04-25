@@ -154,8 +154,9 @@ namespace GameClientApi.BusinessLogic
 					player.IsOwner = true;
 					player.GameLobbyId = gameLobbyId;
 					_playerLogic.UpdatePlayerOwnership(player);
+                    _playerLogic.UpdatePlayerLobbyId(player, gameLobby);
 
-					return gameLobby;
+                    return gameLobby;
 				}
 				return null;
 			}
