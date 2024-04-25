@@ -34,6 +34,9 @@
 				OnlineStatus = false 
 			};
 
+			mockLoginLogic.Setup(logic => logic.GetPlayerFromResponse(It.IsAny<HttpResponseMessage>()))
+				.ReturnsAsync(mockPlayer);
+
 			var mockClaims = new List<Claim> { 
 				new Claim("Username", mockPlayer.Username),
                 new Claim("InGameName", mockPlayer.InGameName),
@@ -46,8 +49,8 @@
 			var mockIdentity = new ClaimsIdentity(mockClaims, "TestAuthType");
 			var mockPrincipal = new ClaimsPrincipal(mockIdentity);
 
-			mockLoginLogic.Setup(logic => logic.GetPlayerFromResponse(It.IsAny<HttpResponseMessage>()))
-				.ReturnsAsync(mockPrincipal);
+			mockLoginLogic.Setup(logic => logic.CreatePrincipal(It.IsAny<PlayerModel>()))
+				.Returns(mockPrincipal);
 
 			var controller = new LoginController(mockLoginLogic.Object);
 

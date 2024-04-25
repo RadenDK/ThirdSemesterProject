@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Routing;
+using System.Security.Claims;
 
 namespace WebClientTest.ControllerTest
 {
@@ -23,8 +24,17 @@ namespace WebClientTest.ControllerTest
 			var mockGameLobbyLogic = new Mock<IGameLobbyLogic>();
 			var newLobby = new GameLobbyModel { LobbyName = "TestLobby" };
 			var createdLobby = new GameLobbyModel { GameLobbyId = 1, LobbyName = "TestLobby" };
-			mockGameLobbyLogic.Setup(x => x.CreateGameLobby(newLobby)).ReturnsAsync(createdLobby);
+			mockGameLobbyLogic.Setup(x => x.CreateGameLobby(newLobby, It.IsAny<string>())).ReturnsAsync(createdLobby);
 			var controller = new GameLobbyController(mockGameLobbyLogic.Object);
+
+			var player = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+			{
+				new Claim(ClaimTypes.Name, "testUser")
+			}));
+			controller.ControllerContext = new ControllerContext()
+			{
+				HttpContext = new DefaultHttpContext() { User = player }
+			};
 
 			// Act
 			var result = await controller.CreateGameLobby(newLobby);
