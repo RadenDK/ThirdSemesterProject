@@ -35,9 +35,10 @@ body {
     background-color: rgb(16, 16, 16, 0);
 }
 
-.main-content-container h1 {
-    color: white;
-}
+    .main-content-container h1 {
+        color: white;
+    }
+
 .main-content {
     padding: 20px;
     display: flex;
@@ -65,7 +66,7 @@ body {
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
-    transition: background-color 0.2s ease-in-out; /* Add transition for smooth color change */
+    transition: background-color 0.3s ease-in-out; /* Add transition for smooth color change */
 }
 
 .text-wrapper {
@@ -75,17 +76,7 @@ body {
 }
 
 
-#bento-box-1 {
-    padding: 20px 20px;
-    margin: 10px 0px;
-    background-color: rgb(30, 120, 255);
-}
-
-#bento-box-1:hover {
-    background-color: rgb(0, 91, 223);
-}
-
-#bento-box-2:hover, #bento-box-3:hover, #bento-box-4:hover {
+#bento-box-1:hover #bento-box-2:hover, #bento-box-3:hover, #bento-box-4:hover {
     background-color: rgb(42, 42, 42);
 }
 
@@ -104,7 +95,6 @@ body {
 #bento-box-4 {
     padding: 20px 20px;
     margin: 10px 0px;
-
 }
 
 #bento-box-5 {
@@ -121,6 +111,7 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
 .bento-box:hover {
     background-color: rgb(42, 42, 42);
 }
@@ -132,16 +123,15 @@ body {
     font-size: 30px; /* Adjust size as needed */
 }
 
-/* Hover effect */
-.fas.fa-fire:hover {
-}
+    /* Hover effect */
+    .fas.fa-fire:hover {
+    }
 
 .fas.fa-folder {
     color: rgb(255, 255, 255); /* Default color */
     font-size: 20px; /* Adjust size as needed */
     padding: 5px 5px;
     vertical-align: middle; /* Aligns the icon vertically in the middle */
-
 }
 
 .fas.fa-user-plus {
@@ -155,7 +145,6 @@ body {
 
 
 .icon {
-
 }
 
 .text {
@@ -166,18 +155,18 @@ body {
 }
 
 /* Styles for input[type="text"] not inside any of the bento box classes in createLobbyStyle, maybe there is better way to do this? */
-input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-bento-box input[type="text"]):not(.lobbyPassword-bento-box input[type="text"]):not(.Lobbychat-input input[type="text"]){
+input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-bento-box input[type="text"]):not(.lobbyPassword-bento-box input[type="text"]):not(.Lobbychat-input input[type="text"]) {
     width: 100%;
     padding: 5px;
     border: none;
-   /* background-color: rgba(23, 23, 23);*/ /* Adjust color to match the sidebar */
+    /* background-color: rgba(23, 23, 23);*/ /* Adjust color to match the sidebar */
 
     font-size: 14px;
 }
 
 
 /* Search bar styling */
-#friendSearch{
+#friendSearch {
     padding-left: 10px;
 }
 
@@ -185,44 +174,51 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 .search {
     display: table;
     align-self: flex-start;
-    input {
-        background: none;
-        border: none;
-        outline: none;
-        width: 100%; /* Adjust width to fit within the sidebar */
-        min-width: 0;
-        padding: 0;
-        z-index: 1;
-        position: relative;
-        line-height: 18px;
-        margin: 5px 0;
-        font-size: 14px;
-        -webkit-appearance: none;
-        font-family: inherit;
-        transition: all .6s ease;
-        cursor: pointer;
-        color: #ffffff; /* Adjust color to match the sidebar */
-        & + div {
-            position: relative;
-            height: 28px;
-            width: 100%;
-            margin: -28px 0 0 0;
-            svg {
-                display: block;
-                position: absolute;
-                height: 28px;
-                width: 100%; /* Adjust width to fit within the sidebar */
-                left: -75%;
-                top: -10%;
-                fill: none;
-                stroke: #ffffff; /* Adjust color to match the sidebar */
-                stroke-width: 1.5px;
-                stroke-dashoffset: 212.908 + 59;
-                stroke-dasharray: 59 212.908;
-                transition: all .6s ease;
-            }
-        }
-    }
+    input
+
+{
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%; /* Adjust width to fit within the sidebar */
+    min-width: 0;
+    padding: 0;
+    z-index: 1;
+    position: relative;
+    line-height: 18px;
+    margin: 5px 0;
+    font-size: 14px;
+    -webkit-appearance: none;
+    font-family: inherit;
+    transition: all .6s ease;
+    cursor: pointer;
+    color: #ffffff; /* Adjust color to match the sidebar */
+    & + div
+
+{
+    position: relative;
+    height: 28px;
+    width: 100%;
+    margin: -28px 0 0 0;
+    svg
+
+{
+    display: block;
+    position: absolute;
+    height: 28px;
+    width: 100%; /* Adjust width to fit within the sidebar */
+    left: -75%;
+    top: -10%;
+    fill: none;
+    stroke: #ffffff; /* Adjust color to match the sidebar */
+    stroke-width: 1.5px;
+    stroke-dashoffset: 212.908 + 59;
+    stroke-dasharray: 59 212.908;
+    transition: all .6s ease;
+}
+
+}
+}
 }
 
 @keyframes slideAndDraw {
@@ -231,9 +227,11 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
         stroke-dasharray: 59 212.908;
         stroke-dashoffset: 212.908 + 59;
     }
+
     50% {
         left: 0;
     }
+
     100% {
         left: 0;
         stroke-dasharray: 150 212.908;
@@ -247,9 +245,11 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
         stroke-dasharray: 150 212.908;
         stroke-dashoffset: 300;
     }
+
     50% {
         left: -85%;
     }
+
     100% {
         stroke-dasharray: 59 212.908;
         stroke-dashoffset: 212.908 + 59;
@@ -289,24 +289,24 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     align-items: center;
 }
 
-.friend div {
-    display: flex;
-    flex-direction: column;
-}
+    .friend div {
+        display: flex;
+        flex-direction: column;
+    }
 
-.friend p {
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 7px;
-    font-size: 12px;
-    font-weight: 500;
-    color: white;
-}
+    .friend p {
+        margin: 0;
+        padding-top: 0;
+        padding-bottom: 7px;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+    }
 
-.friend span {
-    font-size: 11px;
-    color: #878787;
-}
+    .friend span {
+        font-size: 11px;
+        color: #878787;
+    }
 
 #online {
     font-size: 11px;
@@ -317,7 +317,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     color: #f4f4f4;
     text-decoration: none;
     font-weight: 900;
-    font-size: 30px;
+    font-size: 35px;
 }
 
 #store-text {
@@ -340,7 +340,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
 .menu-item {
     display: flex;
-    justify-content: center; /* Aligns items horizontally in the center */
+    justify-content: left; /* Aligns items horizontally in the center */
     align-items: center; /* Aligns items vertically in the center */
     width: 100%; /* Takes up the full width available */
     padding: 0; /* Removes default padding */
@@ -351,19 +351,24 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     text-decoration: none;
 }
 
-.menu-item i, .menu-item img {
-    margin-right: 10px; /* Adds some space to the right of the icon */
-}
+    .menu-item .fa-fire {
+        margin-left: 10px;
+        color: rgb(30, 120, 255);
+    }
 
-.menu-item:hover {
-    text-decoration: none;
-}
+    .menu-item i, .menu-item img {
+        margin-right: 10px; /* Adds some space to the right of the icon */
+    }
 
-.menu-item img {
-    width: 15px;
-    height: 15px;
-    margin-right: 10px;
-}
+    .menu-item:hover {
+        text-decoration: none;
+    }
+
+    .menu-item img {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+    }
 
 .bento-box img {
     width: 30px;
@@ -371,10 +376,21 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     margin-right: 10px;
 }
 
-.footer-layout-lobby {
+.footer-layout-lobby .menu-item {
     display: flex;
     justify-content: center;
+    align-items: center;
+    margin-left: 10px;
 }
+
+.footer-layout-lobby .text{
+    margin-left: 15px;
+}
+
+    .footer-layout-lobby .menu-item:hover .icon {
+        transform: translateX(-5%); /* Moves the SVG to the right */
+    }
+
 
 .header-layout-lobby {
     display: flex;
@@ -382,8 +398,8 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     margin-bottom: 10px;
 }
 
-.header-layout-lobby a {
-}
+    .header-layout-lobby a {
+    }
 
 .custom-lobby-button {
     display: flex;
@@ -393,24 +409,26 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     background-color: rgb(30, 120, 255);
     border-radius: 10px;
     transition: background-color 0.3s ease;
-}
-.custom-lobby-button:hover {
-    transform: scale(0.97);
     transition: transform 0.3s ease;
 }
-.custom-lobby-button a {
-    display: inline-block;
-    padding: 10px 20px;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
 
-}
+    .custom-lobby-button:hover {
+        transform: scale(0.97);
+        transition: transform 0.3s ease;
+    }
 
-.custom-lobby-button a:hover {
-color: #ffffff;
-    text-decoration: none;
-}
+    .custom-lobby-button a {
+        display: inline-block;
+        padding: 10px 20px;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+    }
+
+        .custom-lobby-button a:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
 
 
 .search-for-lobby-container {
@@ -440,11 +458,7 @@ color: #ffffff;
     box-shadow: #0a53be;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 103, 255);
-}
-
-
-
-
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 103, 255);
+    }

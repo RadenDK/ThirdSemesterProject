@@ -53,11 +53,19 @@ body {
 }
 
 .submit-button {
-    background-color: rgba(33, 33, 33, 0.85);
+    margin: 20px 0 20px 0;
+    background-color: rgb(30, 120, 255);
     color: white;
     border-radius: 5px;
     border: 1px solid rgba(46, 46, 46, 0);
+    padding: 5px 15px;
+    transition: transform 0.3s ease-in-out;
 }
+    .submit-button:hover {
+        cursor: pointer;
+        transform: scale(0.97);
+        transition: transform 0.3s ease-in-out;
+    }
 
 
 
@@ -102,4 +110,7 @@ body {
     width: 100%;
     box-sizing: border-box;
 }
+
+
+
 

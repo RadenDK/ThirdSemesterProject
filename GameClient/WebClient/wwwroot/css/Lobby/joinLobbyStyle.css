@@ -37,7 +37,9 @@ h1 {
  margin: 10px 15px;
 }
 
-
+.lobby-container {
+    margin-bottom: 60px; /* Adjust this value as needed */
+}
 
 .lobby-container .table-row:hover {
     background-color: #2e2e2e; /* Light gray */
@@ -88,14 +90,14 @@ h1 {
 }
 
 .modal-content {
-    background-color: #333; /* Dark gray */
+    background-color: rgb(23, 23, 23); /* Dark gray */
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #444; /* Slightly lighter gray for the border */
+    border: 1px solid #333; /* Slightly lighter gray for the border */
     width: 30%;
     color: #fff; /* White text */
-    font-family: Arial, sans-serif; /* Simple, clean font */
     text-align: center; /* Center the text */
+    border-radius: 10px;
 }
 
     .modal-content h2 {
@@ -107,20 +109,33 @@ h1 {
         padding: 10px; /* Add some padding inside the input field */
         margin-bottom: 20px; /* Add some space below the input field */
         border: none; /* Remove the default border */
-        background-color: #444; /* Slightly lighter gray for the input field */
+        background-color: #333; /* Slightly lighter gray for the input field */
         color: #fff; /* White text */
+        border-radius: 5px;
     }
+
+        .modal-content input:hover {
+            background-color: rgb(42, 42, 42);
+        }
 
     .modal-content button {
         padding: 10px 20px; /* Add some padding inside the button */
         border: none; /* Remove the default border */
-        background-color: #555; /* Slightly lighter gray for the button */
+        background-color: rgb(30, 120, 255); /* Slightly lighter gray for the button */
         color: #fff; /* White text */
         cursor: pointer; /* Change the cursor when hovering over the button */
+        border-radius: 5px;
+        transition: transform 0.3s ease-in-out;
     }
 
         .modal-content button:hover {
-            background-color: #666; /* Even lighter gray when hovering over the button */
+            cursor: pointer;
+            transform: scale(0.97);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-content button:focus {
+            outline: none;
         }
 
 

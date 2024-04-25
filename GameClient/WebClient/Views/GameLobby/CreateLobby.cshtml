@@ -10,7 +10,13 @@
                 </div>
                 <div class="bento-box-row">
                     <div class="teamSize-bento-box">
-                        <input type="number" id="team-size" name="AmountOfPlayers" min="2" max="10" placeholder="Enter team size">
+                        <select id="team-size" name="AmountOfPlayers">
+                            <option value="">Select team size</option>
+                            @for (int i = 2; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
                     </div>
                     <div class="lobbyPassword-bento-box">
                         <input type="password" id="lobby-password" name="PasswordHash" placeholder="Optional: Enter password">
