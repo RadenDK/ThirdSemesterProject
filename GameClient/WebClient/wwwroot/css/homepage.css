@@ -149,7 +149,7 @@ img {
     height: inherit;
     border-radius: 50%;
     transform: rotateX(70deg);
-    animation: 1s spin linear infinite;
+    animation: 0.5s spin linear infinite;
 }
 .loader:after {
     color: #0095ff;
@@ -218,7 +218,7 @@ img {
 
 #loading-overlay {
     animation-name: fadeOutAfterDelay;
-    animation-duration: 3s;
+    animation-duration: 0.5s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
 }

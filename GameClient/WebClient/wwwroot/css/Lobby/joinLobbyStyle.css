@@ -10,8 +10,9 @@ body {
 .header-layout-lobby {
 
 }
-.search-for-lobby-container {
-
+.search-for-lobby-container #searchField {
+    margin-left: 20px;
+    border-radius: 5px;
 }
 
 .header-join-lobby {
@@ -34,11 +35,12 @@ h1 {
 }
 
 #searchField {
- margin: 10px 15px;
+    margin: 10px 15px;
 }
 
 .lobby-container {
     margin-bottom: 60px; /* Adjust this value as needed */
+    margin-right: 20px;
 }
 
 .lobby-container .table-row:hover {
@@ -143,7 +145,6 @@ h1 {
     background-color: #333; /* Dark gray */
     color: #fff; /* White text */
     padding: 10px 20px; /* Add some padding inside the button */
-    border: 1px solid #444; /* Slightly lighter gray for the border */
     cursor: pointer;
     border-radius: 10px;
     margin-left: 10px;
@@ -151,6 +152,10 @@ h1 {
 
     .btn-dark:hover {
         background-color: #444; /* Slightly lighter gray when hovering over the button */
+    }
+
+    .btn-dark:focus{
+        outline: none;
     }
 
 .noselect {
