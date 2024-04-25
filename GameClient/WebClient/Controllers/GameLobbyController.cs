@@ -21,7 +21,13 @@ namespace WebClient.Controllers
             return View();
         }
 
-        [HttpGet]
+		[HttpGet("GameLobby")]
+		public IActionResult GameLobby()
+		{
+			return View();
+		}
+
+		[HttpGet]
         public async Task<IActionResult> JoinLobby()
         {
 
@@ -52,7 +58,7 @@ namespace WebClient.Controllers
                 var userPrincipal = HttpContext.User;
                 string username = _gameLobbyLogic.GetUsername(userPrincipal);
                 GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
-                return RedirectToAction("Homepage", "Homepage");
+                return RedirectToAction("GameLobby", "GameLobby");
             }
             return View("CreateLobby");
         }
