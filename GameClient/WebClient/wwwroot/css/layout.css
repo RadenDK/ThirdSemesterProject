@@ -379,23 +379,37 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 .header-layout-lobby {
     display: flex;
     justify-content: center;
-    padding: 20px;
+    margin-bottom: 10px;
 }
 
 .header-layout-lobby a {
-    padding: 20px;
-    margin: 0px 10px;
-    color: #ffffff; /* Default color */
-    text-decoration: none; /* Removes underline */
-    backdrop-filter: blur(10px);
-    background-color: rgba(77, 77, 77, 0.46);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 10px;
 }
 
-.header-layout-lobby a:hover {
-    color: #3884f1; /* Color on hover */
-    text-decoration: none; /* Removes underline */
+.custom-lobby-button {
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    margin: 10px 10px;
+    background-color: rgb(30, 120, 255);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+.custom-lobby-button:hover {
+    transform: scale(0.97);
+    transition: transform 0.3s ease;
+}
+.custom-lobby-button a {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+
+}
+
+.custom-lobby-button a:hover {
+color: #ffffff;
+    text-decoration: none;
 }
 
 
