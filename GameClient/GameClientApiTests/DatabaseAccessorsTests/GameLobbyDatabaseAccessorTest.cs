@@ -198,20 +198,16 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 		}
 
 		[Fact]
-		public void GetGameLobby_TC2_MethodThrowsExpectionIfLobbyCouldNotBeFound()
+		public void GetGameLobby_TC2_ReturnsNull_WhenLobbyNotFound()
 		{
 			// Arrange
 			GameLobbyDatabaseAccessor SUT = new GameLobbyDatabaseAccessor(_configuration);
 
+			// Act
+			GameLobbyModel testResult = SUT.GetGameLobby(1);
+
 			// Assert
-
-			Assert.Throws<Exception>(() =>
-			{
-				// Act
-
-				GameLobbyModel testResult = SUT.GetGameLobby(1);
-			});
+			Assert.True(testResult == null, "Gamelobby is not null");
 		}
-
 	}
 }
