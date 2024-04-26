@@ -70,14 +70,15 @@ namespace GameClientApi.Controllers
 				return Ok(gameLobby);
 
 			}
-			catch (ArgumentException ex)
-			{
-				return BadRequest(ex.Message);
-			}
 			catch (UnauthorizedAccessException ex)
 			{
 				return BadRequest(ex.Message);
 			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			
 		}
 	}
 }
