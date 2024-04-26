@@ -15,7 +15,7 @@ namespace GameClientApi.DatabaseAccessors
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public string GetPassword(string userName)
+		public string? GetPassword(string userName)
 		{
 			string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
 

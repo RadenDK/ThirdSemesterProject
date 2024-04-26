@@ -7,7 +7,7 @@ namespace GameClientApi.DatabaseAccessors
 	public interface IPlayerDatabaseAccessor
 	{
 
-		string GetPassword(string userName);
+		string? GetPassword(string userName);
 
 		bool CreatePlayer(AccountRegistrationModel newPlayer);
 

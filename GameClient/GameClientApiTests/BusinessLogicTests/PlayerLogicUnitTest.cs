@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using GameClientApi.DatabaseAccessors;
+﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
-using GameClientApiTests.TestHelpers;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -26,14 +18,15 @@ namespace GameClientApiTests.BusinessLogicTests
 		}
 
 		[Fact]
-		public void VerifyLogin_TC1_ReturnsTrueWhenInputIsFound()
+		public void VerifyLogin_ReturnsTrue_WhenUsernameAndPasswordAreCorrect()
 		{
 			// Arrange
 			string testUsername = "Username";
-			string testPassword = "ExpectedHashedPassword";
+			string testPassword = "password";
+			string testHashedPassword = "$2a$11$kueqhMMKYY55XvbWELUkjOvGO0BP4f/VjQbMCO27NtLqf8L.smoYm"; // this is 'password' hashed by bcrypt
 
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
-				.Returns(testPassword);
+				.Returns(testHashedPassword);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
@@ -45,79 +38,83 @@ namespace GameClientApiTests.BusinessLogicTests
 		}
 
 		[Fact]
-		public void VerifyLogin_TC3_ReturnsFalseWhenUsernameIsNotFound()
+		public void VerifyLogin_ThrowsException_WhenUsernameIsInvalid()
 		{
 			// Arrange
 			string testUsername = "Username";
-			string testPassword = "ExpectedHashedPassword";
+			string testPassword = "password";
 
 			_mockAccessor.Setup(a => a.GetPassword("invalidUsername"))
 				.Returns("");
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
-		
-			// Act
-			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
 
 			// Assert
-			Assert.False(testResult, "Should return False but does not");
+			Assert.Throws<ArgumentNullException>(() =>
+			{
+				// Act
+				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+			});
 		}
 
 		[Fact]
-		public void VerifyLogin_TC4_ReturnsFalseWhenPasswordIsNotFound()
+		public void VerifyLogin_ThrowsException_WhenPasswordForUsernameIsNotFound()
 		{
 			// Arrange
 			string testUsername = "Username";
-			string testPassword = "ExpectedHashedPassword";
+			string testPassword = "password";
 
 			_mockAccessor.Setup(a => a.GetPassword("Username"))
-				.Returns("");
+				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
-			// Act
-			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
-
 			// Assert
-			Assert.False(testResult, "Should return False but does not");
+			Assert.Throws<ArgumentNullException>(() =>
+			{
+				// Act
+				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+			});
 		}
 
 		[Fact]
-		public void VerifyLogin_TC5_ReturnsFalseWhenUsernameAndPasswordAreEmpty()
+		public void VerifyLogin_ThrowsException_WhenUsernameAndPasswordAreEmpty()
 		{
 			// Arrange
 			string testUsername = "";
 			string testPassword = "";
 
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
-				.Returns(testPassword);
+				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
-			// Act
-			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
-
 			// Assert
-			Assert.False(testResult, "Should return False but does not");
+			Assert.Throws<ArgumentNullException>(() =>
+			{
+				// Act
+				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+			});
 		}
 
 		[Fact]
-		public void VerifyLogin_TC6_ReturnsFalseWhenUsernameAndPasswordAreNull()
+		public void VerifyLogin_ThrowsException_WhenUsernameAndPasswordAreNull()
 		{
 			// Arrange
-			string testUsername = "Username";
-			string testPassword = "ExpectedHashedPassword";
+			string testUsername = null;
+			string testPassword = null;
 
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
-				.Returns("null");
+				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
-			// Act
-			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
-
 			// Assert
-			Assert.False(testResult, "Should return False but does not");
+			Assert.Throws<ArgumentNullException>(() =>
+			{
+				// Act
+				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+			});
 		}
 
 		[Fact]
@@ -130,14 +127,14 @@ namespace GameClientApiTests.BusinessLogicTests
                 Password = "password1",
                 Email = "email1@example.com",
                 InGameName = "InGameName1",
-                BirthDay = DateTime.Now // or any other DateTime value
+                BirthDay = DateTime.Now 
             };
 
 			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
 				.Returns(false);
 			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
 				.Returns(false);
-			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+			_mockAccessor.Setup(a => a.CreatePlayer(It.IsAny<AccountRegistrationModel>()))
 				.Returns(true);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);

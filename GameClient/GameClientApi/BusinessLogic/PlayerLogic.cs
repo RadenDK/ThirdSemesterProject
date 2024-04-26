@@ -16,7 +16,7 @@ namespace GameClientApi.BusinessLogic
 
 		public bool VerifyLogin(string userName, string password)
 		{
-			string storedHashedPassword = _playerAccessor.GetPassword(userName);
+			string? storedHashedPassword = _playerAccessor.GetPassword(userName);
 			if (storedHashedPassword == null || userName == null)
 			{
 				throw new ArgumentNullException("Stored HashedPassword or username is null");
