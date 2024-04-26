@@ -1,5 +1,7 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using BC = BCrypt.Net.BCrypt;
 namespace GameClientApi.BusinessLogic
 {
@@ -12,25 +14,25 @@ namespace GameClientApi.BusinessLogic
 			_playerAccessor = playerDatabaseAccessor;
 		}
 
-        public bool VerifyLogin(string userName, string password)
-        {
-            string storedHashedPassword = _playerAccessor.GetPassword(userName);
-            if (storedHashedPassword == null || userName == null)
-            {
-                throw new ArgumentNullException("Stored HashedPassword or username is null");
-            }
-            return BC.Verify(password, storedHashedPassword);
-        }
+		public bool VerifyLogin(string userName, string password)
+		{
+			string storedHashedPassword = _playerAccessor.GetPassword(userName);
+			if (storedHashedPassword == null || userName == null)
+			{
+				throw new ArgumentNullException("Stored HashedPassword or username is null");
+			}
+			return BC.Verify(password, storedHashedPassword);
+		}
 
-        public PlayerModel GetPlayer(string userName)
-        {
+		public PlayerModel GetPlayer(string userName)
+		{
 			PlayerModel playerData = _playerAccessor.GetPlayer(userName);
-            if (playerData == null)
-            {
-                throw new Exception("Player not found");
-            }
-            return playerData;
-        }
+			if (playerData == null)
+			{
+				throw new Exception("Player not found");
+			}
+			return playerData;
+		}
 
 
 		public bool CreatePlayer(AccountRegistrationModel newPlayerAccount)
@@ -56,16 +58,39 @@ namespace GameClientApi.BusinessLogic
 			return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
 		}
 
-		public List<PlayerModel> GetAllPlayersInLobby(int? lobbyId)
+		public List<PlayerModel> GetAllPlayersInLobby(int? lobbyId, SqlTransaction transaction = null)
 		{
-			return _playerAccessor.GetAllPlayersInLobby(lobbyId);
+			return _playerAccessor.GetAllPlayersInLobby(lobbyId, transaction);
 
 		}
 
 		public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
-        {
-            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel);
-        }
+		{
+			SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
+
+			_playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
+
+			if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
+			{
+				_playerAccessor.CommitTransaction(transaction);
+
+			}
+			else
+			{
+				_playerAccessor.RollbackTransaction(transaction);
+				throw new ArgumentException("Too many players in lobby");
+			}
+		}
+
+		private bool TooManyPlayersInLobby(GameLobbyModel gameLobby, SqlTransaction transaction)
+		{
+			List<PlayerModel> playersInGameLobby = GetAllPlayersInLobby(gameLobby.GameLobbyId, transaction);
+
+			bool lobbyHasTooManyPlayers = playersInGameLobby.Count > gameLobby.AmountOfPlayers;
+
+			return lobbyHasTooManyPlayers;
+
+		}
 
 		public void UpdatePlayerOwnership(PlayerModel player)
 		{
