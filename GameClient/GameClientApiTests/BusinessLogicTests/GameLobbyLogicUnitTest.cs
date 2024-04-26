@@ -19,13 +19,13 @@ namespace GameClientApiTests.BusinessLogicTests
 
 		private readonly IConfiguration? _mockConfiguration;
 		private readonly Mock<IGameLobbyDatabaseAccessor> _gameLobbyMockAccessor;
-		private readonly Mock<IPlayerLogic> _playerMockService;
+		private readonly Mock<IPlayerLogic> _playerMockLogic;
 
 
 		public GameLobbyLogicUnitTest()
 		{
 			_gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();
-			_playerMockService = new Mock<IPlayerLogic>();
+			_playerMockLogic = new Mock<IPlayerLogic>();
 		}
 
 
@@ -53,12 +53,12 @@ namespace GameClientApiTests.BusinessLogicTests
 			};
 
 
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(2)).Returns(expectedPlayersGameLobby2);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(expectedPlayersGameLobby1);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(2, null)).Returns(expectedPlayersGameLobby2);
 
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -89,7 +89,7 @@ namespace GameClientApiTests.BusinessLogicTests
 				.Returns(expectedGameLobbies);
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -116,10 +116,10 @@ namespace GameClientApiTests.BusinessLogicTests
 				new PlayerModel { Username = "Player2", InGameName = "InGame2", IsOwner = false },
 			};
 
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(expectedPlayersGameLobby1);
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -156,10 +156,10 @@ namespace GameClientApiTests.BusinessLogicTests
 				new PlayerModel { Username = "Player2", InGameName = "InGame2", IsOwner = true },
 			};
 
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(expectedPlayersGameLobby1);
 			
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -192,10 +192,10 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			List<PlayerModel> expectedPlayersGameLobby1 = new List<PlayerModel>();
 
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(expectedPlayersGameLobby1);
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -224,10 +224,10 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			};
 
-			_playerMockService.Setup(a => a.GetAllPlayersInLobby(1)).Returns(expectedPlayersGameLobby1);
+			_playerMockLogic.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(expectedPlayersGameLobby1);
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration,
-				_gameLobbyMockAccessor.Object, _playerMockService.Object);
+				_gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			IEnumerable<GameLobbyModel> testResult = SUT.GetAllGameLobbies();
@@ -256,9 +256,9 @@ namespace GameClientApiTests.BusinessLogicTests
 			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
 
 			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
-			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+			_playerMockLogic.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
 			
-			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
@@ -277,7 +277,7 @@ namespace GameClientApiTests.BusinessLogicTests
 			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
 			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(0);
 
-			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
@@ -294,9 +294,9 @@ namespace GameClientApiTests.BusinessLogicTests
 			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
 
 			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
-			_playerMockService.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
+			_playerMockLogic.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
 
-			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockService.Object);
+			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
 			// Act
 			GameLobbyModel testResult = SUT.CreateGameLobby(expectedGameLobby, "Player1");
