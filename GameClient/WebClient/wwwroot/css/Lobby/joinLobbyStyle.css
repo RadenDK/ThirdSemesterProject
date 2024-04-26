@@ -1,15 +1,42 @@
-* {
-
+:root {
+    --primary-gray: rgb(23, 23, 23);
+    --dark-gray: rgb(16, 16, 16);
+    --hover-gray: rgb(42, 42, 42);
+    --primary-blue: rgb(30, 120, 255);
+    --hover-blue: rgb(0, 91, 223);
+    --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
+    --white: rgb(255, 255, 255); /* White color */
 }
 
 body {
 
 }
 
+#search-lobby-field {
+    padding: 15px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border: 1px solid rgba(209, 209, 209, 0);
+    border-radius: 5px;
+    transition: all 0.3s cubic-bezier(0.82,-0.1, 0.33, 1.35);
+    background-color: var(--dark-gray) ;
+    color: var(--white);
+    font-size: 11px;
+    width: 70%;
+    font-weight: bold;
+}
+
+#search-lobby-field:focus {
+    transform: scale(1.05);
+    outline: none; /* Remove blue and white border on focus */
+    caret-color: transparent;
+    caret-shape: underscore;
+    font-size: 12px;
+}
 
 .header-layout-lobby {
-
 }
+
 .search-for-lobby-container #searchField {
     margin-left: 20px;
     border-radius: 5px;
@@ -34,35 +61,47 @@ h1 {
     font-size: 2rem;
 }
 
-#searchField {
-    margin: 10px 15px;
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    background: #121212;
+    z-index: 10; /* Make sure the header is above the other table rows */
+}
+
+.lobby-container .table-row:hover {
+    background-color: #2e2e2e;
+    border-radius: 15px;
 }
 
 .lobby-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
     margin-bottom: 60px; /* Adjust this value as needed */
     margin-right: 20px;
 }
 
-.lobby-container .table-row:hover {
-    background-color: #2e2e2e; /* Light gray */
-}
 
 .table-responsive {
     margin: 20px; /* Add some space around the table */
+    padding-bottom: 40px;
 }
 
 .table-responsive table {
     border-collapse: collapse;
     width: 100%;
     color: #fff; /* White text */
-    background-color: #212121; /* White background */
     border-radius: 15px;
 }
 
+
 .table-responsive th, .table-responsive td {
     padding: 15px; /* Padding inside cells */
-    text-align: left; /* Align text to the left */
+    text-align: left;
+    overflow: hidden;
 }
+
 .table-responsive th {
     background-color: #121212; /* Dark gray */
     color: #fff; /* White text */
@@ -73,22 +112,48 @@ h1 {
 
 .table-responsive tr {
     border-bottom: 1px solid rgba(16, 15, 15, 0.85); /* Border between rows */
+    border-radius: 15px;
 }
 
 .table-responsive tr:last-child {
     border-bottom: none; /* Remove border from last row */
 }
 
+#lockHeader {
+    border-top-left-radius: 15px;
+    background-color: #121212;
+    overflow: hidden;
+}
+
+#playersHeader {
+    border-top-right-radius: 15px;
+    background-color: #121212;
+    overflow: hidden;
+}
+
+.scrollable-table {
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.7); /* Darker background */
+}
+
+.modal-closing {
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 1s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+    opacity: 0;
+    transform: scale(0.9);
 }
 
 .modal-content {
@@ -139,7 +204,35 @@ h1 {
         .modal-content button:focus {
             outline: none;
         }
+@keyframes modalOpen {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
+@keyframes modalClose {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+.modal-opening {
+    animation: modalOpen 0.3s forwards;
+}
+
+.modal-closing {
+    animation: modalClose 0.3s forwards;
+}
 
 .btn-dark {
     background-color: #333; /* Dark gray */
@@ -147,7 +240,7 @@ h1 {
     padding: 10px 20px; /* Add some padding inside the button */
     cursor: pointer;
     border-radius: 10px;
-    margin-left: 10px;
+    margin-left: calc(search-lobby-field-width + 20px); /* Adjust the margin as needed */
 }
 
     .btn-dark:hover {
@@ -171,20 +264,16 @@ h1 {
 .noselect {
     position: fixed;
     bottom: 15px;
-
-    width: 150px;
-    height: 50px;
+    width: 140px;
+    height: 45px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    background: red;
+    background: var(--exit-button-color); /* Use the custom color variable defined at the very top */
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
-    background: #e62222;
     position: fixed;
-    bottom: 15px;
-
 }
 
 .noselect, .noselect span {
@@ -199,8 +288,9 @@ h1 {
 
 .noselect .icon {
     position: absolute;
-    border-left: 1px solid #c41b1b;
-    transform: translateX(110px);
+    border-left: 1px solid var(--exit-button-color);
+    transform: translateX(90px);
+    transform: translateY(-3px);
     height: 40px;
     width: 40px;
     display: flex;
@@ -214,7 +304,8 @@ h1 {
 }
 
 .noselect:hover {
-    background: #ff3636;
+    background: var(--exit-button-color);
+    transform: scale(1.05);
 }
 
 .noselect:hover .text {
@@ -222,11 +313,13 @@ h1 {
 }
 
 .noselect:hover .icon {
-    width: 150px;
+    width: 140px;
     border-left: none;
     transform: translateX(0);
+    transform: translateY(-10px);
 }
 
 .noselect:focus {
     outline: none;
 }
+

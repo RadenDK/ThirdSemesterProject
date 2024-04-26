@@ -1,5 +1,11 @@
-﻿* {
-
+﻿:root {
+    --primary-gray: rgb(23, 23, 23);
+    --dark-gray: rgb(16, 16, 16);
+    --hover-gray: rgb(42, 42, 42);
+    --primary-blue: rgb(30, 120, 255);
+    --hover-blue: rgb(0, 91, 223);
+    --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
+    --white: rgb(255, 255, 255); /* White color */
 }
 
 .search-for-lobby-container {
@@ -7,7 +13,7 @@
 }
 
 .lobby-container .table-row:hover {
-    background-color: #9d9d9d; /* Light gray */
+    background-color: var(--hover-gray); /* Light gray */
 }
 
 .chat-container {
@@ -17,17 +23,18 @@
     right: 0;
     width: 300px;
     height: 400px;
-    background-color: #f4f4f4;
+    background-color: var(--white);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
 .chat-header {
     padding: 10px;
-    background-color: #3884f1;
-    color: white;
+    background-color: var(--primary-blue);
+    color: var(--white);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -36,20 +43,20 @@
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
+    margin-top: 5px;
 }
 
 .message {
     margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .timestamp, .sender {
     font-size: 12px;
     color: #878787;
-}
-
-.text {
     margin-top: 5px;
 }
+
 
 .chat-input {
     display: flex;
@@ -63,7 +70,6 @@
     flex-grow: 1;
     color: black;
     margin-right: 10px;
-    color: black;
 }
 
 /* styling teams view in game lobby */

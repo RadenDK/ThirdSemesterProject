@@ -19,49 +19,53 @@
 	<div class="header-join-lobby">
 		<h1>Custom Game Lobby</h1>
 		<div class="search-for-lobby-container">
-			<input type="text" id="searchField"  placeholder="Search for a game lobby..." />
+			<input type="text" id="search-lobby-field"  placeholder="Search for a game lobby..." />
 			<button class="btn btn-dark" type="button" onclick="location.reload();">Refresh</button>
 		</div>
 	</div>
 
 	<div class="lobby-container">
 		<div class="table-responsive">
-			 <table>
-                  <thead>
-                  <tr>
-	                  <th id="lockHeader"><i class="bi bi-lock-fill"></i></th>
-	                  <th id="lobbyNameHeader">Lobby Name</th>
-	                  <th id="ownerHeader">Owner</th>
-	                  <th id="playersHeader">Players</th>
-                  </tr>
-                  <thead>
-                  <tbody>
-                  				@foreach (GameLobbyModel lobby in Model)
-                  				{
-                  					<tr class="table-row" data-lobby-id="@lobby.GameLobbyId">
-                  						<td>
-                  							@if (lobby.IsPrivate())
-                  							{
-                  								<i class="bi bi-lock-fill"></i>
-                  							}
-                  						</td>
-                  						<td class="lobby-name">@lobby.LobbyName</td>
-                  						<td>@lobby.GetInGameNameOfLobbyOwner()</td>
-                  						<td>@lobby.PlayersInLobby.Count()/@lobby.AmountOfPlayers</td>
-                  					</tr>
-                  				}
-                  				</tbody>
-                </table>
+			<div class="scrollable-table">
+
+				<table>
+					<thead>
+					<tr>
+						<th id="lockHeader"><i class="bi bi-lock-fill"></i></th>
+						<th id="lobbyNameHeader">Lobby Name</th>
+						<th id="ownerHeader">Owner</th>
+						<th id="playersHeader">Players</th>
+					</tr>
+					<thead>
+					<tbody>
+					@foreach (GameLobbyModel lobby in Model)
+					{
+						<tr class="table-row" data-lobby-id="@lobby.GameLobbyId">
+							<td>
+								@if (lobby.IsPrivate())
+								{
+									<i class="bi bi-lock-fill"></i>
+								}
+							</td>
+							<td class="lobby-name">@lobby.LobbyName</td>
+							<td>@lobby.GetInGameNameOfLobbyOwner()</td>
+							<td>@lobby.PlayersInLobby.Count()/@lobby.AmountOfPlayers</td>
+						</tr>
+					}
+					</tbody>
+				</table>
+				</div>
 		</div>
 	</div>
 	<div id="passwordModal" class="modal">
 		<div class="modal-content">
+			<span class="close-modal-button">&times;</span>
 			<h2>This lobby is private. Please enter the password:</h2>
 			<form id="passwordForm">
 				<input type="password" id="passwordInput">
 				<button id="submitPassword" type="submit">Submit</button>
 			</form>
 		</div>
-	</div
+	</div>
 </div>
 

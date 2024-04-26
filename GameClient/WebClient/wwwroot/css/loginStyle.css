@@ -1,8 +1,18 @@
-﻿body {
+﻿:root {
+    --primary-gray: rgb(23, 23, 23);
+    --dark-gray: rgb(16, 16, 16);
+    --hover-gray: rgb(42, 42, 42);
+    --primary-blue: rgb(30, 120, 255);
+    --hover-blue: rgb(0, 91, 223);
+    --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
+    --white: rgb(255, 255, 255); /* White color */
+}
+
+body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 300;
-    background-color: rgb(23, 23, 23);
+    background-color: var(--primary-gray) ;
 }
 
 .container {
@@ -13,8 +23,9 @@
     padding-bottom: 20px;
     padding-left: 20px;
     padding-top: 20px;
-    background-color: rgb(16, 16, 16);
-    backdrop-filter: blur(90%); /* Frosted glass effect, not sure if working properly*/
+    background-color: var(--dark-gray);
+    backdrop-filter: blur(90%);
+    -webkit-backdrop-filter: blur(90%); /* Frosted glass effect, not sure if working properly*/
     overflow-x: hidden;
 }
 body, .container {
@@ -60,7 +71,7 @@ body, .container {
 }
 
 .links a:hover {
-    color: #ffffff;
+    color: var(--white);
     transform: scale(1.05);
 }
 
@@ -68,7 +79,7 @@ h1 {
     font-size: 37px;
     margin-bottom: 40px;
     margin-top: 10px;
-    color: #ffffff;
+    color: var(--white);
 
 }
 
@@ -79,7 +90,7 @@ form {
 
 label {
     font-weight: bold;
-    color: white;
+    color: var(--white);
     font-size: 12px;
 }
 
@@ -92,8 +103,8 @@ input[type="password"] {
     border-radius: 5px;
     width: 93%; /* textfield length */
     transition: all 0.3s cubic-bezier(0.82,-0.1, 0.33, 1.35);
-    background-color: rgb(23, 23, 23);
-    color: #ffffff;
+    background-color: var(--dark-gray) ;
+    color: var(--white);
     font-size: 11px;
     font-weight: bold;
 }
@@ -134,8 +145,8 @@ input[type="password"].error {
 }
 
 button {
-    background-color: #007bff;
-    font-family: "Poppins", sans-serif;
+    background-color: var(--primary-blue) ;
+    font-family: inherit;
     color: #f4f4f4;
     /* margins er iffy atm */
     margin: 50px 80px auto;
@@ -149,18 +160,18 @@ button {
     transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
 }
 button:hover {
-    color: #ffffff;
-    background-color: #007bff;
+    color: var(--white);
+    background-color: var(--hover-blue);
     cursor: pointer;
 }
 
 button:disabled {
-    background-color: rgb(23, 23, 23);
+    background-color: var(--primary-gray);
     cursor: default;
 }
 button:not(:disabled):hover {
-    color: #ffffff;
-    background-color: #007bff;
+    color: var(--white);
+    background-color: var(--hover-blue);
     transform: scale(1.08);
     cursor: pointer;
 }
@@ -191,7 +202,7 @@ button#submit-button.pressed {
     width: 2000%;
     height: 120%;
     /* border-radius: 120px; */
-    background-color: rgb(23, 23, 23);
+    background-color: var(--primary-gray) ;
     margin-left: 50px;
     margin-right: 0;
 }
@@ -201,7 +212,7 @@ button#submit-button.pressed {
     height: 70vh;
     border-radius: 5px;
     /* background-color: rgb(25, 23, 23); */
-    color: rgb(23, 23, 23);
+    color: var(--primary-gray) ;
     margin-left: 5%;
     margin-right:5%;
 }
@@ -213,7 +224,7 @@ button#submit-button.pressed {
 
 #stay-signed-in:hover {
     color: #0f0f13;
-    background-color: #000000;
+    background-color: var(--black);
     transform: scale(1.1);
     border-radius: 5px;
 }

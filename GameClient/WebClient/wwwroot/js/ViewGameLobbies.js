@@ -115,3 +115,28 @@
         return $(row).children('td').eq(index).text();
     }
 });
+
+
+// Get the modal
+var modal = document.querySelector('.modal');
+
+// Get the close button
+var closeButton = document.querySelector('.close-modal-button');
+
+// When the user clicks on the close button, start the closing animation
+closeButton.onclick = function() {
+    modal.classList.add('modal-closing');
+
+    // After the transition is complete, hide the modal
+    setTimeout(function() {
+        modal.style.display = "none";
+        modal.classList.remove('modal-closing');
+    }, 300); // Match this with the duration of your CSS transition
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}

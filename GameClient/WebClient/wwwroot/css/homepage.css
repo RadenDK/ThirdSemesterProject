@@ -1,4 +1,12 @@
-
+:root {
+    --primary-gray: rgb(23, 23, 23);
+    --dark-gray: rgb(16, 16, 16);
+    --hover-gray: rgb(42, 42, 42);
+    --primary-blue: rgb(30, 120, 255);
+    --hover-blue: rgb(0, 91, 223);
+    --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
+    --white: rgb(255, 255, 255); /* White color */
+}
 /* ---- MAIN CONTENT TIL HOMEPAGE */
 
 
@@ -55,20 +63,21 @@ header h1 {
         font-family: "Poppins", sans-serif;
         font-size: 12px;
         font-weight: 700;
-        background-color: rgb(0, 123, 255, 0.8);
+        background-color: var(--primary-blue);
         color: #f4f4f4;
         border: none;
         padding: 5px 20px;
         border-radius: 5px;
         cursor: pointer;
-        transition: transform 0.4s ease-in-out;
+        transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+        background-color 0.6s cubic-bezier(0.85,-0.27, 0, 1.41),
+        transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
     }
 
         header button:hover {
-            background-color: #007bff;
+            background-color: var(--hover-blue);
             cursor: pointer;
-            transform: scale(1.02);
-            transition: transform 0.4s ease-in-out;
+            transform: scale(1.05);
         }
 
 /* Main section styles */
