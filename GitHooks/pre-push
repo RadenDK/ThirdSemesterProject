@@ -1,39 +1,28 @@
 #!/bin/sh
 
-# Change the working directory to the root directory of the Git repository
-cd "$(git rev-parse --show-toplevel)"
+# Get the list of changed files
+changed_files=$(git diff --name-only HEAD HEAD~1)
 
-# Get the name of the branch we're pushing to
-while read local_ref local_sha remote_ref remote_sha
-do
-    branch=${remote_ref#refs/heads/}
-done
+# Check if any of the changed files are in the ./GameClient/GameClientApi/ directory
+if echo "$changed_files" | grep -q "^GameClient/GameClientApi/"; then
+    # Change the working directory to the test project directory
+    cd "../GameClient/GameClientApiTests"
 
-# Only run tests if we're pushing to main
-if [ "$branch" = "MakingATestPipeline" ]; then
-  # Get a list of the files that have changed
-  changed_files=$(git diff --name-only origin/$branch)
+    # Print the current directory and the list of files in it
+    pwd
+    ls
 
-  # Check if any of the changed files are in the GameClient/GameClientApi directory
-  for file in $changed_files; do
-    if [[ $file == GameClient/GameClientApi/* ]]; then
-      # Navigate to the test project directory
-      cd "./GameClient/GameClientApiTests"
+    # Run the tests
+    dotnet test --no-restore
 
-      # Run the tests
-      dotnet test --no-restore
-
-      # Check the exit status of the 'dotnet test' command
-      if [ $? -ne 0 ]; then
-        echo "Tests failed! Aborting push."
+    # Check the exit status of the 'dotnet test' command
+    if [ $? -ne 0 ]; then
+        echo "Tests failed!"
         exit 1
-      fi
-
-      # If we got here, the tests passed. Allow the push.
-      echo "Tests passed! Proceeding with push."
-      exit 0
     fi
-  done
+
+    # If we got here, the tests passed.
+    echo "Tests passed!"
 fi
 
 exit 0
