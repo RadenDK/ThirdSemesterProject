@@ -6,6 +6,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+        ConnectionStrings__DefaultConnection: ${{ secrets.TESTS_DEFAULT_CONNECTION }} 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
