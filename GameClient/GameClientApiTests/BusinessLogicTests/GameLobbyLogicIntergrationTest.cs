@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using System.Diagnostics;
 
 namespace GameClientApiTests.BusinessLogicTests
 {
@@ -19,10 +20,12 @@ namespace GameClientApiTests.BusinessLogicTests
 
 		public GameLobbyLogicIntergrationTest()
 		{
+			string currentDirectory = Directory.GetCurrentDirectory();
+			string settingsFilePath = Path.Combine(currentDirectory, "..", "..", "..", "appsettingsForTesting.json");
 			_configuration = new ConfigurationBuilder()
-		.SetBasePath(Directory.GetCurrentDirectory())
-		.AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
-		.Build();
+				.AddJsonFile(settingsFilePath, optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
 
 			_connectionString = _configuration.GetConnectionString("DefaultConnection");
 

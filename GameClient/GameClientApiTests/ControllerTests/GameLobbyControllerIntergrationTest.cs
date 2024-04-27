@@ -22,9 +22,11 @@ namespace GameClientApiTests.ControllerTests
 
 		public GameLobbyControllerIntergrationTest()
 		{
+			string currentDirectory = Directory.GetCurrentDirectory();
+			string settingsFilePath = Path.Combine(currentDirectory, "..", "..", "..", "appsettingsForTesting.json");
 			_configuration = new ConfigurationBuilder()
-				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
+				.AddJsonFile(settingsFilePath, optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
 				.Build();
 
 			_connectionString = _configuration.GetConnectionString("DefaultConnection");

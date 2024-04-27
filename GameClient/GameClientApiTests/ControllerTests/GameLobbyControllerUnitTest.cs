@@ -12,8 +12,6 @@ namespace GameClientApiTests.ControllerTests
         
         private IConfiguration _configuration;
 
-        private string _connectionString;
-
         private readonly Mock<IPlayerDatabaseAccessor> _playerMockAccessor;
 
         private readonly Mock<IGameLobbyDatabaseAccessor> _gameLobbyMockAccessor;
@@ -21,13 +19,6 @@ namespace GameClientApiTests.ControllerTests
 
         public GameLobbyControllerUnitTest()
         {
-            _configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
-
             _playerMockAccessor = new Mock<IPlayerDatabaseAccessor>();
 
             _gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();

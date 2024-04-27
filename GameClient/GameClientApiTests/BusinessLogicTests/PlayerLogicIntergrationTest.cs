@@ -23,12 +23,14 @@ namespace GameClientApiTests.BusinessLogicTests
 
         public PlayerLogicIntergrationTest()
         {
-            _configuration = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettingsForTesting.json", optional: false, reloadOnChange: true)
-        .Build();
+			string currentDirectory = Directory.GetCurrentDirectory();
+			string settingsFilePath = Path.Combine(currentDirectory, "..", "..", "..", "appsettingsForTesting.json");
+			_configuration = new ConfigurationBuilder()
+				.AddJsonFile(settingsFilePath, optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
 
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+			_connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             _testDatabaseHelper = new TestDatabaseHelper(_connectionString);
 
