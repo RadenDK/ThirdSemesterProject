@@ -27,6 +27,8 @@ namespace GameClientApiTests.ControllerTests
         [Fact]
         public void CreateGameLobby_TC1_ReturnsOkwithCreatedGameLobbyWhenNothingIsWrong() 
         {
+
+            Assert.True(false);
             //Arrange
             GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "testLobby", AmountOfPlayers = 3, InviteLink = "testLink" };
             _gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby)).Returns(1);
