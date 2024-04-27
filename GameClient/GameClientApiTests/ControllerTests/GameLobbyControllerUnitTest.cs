@@ -23,13 +23,6 @@ namespace GameClientApiTests.ControllerTests
 
             _gameLobbyMockAccessor = new Mock<IGameLobbyDatabaseAccessor>();
         }
-
-        [Fact]
-        public void TestToCheckGitHook()
-        {
-            Assert.True(false);
-        }
-
      
         [Fact]
         public void CreateGameLobby_TC1_ReturnsOkwithCreatedGameLobbyWhenNothingIsWrong() 
