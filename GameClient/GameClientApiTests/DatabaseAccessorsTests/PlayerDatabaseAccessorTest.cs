@@ -1,20 +1,15 @@
 ﻿using Dapper;
 using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
-
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GameClientApiTests.DatabaseAccessorsTests
 {
+	
 	[Collection("Sequential")]
-
 	public class PlayerDatabaseAccessorTest : IDisposable
 	{
 		private IConfiguration _configuration;

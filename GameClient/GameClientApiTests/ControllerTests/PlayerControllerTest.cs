@@ -1,19 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using GameClientApi.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameClientApi.DatabaseAccessors;
 using Moq;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using GameClientApiTests.TestHelpers;
-using GameClientApi.BusinessLogic;
-using Microsoft.OpenApi.Any;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
@@ -42,6 +34,8 @@ namespace GameClientApiTests.PlayerControllerTests
             _mockAccessor = new Mock<IPlayerDatabaseAccessor>();
 
             _testDatabaseHelper = new TestDatabaseHelper(_connectionString);
+
+            _testDatabaseHelper.TearDownAndBuildTestDatabase();
         }
 
 		public void Dispose()

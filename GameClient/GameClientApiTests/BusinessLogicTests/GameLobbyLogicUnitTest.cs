@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using GameClientApi.DatabaseAccessors;
+﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
-using GameClientApiTests.TestHelpers;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 

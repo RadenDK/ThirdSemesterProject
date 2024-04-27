@@ -1,20 +1,15 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using GameClientApi.Controllers;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Identity.Data;
 
 namespace GameClientApiTests.ControllerTests
 {
+
+	[Collection("Sequential")]
 	public class GameLobbyControllerIntergrationTest : IDisposable
 	{
 

@@ -2,16 +2,9 @@
 using GameClientApi.BusinessLogic;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
-using Azure.Identity;
 
 using BC = BCrypt.Net.BCrypt;
 

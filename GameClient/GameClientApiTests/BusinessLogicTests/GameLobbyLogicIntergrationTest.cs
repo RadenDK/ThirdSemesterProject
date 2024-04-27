@@ -5,9 +5,6 @@ using Microsoft.Extensions.Configuration;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
-using Microsoft.AspNetCore.Mvc;
-
-
 
 namespace GameClientApiTests.BusinessLogicTests
 {
