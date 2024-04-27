@@ -12,7 +12,6 @@ namespace GameClientApiTests.TestHelpers
 	internal class TestDatabaseHelper
 	{
 
-		private IConfiguration _configuration;
 		private string _connectionString;
 
 		public TestDatabaseHelper(string connectionString)
