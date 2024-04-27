@@ -1,0 +1,19 @@
+name: Run API Tests Before Push
+on:
+  push:
+    branches:
+      - MakingATestPipeline
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0'  # adjusted to your project's .NET version
+    - name: Restore dependencies
+      run: dotnet restore ./GameClient/GameClientApiTests
+    - name: Run tests
+      run: dotnet test --no-restore ./GameClient/GameClientApiTests
