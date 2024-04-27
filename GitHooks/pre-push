@@ -3,14 +3,16 @@
 # Get the list of changed files
 changed_files=$(git diff --name-only HEAD HEAD~1)
 
+# Print the list of changed files
+echo "Changed files:"
+echo "$changed_files"
+
 # Check if any of the changed files are in the ./GameClient/GameClientApi/ directory
-if echo "$changed_files" | grep -q "^GameClient/GameClientApi/"; then
+if echo "$changed_files" | grep -q "^GameClient/GameClientApiTests/"; then
+    echo "Changes detected in GameClient/GameClientApiTests/"
+
     # Change the working directory to the test project directory
     cd "../GameClient/GameClientApiTests"
-
-    # Print the current directory and the list of files in it
-    pwd
-    ls
 
     # Run the tests
     dotnet test --no-restore
@@ -23,6 +25,8 @@ if echo "$changed_files" | grep -q "^GameClient/GameClientApi/"; then
 
     # If we got here, the tests passed.
     echo "Tests passed!"
+else
+    echo "No changes detected in GameClient/GameClientApiTests/"
 fi
 
 exit 0
