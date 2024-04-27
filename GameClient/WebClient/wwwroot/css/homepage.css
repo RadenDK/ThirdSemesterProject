@@ -5,7 +5,7 @@
     --primary-blue: rgb(30, 120, 255);
     --hover-blue: rgb(0, 91, 223);
     --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
-    --white: rgb(255, 255, 255); /* White color */
+    --white: rgba(255, 255, 255, 0.35); /* White color */
 }
 /* ---- MAIN CONTENT TIL HOMEPAGE */
 
