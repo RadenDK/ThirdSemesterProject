@@ -14,6 +14,8 @@ if echo "$changed_files" | grep -q "^GameClient/GameClientApiTests/"; then
     # Change the working directory to the test project directory
     cd "../GameClient/GameClientApiTests"
 
+    dotnet restore
+
     # Run the tests
     dotnet test --no-restore
 
