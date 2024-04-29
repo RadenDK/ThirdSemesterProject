@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "Current working directory: $(pwd)"
-
 # Get the list of changed files
 changed_files=$(git diff --name-only HEAD HEAD~1)
 
