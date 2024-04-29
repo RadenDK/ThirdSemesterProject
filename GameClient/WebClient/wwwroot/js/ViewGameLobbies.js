@@ -1,10 +1,13 @@
 ﻿$(document).ready(function () {
-    $("#searchField").on("keyup", function () {
+    $("#search-lobby-field").on("input", function () {
         var value = $(this).val().toLowerCase();
         $(".table-row").filter(function () {
-            $(this).toggle($(this).find('.lobby-name').text().toLowerCase().startsWith(value));
+            var nameMatch = $(this).find('.lobby-name').text().toLowerCase().startsWith(value);
+            var ownerMatch = $(this).find('.owner').text().toLowerCase().startsWith(value);
+            $(this).toggle(nameMatch || ownerMatch);
         });
     });
+});
 
     $(".table-row").click(function (event) {
         var lobbyId = $(this).data("lobby-id");
@@ -113,8 +116,8 @@
 
     function getCellValue(row, index) {
         return $(row).children('td').eq(index).text();
-    }
-});
+
+}
 
 
 // Get the modal
