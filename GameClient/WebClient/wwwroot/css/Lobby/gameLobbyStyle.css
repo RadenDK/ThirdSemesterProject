@@ -84,10 +84,11 @@
 
 .team {
     width: 45%; /* Adjust as needed */
-     
-    border-radius: 10px;
-    padding: 20px;
     color: white;
+    background-color: #101010;
+    padding: 10px;
+    border-radius: 15px;
+    margin: 20px;
 }
 
 .team h2 {
