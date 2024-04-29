@@ -29,8 +29,6 @@ namespace GameClientApiTests.ControllerTests
         {
 
             //Arrange
-            Assert.True(false);
-
             GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "testLobby", AmountOfPlayers = 3, InviteLink = "testLink" };
             _gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby)).Returns(1);
            
