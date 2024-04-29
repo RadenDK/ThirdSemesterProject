@@ -22,6 +22,8 @@ namespace GameClientApiTests.BusinessLogicTests
 
 	public class PlayerLogicIntergrationTest : IDisposable
     {
+        private ITransactionHandler transactionHandler;
+
         private IConfiguration _configuration;
 
         private string _connectionString;
@@ -53,7 +55,7 @@ namespace GameClientApiTests.BusinessLogicTests
         {
             // Arrange
             IPlayerDatabaseAccessor playerTestDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-            PlayerLogic SUT = new PlayerLogic(_configuration, playerTestDatabaseAccessor);
+            PlayerLogic SUT = new PlayerLogic(_configuration, playerTestDatabaseAccessor, transactionHandler);
 
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel
             {

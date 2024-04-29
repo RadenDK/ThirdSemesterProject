@@ -41,8 +41,9 @@ namespace GameClientApi.DatabaseAccessors
             return deletionSucces;
         }
 
-        public int CreateLobbyChat()
+        public int CreateLobbyChat(SqlTransaction transaction)
         {
+
             string createLobbyQuery = "INSERT INTO Chat (CreatedDate, ChatType) OUTPUT INSERTED.ChatID VALUES (@CreatedDate, @ChatType)";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -53,23 +54,19 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public int CreateGameLobby(GameLobbyModel gameLobby)
+        public int CreateGameLobby(GameLobbyModel gameLobby, SqlTransaction transaction)
         {
-            int lobbyChatId = CreateLobbyChat();
+            int lobbyChatId = CreateLobbyChat(transaction);
 
             string createGameLobbyQuery = "INSERT INTO GameLobby (LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId) OUTPUT INSERTED.GameLobbyID VALUES (@LobbyName, @AmountOfPlayers, @PasswordHash, @InviteLink, @LobbyChatId)";
 
             try
             {
-				if (GameLobbyHasValues(gameLobby))
-				{
-					using (SqlConnection connection = new SqlConnection(_connectionString))
-					{
-						connection.Open();
-						int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId });
-						return gameLobbyId;
-					}
-				}
+                if (GameLobbyHasValues(gameLobby))
+                {
+                    int gameLobbyId = transaction.Connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId }, transaction);
+                    return gameLobbyId;
+                }
 
                 return 0;
             }
@@ -78,6 +75,8 @@ namespace GameClientApi.DatabaseAccessors
                 throw new Exception("Not saved in database", ex);
             }
         }
+
+
 
         private bool GameLobbyHasValues(GameLobbyModel gameLobby)
         {
@@ -99,46 +98,46 @@ namespace GameClientApi.DatabaseAccessors
             }
             return true;
         }
-    
 
 
-		
 
-		public GameLobbyModel GetGameLobby(int gameLobbyId)
-		{
-			GameLobbyModel gameLobby = null;
-			
-			string selectLobbyQuery = "SELECT GameLobbyId, LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId " +
-				"FROM Gamelobby WHERE GameLobbyId = @GameLobbyId";
 
-			string selectChatQuery = "SELECT ChatId as LobbyChatId, ChatType FROM Chat WHERE ChatId = @ChatId";
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				var gameLobbyResult = connection.QueryFirstOrDefault<dynamic>(selectLobbyQuery, new { GameLobbyId = gameLobbyId });
+        public GameLobbyModel GetGameLobby(int gameLobbyId)
+        {
+            GameLobbyModel gameLobby = null;
 
-				if (gameLobbyResult != null)
-				{
+            string selectLobbyQuery = "SELECT GameLobbyId, LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId " +
+                "FROM Gamelobby WHERE GameLobbyId = @GameLobbyId";
 
-					gameLobby = new GameLobbyModel
-					{
-						GameLobbyId = gameLobbyResult.GameLobbyId,
-						LobbyName = gameLobbyResult.LobbyName,
-						AmountOfPlayers = gameLobbyResult.AmountOfPlayers,
-						PasswordHash = gameLobbyResult.PasswordHash,
-						InviteLink = gameLobbyResult.InviteLink
-					};
+            string selectChatQuery = "SELECT ChatId as LobbyChatId, ChatType FROM Chat WHERE ChatId = @ChatId";
 
-					int? lobbyChatId = gameLobbyResult.LobbyChatId as int?;
-					if (lobbyChatId.HasValue)
-					{
-						gameLobby.LobbyChat = connection.QueryFirstOrDefault<LobbyChatModel>(selectChatQuery, new { ChatId = lobbyChatId });
-					}
-				}
-				return gameLobby;
-			}
-		}
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var gameLobbyResult = connection.QueryFirstOrDefault<dynamic>(selectLobbyQuery, new { GameLobbyId = gameLobbyId });
 
-	}
+                if (gameLobbyResult != null)
+                {
+
+                    gameLobby = new GameLobbyModel
+                    {
+                        GameLobbyId = gameLobbyResult.GameLobbyId,
+                        LobbyName = gameLobbyResult.LobbyName,
+                        AmountOfPlayers = gameLobbyResult.AmountOfPlayers,
+                        PasswordHash = gameLobbyResult.PasswordHash,
+                        InviteLink = gameLobbyResult.InviteLink
+                    };
+
+                    int? lobbyChatId = gameLobbyResult.LobbyChatId as int?;
+                    if (lobbyChatId.HasValue)
+                    {
+                        gameLobby.LobbyChat = connection.QueryFirstOrDefault<LobbyChatModel>(selectChatQuery, new { ChatId = lobbyChatId });
+                    }
+                }
+                return gameLobby;
+            }
+        }
+
+    }
 }

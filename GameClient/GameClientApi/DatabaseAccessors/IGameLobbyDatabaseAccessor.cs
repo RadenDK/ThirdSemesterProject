@@ -1,4 +1,5 @@
 ﻿using GameClientApi.Models;
+using Microsoft.Data.SqlClient;
 
 namespace GameClientApi.DatabaseAccessors
 {
@@ -9,9 +10,9 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool DeleteGameLobby(int? gameLobbyId);
 
-		int CreateGameLobby(GameLobbyModel gameLobby);
+		int CreateGameLobby(GameLobbyModel gameLobby, SqlTransaction transaction);
 
-		int CreateLobbyChat();
+		int CreateLobbyChat(SqlTransaction transaction);
 
 		GameLobbyModel GetGameLobby(int gameLobbyId);
 	}

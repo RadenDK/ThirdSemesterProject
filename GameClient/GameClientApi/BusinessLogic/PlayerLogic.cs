@@ -8,11 +8,13 @@ namespace GameClientApi.BusinessLogic
 	public class PlayerLogic : IPlayerLogic
 	{
 		IPlayerDatabaseAccessor _playerAccessor;
+		ITransactionHandler _transactionHandler;
 
-		public PlayerLogic(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
+		public PlayerLogic(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor, ITransactionHandler transactionHandler)
 		{
 			_playerAccessor = playerDatabaseAccessor;
-		}
+            _transactionHandler = transactionHandler;
+        }
 
 		public bool VerifyLogin(string userName, string password)
 		{
@@ -66,18 +68,18 @@ namespace GameClientApi.BusinessLogic
 
 		public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
 		{
-			SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
+			SqlTransaction transaction = _transactionHandler.BeginTransaction(IsolationLevel.ReadUncommitted);
 
 			_playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
 
 			if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
 			{
-				_playerAccessor.CommitTransaction(transaction);
+				_transactionHandler.CommitTransaction(transaction);
 
 			}
 			else
 			{
-				_playerAccessor.RollbackTransaction(transaction);
+				_transactionHandler.RollbackTransaction(transaction);
 				throw new ArgumentException("Too many players in lobby");
 			}
 		}

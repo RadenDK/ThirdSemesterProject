@@ -6,36 +6,36 @@ using Newtonsoft.Json;
 
 namespace GameClientApi.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class GameLobbyController : Controller
-	{
+    [ApiController]
+    [Route("[controller]")]
+    public class GameLobbyController : Controller
+    {
+        private ITransactionHandler transactionHandler;
+        private IGameLobbyLogic _gameLobbyLogic;
+        private IPlayerLogic _playerLogic;
 
-		private GameLobbyLogic _gameLobbyLogic;
-		private PlayerLogic _playerLogic;
+        public GameLobbyController(IConfiguration configuration,
+            IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
+            IPlayerDatabaseAccessor playerDatabaseAccessor)
+        {
+            _playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor, transactionHandler);
 
-		public GameLobbyController(IConfiguration configuration,
-			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor,
-			IPlayerDatabaseAccessor playerDatabaseAccessor)
-		{
-			_playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor);
-
-			_gameLobbyLogic = new GameLobbyLogic(configuration,
-				gameLobbyDatabaseAccessor, _playerLogic);
-		}
-		[HttpGet("AllGameLobbies")]
-		public IActionResult AllGameLobbies()
-		{
-			try
-			{
-				IEnumerable<GameLobbyModel> allGameLobbies = _gameLobbyLogic.GetAllGameLobbies();
-				return Ok(allGameLobbies);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
+            _gameLobbyLogic = new GameLobbyLogic(configuration,
+                gameLobbyDatabaseAccessor, _playerLogic);
+        }
+        [HttpGet("AllGameLobbies")]
+        public IActionResult AllGameLobbies()
+        {
+            try
+            {
+                IEnumerable<GameLobbyModel> allGameLobbies = _gameLobbyLogic.GetAllGameLobbies();
+                return Ok(allGameLobbies);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("CreateGameLobby")]
         public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
@@ -61,24 +61,24 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPost("join")]
-		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
-		{
-			try
-			{
-				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.LobbyPassword);
+        public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
+        {
+            try
+            {
+                GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.LobbyPassword);
 
-				return Ok(gameLobby);
+                return Ok(gameLobby);
 
-			}
-			catch (UnauthorizedAccessException ex)
-			{
-				return BadRequest(ex.Message);
-			}
-			catch (ArgumentException ex)
-			{
-				return BadRequest(ex.Message);
-			}
-			
-		}
-	}
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+    }
 }

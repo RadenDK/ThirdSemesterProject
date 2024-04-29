@@ -23,10 +23,5 @@ namespace GameClientApi.DatabaseAccessors
 
 		PlayerModel GetPlayer(string userName);
 
-		SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
-
-		void CommitTransaction(SqlTransaction sqlTransaction);
-
-		void RollbackTransaction(SqlTransaction sqlTransaction);
 	}
 }

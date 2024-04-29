@@ -11,11 +11,12 @@ namespace GameClientApi.Controllers
 	public class PlayerController : Controller
 	{
 
-		private PlayerLogic _playerLogic;
+		private IPlayerLogic _playerLogic;
+		private ITransactionHandler transactionHandler;
 
 		public PlayerController(IConfiguration configuration, IPlayerDatabaseAccessor playerDatabaseAccessor)
 		{
-			_playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor);
+			_playerLogic = new PlayerLogic(configuration, playerDatabaseAccessor, transactionHandler);
 		}
 
 

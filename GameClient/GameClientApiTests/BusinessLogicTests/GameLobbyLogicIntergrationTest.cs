@@ -13,8 +13,10 @@ namespace GameClientApiTests.BusinessLogicTests
 {
 	[Collection("Sequential")]
 	public class GameLobbyLogicIntergrationTest : IDisposable
-	{
-		private IConfiguration _configuration;
+    {
+        private ITransactionHandler transactionHandler;
+
+        private IConfiguration _configuration;
 
 		private string _connectionString;
 
@@ -128,7 +130,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -156,7 +158,7 @@ namespace GameClientApiTests.BusinessLogicTests
 			// Arrange
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -178,7 +180,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -209,7 +211,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -241,7 +243,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -273,7 +275,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -305,7 +307,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerLogic = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerLogic);
 
 			// Act
@@ -325,7 +327,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
@@ -354,7 +356,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
@@ -388,7 +390,7 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			GameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
 			PlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor);
+			PlayerLogic playerService = new PlayerLogic(_configuration, playerDatabaseAccessor, transactionHandler);
 			GameLobbyLogic SUT = new GameLobbyLogic(_configuration, gameLobbyDatabaseAccessor, playerService);
 
 			// Act
