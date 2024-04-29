@@ -27,6 +27,7 @@ namespace GameClientApiTests.ControllerTests
         [Fact]
         public void CreateGameLobby_TC1_ReturnsOkwithCreatedGameLobbyWhenNothingIsWrong() 
         {
+	        Assert.True(false);
 
             //Arrange
             Assert.True(false);
