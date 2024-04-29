@@ -1,12 +1,22 @@
 ﻿$(document).ready(function () {
     $("#search-lobby-field").on("input", function () {
         var value = $(this).val().toLowerCase();
+        var hasResults = false;
         $(".table-row").filter(function () {
             var nameMatch = $(this).find('.lobby-name').text().toLowerCase().startsWith(value);
             var ownerMatch = $(this).find('.owner').text().toLowerCase().startsWith(value);
-            $(this).toggle(nameMatch || ownerMatch);
+            var match = nameMatch || ownerMatch;
+            $(this).toggle(match);
+            if (match) {
+                hasResults = true;
+            }
         });
-    });
+        if (hasResults) {
+            $("#no-results").hide();
+        } else {
+            $("#no-results").show();
+        }
+    })
 });
 
     $(".table-row").click(function (event) {
