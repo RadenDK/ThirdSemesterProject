@@ -6,7 +6,7 @@ on:
       - main
       - Development
     paths:
-      - 'GameClient/WebClient/**' 
+      - 'GameClient/GameClientApi/**' 
 
 jobs:
   deploy:
