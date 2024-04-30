@@ -253,7 +253,7 @@ namespace GameClientApiTests.BusinessLogicTests
 		{
 			// Arrange
 			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" };
-			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby, It.IsAny<SqlTransaction>())).Returns(1);
 
 			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
 			_playerMockLogic.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);
@@ -275,7 +275,7 @@ namespace GameClientApiTests.BusinessLogicTests
 		{
 			// Arrange
 			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1" }; ;
-			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(0);
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby, It.IsAny<SqlTransaction>())).Returns(0);
 
 			GameLobbyLogic SUT = new GameLobbyLogic(_mockConfiguration, _gameLobbyMockAccessor.Object, _playerMockLogic.Object);
 
@@ -291,7 +291,7 @@ namespace GameClientApiTests.BusinessLogicTests
 		{
 			// Arrange
 			GameLobbyModel expectedGameLobby = new GameLobbyModel { LobbyName = "Lobby1", AmountOfPlayers = 3, InviteLink = "inviteLink1", PasswordHash = "password" }; ;
-			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby)).Returns(1);
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(expectedGameLobby, It.IsAny<SqlTransaction>())).Returns(1);
 
 			PlayerModel expectedPlayer = new PlayerModel { Username = "player1", InGameName = "Player1", IsOwner = true };
 			_playerMockLogic.Setup(a => a.GetPlayer("Player1")).Returns(expectedPlayer);

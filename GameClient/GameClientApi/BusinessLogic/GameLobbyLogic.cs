@@ -167,6 +167,7 @@ namespace GameClientApi.BusinessLogic
 			}
 			catch (Exception ex)
 			{
+				_gameLobbyAccessor.RollbackTransaction(transaction);
 				throw new Exception("Failed to create game lobby", ex);
 			}
 		}

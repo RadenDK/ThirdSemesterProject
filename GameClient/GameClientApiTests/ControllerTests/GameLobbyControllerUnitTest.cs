@@ -11,6 +11,7 @@ using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 
 namespace GameClientApiTests.ControllerTests
 {
@@ -45,7 +46,7 @@ namespace GameClientApiTests.ControllerTests
         {
             //Arrange
             GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "testLobby", AmountOfPlayers = 3, InviteLink = "testLink" };
-            _gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby)).Returns(1);
+            _gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby, It.IsAny<SqlTransaction>())).Returns(1);
            
             PlayerModel mockPlayerModel = new PlayerModel { Username = "testPlayer", InGameName = "testPlayer", IsOwner = true };
             _playerMockAccessor.Setup(a => a.GetPlayer("testPlayer")).Returns(mockPlayerModel);
@@ -70,7 +71,7 @@ namespace GameClientApiTests.ControllerTests
         {
 			//Arrange
 			GameLobbyModel mockGameLobby = new GameLobbyModel { LobbyName = "testLobby", AmountOfPlayers = 3, InviteLink = "testLink" };
-			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby)).Returns(0);
+			_gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby, It.IsAny<SqlTransaction>())).Returns(0);
 			
 			GameLobbyController SUT = new GameLobbyController(_configuration, _gameLobbyMockAccessor.Object, _playerMockAccessor.Object);
 			CreateGameLobbyModel data = new CreateGameLobbyModel { newLobby = mockGameLobby, username = "testPlayer" };
