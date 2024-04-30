@@ -171,7 +171,7 @@ namespace GameClientApi.DatabaseAccessors
 			return rowsAffected > 0;
 		}
 
-		public bool UpdatePlayerOwnership(PlayerModel player)
+		public bool UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null)
 		{
 			string updateOwnershipQuery = "UPDATE Player SET IsOwner = @IsOwner WHERE PlayerId = @PlayerId";
 

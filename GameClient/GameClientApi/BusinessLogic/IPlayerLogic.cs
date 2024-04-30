@@ -9,7 +9,8 @@ namespace GameClientApi.BusinessLogic
 		bool CreatePlayer(AccountRegistrationModel newPlayerAccount);
 		List<PlayerModel> GetAllPlayersInLobby(int? lobbyId, SqlTransaction transaction = null);
 		void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel);
-		void UpdatePlayerOwnership(PlayerModel player);
+		void UpdatePlayerLobbyIdNoTransaction(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null);
+		void UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 		PlayerModel GetPlayer(string username);
 	}
 }

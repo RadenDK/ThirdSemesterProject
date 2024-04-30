@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Reflection.Metadata.Ecma335;
 
 namespace GameClientApi.DatabaseAccessors
@@ -53,30 +54,36 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public int CreateGameLobby(GameLobbyModel gameLobby)
+        public int CreateGameLobby(GameLobbyModel gameLobby, SqlTransaction transaction = null)
         {
             int lobbyChatId = CreateLobbyChat();
 
             string createGameLobbyQuery = "INSERT INTO GameLobby (LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId) OUTPUT INSERTED.GameLobbyID VALUES (@LobbyName, @AmountOfPlayers, @PasswordHash, @InviteLink, @LobbyChatId)";
 
-            try
+            IDbConnection connection;
+            if (transaction != null)
             {
-				if (GameLobbyHasValues(gameLobby))
-				{
-					using (SqlConnection connection = new SqlConnection(_connectionString))
-					{
-						connection.Open();
-						int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId });
-						return gameLobbyId;
-					}
-				}
+                connection = transaction.Connection;
+            }
+            else
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+            }
 
-                return 0;
-            }
-            catch (Exception ex)
+            if (GameLobbyHasValues(gameLobby))
             {
-                throw new Exception("Not saved in database", ex);
+                int gameLobbyId = connection.QuerySingle<int>(createGameLobbyQuery, new { gameLobby.LobbyName, gameLobby.AmountOfPlayers, gameLobby.PasswordHash, gameLobby.InviteLink, LobbyChatId = lobbyChatId }, transaction: transaction);
+                return gameLobbyId;
             }
+
+            if (transaction == null)
+            {
+                connection.Close();
+            }
+
+            return 0;
+
         }
 
         private bool GameLobbyHasValues(GameLobbyModel gameLobby)
@@ -99,46 +106,94 @@ namespace GameClientApi.DatabaseAccessors
             }
             return true;
         }
-    
 
 
-		
 
-		public GameLobbyModel GetGameLobby(int gameLobbyId)
-		{
-			GameLobbyModel gameLobby = null;
-			
-			string selectLobbyQuery = "SELECT GameLobbyId, LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId " +
-				"FROM Gamelobby WHERE GameLobbyId = @GameLobbyId";
 
-			string selectChatQuery = "SELECT ChatId as LobbyChatId, ChatType FROM Chat WHERE ChatId = @ChatId";
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				var gameLobbyResult = connection.QueryFirstOrDefault<dynamic>(selectLobbyQuery, new { GameLobbyId = gameLobbyId });
+        public GameLobbyModel GetGameLobby(int gameLobbyId)
+        {
+            GameLobbyModel gameLobby = null;
 
-				if (gameLobbyResult != null)
-				{
+            string selectLobbyQuery = "SELECT GameLobbyId, LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId " +
+                "FROM Gamelobby WHERE GameLobbyId = @GameLobbyId";
 
-					gameLobby = new GameLobbyModel
-					{
-						GameLobbyId = gameLobbyResult.GameLobbyId,
-						LobbyName = gameLobbyResult.LobbyName,
-						AmountOfPlayers = gameLobbyResult.AmountOfPlayers,
-						PasswordHash = gameLobbyResult.PasswordHash,
-						InviteLink = gameLobbyResult.InviteLink
-					};
+            string selectChatQuery = "SELECT ChatId as LobbyChatId, ChatType FROM Chat WHERE ChatId = @ChatId";
 
-					int? lobbyChatId = gameLobbyResult.LobbyChatId as int?;
-					if (lobbyChatId.HasValue)
-					{
-						gameLobby.LobbyChat = connection.QueryFirstOrDefault<LobbyChatModel>(selectChatQuery, new { ChatId = lobbyChatId });
-					}
-				}
-				return gameLobby;
-			}
-		}
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var gameLobbyResult = connection.QueryFirstOrDefault<dynamic>(selectLobbyQuery, new { GameLobbyId = gameLobbyId });
 
-	}
+                if (gameLobbyResult != null)
+                {
+
+                    gameLobby = new GameLobbyModel
+                    {
+                        GameLobbyId = gameLobbyResult.GameLobbyId,
+                        LobbyName = gameLobbyResult.LobbyName,
+                        AmountOfPlayers = gameLobbyResult.AmountOfPlayers,
+                        PasswordHash = gameLobbyResult.PasswordHash,
+                        InviteLink = gameLobbyResult.InviteLink
+                    };
+
+                    int? lobbyChatId = gameLobbyResult.LobbyChatId as int?;
+                    if (lobbyChatId.HasValue)
+                    {
+                        gameLobby.LobbyChat = connection.QueryFirstOrDefault<LobbyChatModel>(selectChatQuery, new { ChatId = lobbyChatId });
+                    }
+                }
+                return gameLobby;
+            }
+        }
+
+        public SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+            SqlTransaction transaction = connection.BeginTransaction(isolationLevel);
+            return transaction;
+        }
+
+
+        public void CommitTransaction(SqlTransaction sqlTransaction)
+        {
+            if (sqlTransaction == null)
+            {
+                throw new ArgumentNullException(nameof(sqlTransaction));
+            }
+
+            try
+            {
+                sqlTransaction.Commit();
+            }
+            finally
+            {
+                if(sqlTransaction.Connection != null)
+                {
+                    sqlTransaction.Connection.Close();
+                } 
+            }
+        }
+
+        public void RollbackTransaction(SqlTransaction sqlTransaction)
+        {
+            try
+            {
+                sqlTransaction.Rollback();
+            }
+            finally
+            {
+                try
+                {
+                    sqlTransaction.Connection.Close();
+                }
+                catch (NullReferenceException ex)
+                {
+
+                }
+            }
+        }
+
+    }
 }

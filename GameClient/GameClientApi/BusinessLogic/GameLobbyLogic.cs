@@ -1,5 +1,6 @@
 ﻿using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
+using Microsoft.Data.SqlClient;
 using BC = BCrypt.Net.BCrypt;
 
 namespace GameClientApi.BusinessLogic
@@ -134,6 +135,7 @@ namespace GameClientApi.BusinessLogic
 
 		public GameLobbyModel CreateGameLobby(GameLobbyModel gameLobby, string username)
 		{
+			SqlTransaction transaction = null;
 			try
 			{
 				if (!string.IsNullOrEmpty(gameLobby.PasswordHash))
@@ -143,18 +145,21 @@ namespace GameClientApi.BusinessLogic
 
 				gameLobby.InviteLink = GenerateInviteLink();
 
-				int gameLobbyId = _gameLobbyAccessor.CreateGameLobby(gameLobby);
+				transaction = _gameLobbyAccessor.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
-				if (gameLobbyId != 0)
+				int gameLobbyId = _gameLobbyAccessor.CreateGameLobby(gameLobby, transaction);
+
+				if (gameLobbyId > 0)
 				{
-
 					gameLobby.GameLobbyId = gameLobbyId;
 
 					PlayerModel player = _playerLogic.GetPlayer(username);
 					player.IsOwner = true;
 					player.GameLobbyId = gameLobbyId;
-					_playerLogic.UpdatePlayerOwnership(player);
-					_playerLogic.UpdatePlayerLobbyId(player, gameLobby);
+					_playerLogic.UpdatePlayerOwnership(player, transaction);
+					_playerLogic.UpdatePlayerLobbyIdNoTransaction(player, gameLobby, transaction);
+
+					_gameLobbyAccessor.CommitTransaction(transaction);
 
 					return gameLobby;
 				}

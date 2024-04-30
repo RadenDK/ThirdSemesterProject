@@ -19,7 +19,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null);
 
-		bool UpdatePlayerOwnership(PlayerModel player);
+		bool UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 
 		PlayerModel GetPlayer(string userName);
 
