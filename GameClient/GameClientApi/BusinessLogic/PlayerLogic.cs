@@ -82,7 +82,7 @@ namespace GameClientApi.BusinessLogic
             }
         }
 
-        public void UpdatePlayerLobbyIdNoTransaction(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
+        public void UpdatePlayerLobbyIdNoPlayerCheck(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
         {
             if (transaction == null)
             {
