@@ -322,7 +322,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 .friend-list .bento-box {
     transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
     background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
-    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+    transform 0.4s cubic-bezier(0, -0.66, 0.07, 1.33)
 }
 
 .friend-list .bento-box:hover {
@@ -501,36 +501,41 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
         transition: transform 0.3s ease;
     }
 
-.search-for-lobby-container {
-    display: flex;
-}
+    .search-for-lobby-container {
+        display: flex;
+    }
 
-.header-join-lobby {
-    display: flex;
-}
+    .header-join-lobby {
+        display: flex;
+    }
 
-/* SCROLLBAR STYLING, CURRENTLY AFFECTS ALL SCROLLBARS. WILL HAVE TO SPECIFY IF MORE SCROLLBARS ARE PROMINENT*/
-/* width for scrollbar*/
-::-webkit-scrollbar {
-    width: 5px;
-}
+    /* SCROLLBAR STYLING, CURRENTLY AFFECTS ALL SCROLLBARS. WILL HAVE TO SPECIFY IF MORE SCROLLBARS ARE PROMINENT*/
+    /* width for scrollbar*/
 
-/* Track */
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px var(--black);
-    border-radius: 30px;
-}
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--primary-blue);
-    border-radius: 30px;
-    box-shadow: #0a53be;
-}
+    /* Track */
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: var(--hover-blue);
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px var(--black);
+        border-radius: 30px;
+    }
+
+    /* Handle */
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary-blue);
+        border-radius: 30px;
+        box-shadow: #0a53be;
+    }
+
+    /* Handle on hover */
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--hover-blue);
+    }
 }
 
 
