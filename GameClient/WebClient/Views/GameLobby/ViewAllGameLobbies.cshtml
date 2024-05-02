@@ -40,7 +40,7 @@
 					<tbody>
 					@foreach (GameLobbyModel lobby in Model)
 					{
-						<tr class="table-row" data-lobby-id="@lobby.GameLobbyId">
+						<tr class="table-row lobby-row" data-lobby-id="@lobby.GameLobbyId">
 							<td>
 								@if (lobby.IsPrivate())
 								{

@@ -19,43 +19,6 @@
     })
 });
 
-    $(".table-row").click(function (event) {
-        var lobbyId = $(this).data("lobby-id");
-
-        // Check if the lobby is private
-        if ($(this).find('.bi-lock-fill').length > 0) {
-            // Show the password modal
-            $("#passwordModal").show();
-        } else {
-            // If the lobby is not private, send a POST request with a null password
-            var requestBody = {
-                gameLobbyId: lobbyId,
-                lobbyPassword: null
-            };
-
-            fetch("https://localhost:7292/GameLobby/GameLobby", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(requestBody)
-            }).then(response => {
-                if (response.ok) {
-                    // Parse the response body as text
-                    response.text().then(html => {
-                        // Insert the HTML into your page
-                        document.body.innerHTML = html;
-                    });
-                } else {
-                    // Handle errors
-                    console.error("Error:", response);
-                }
-            });
-        }
-
-        // Prevent the default action
-        event.preventDefault();
-    });
 
 
     $("#submitPassword").click(function (event) {
@@ -153,3 +116,40 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+$(".table-row").dblclick(function (event) {
+    var lobbyId = $(this).data("lobby-id");
+
+    // Check if the lobby is private
+    if ($(this).find('.bi-lock-fill').length > 0) {
+        // Show the password modal
+        $("#passwordModal").show();
+    } else {
+        // If the lobby is not private, send a POST request with a null password
+        var requestBody = {
+            gameLobbyId: lobbyId,
+            lobbyPassword: null
+        };
+
+        fetch("https://localhost:7292/GameLobby/GameLobby", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+        }).then(response => {
+            if (response.ok) {
+                // Parse the response body as text
+                response.text().then(html => {
+                    // Insert the HTML into your page
+                    document.body.innerHTML = html;
+                });
+            } else {
+                // Handle errors
+                console.error("Error:", response);
+            }
+        });
+    }
+
+    // Prevent the default action
+    event.preventDefault();
+});
