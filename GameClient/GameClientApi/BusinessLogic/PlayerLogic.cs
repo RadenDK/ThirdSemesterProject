@@ -17,10 +17,16 @@ namespace GameClientApi.BusinessLogic
         public bool VerifyLogin(string userName, string password)
         {
             string? storedHashedPassword = _playerAccessor.GetPassword(userName);
+            PlayerModel player = _playerAccessor.GetPlayer(userName);
+
             if (storedHashedPassword == null || userName == null)
             {
                 throw new ArgumentNullException("Stored HashedPassword or username is null");
             }
+            if (player.Banned == true)
+            {
+				throw new ArgumentException("Player is banned");
+			}
             return BC.Verify(password, storedHashedPassword);
         }
 
