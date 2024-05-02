@@ -28,7 +28,7 @@ namespace WebClient.Controllers
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> JoinLobby()
+        public async Task<IActionResult> ViewAllGameLobbies()
         {
 
             IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
@@ -37,7 +37,7 @@ namespace WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GameLobby([FromBody] JoinGameLobbyRequest request)
+        public async Task<IActionResult> JoinGameLobby([FromBody] JoinGameLobbyRequest request)
         {
             // TODO get the players id to pass along
             // request.playerId = PLAYERS ACTUALLY ID
