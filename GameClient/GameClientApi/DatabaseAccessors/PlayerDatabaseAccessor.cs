@@ -41,6 +41,19 @@ namespace GameClientApi.DatabaseAccessors
 			}
 		}
 
+		public List<PlayerModel> GetAllPlayers()
+		{
+			List<PlayerModel> players = new List<PlayerModel>();
+			string getAllPlayersQuery = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player";
+
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				players = connection.Query<PlayerModel>(getAllPlayersQuery).ToList();
+			}
+			return players;
+		}
+
 		public bool CreatePlayer(AccountRegistrationModel newPlayer)
 		{
 			bool playerInserted = false;

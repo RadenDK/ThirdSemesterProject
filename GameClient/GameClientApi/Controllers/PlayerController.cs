@@ -86,4 +86,39 @@ namespace GameClientApi.Controllers
             }
         }
     }
+		[HttpPost("create")]
+		public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
+		{
+			try
+			{
+				if (_playerLogic.CreatePlayer(accountRegistration))
+				{
+					return Ok(); // Return Ok if the player was created successfully
+				}
+				else
+				{
+					return BadRequest(new { message = "Error creating the player" });
+				}
+			}
+			catch (ArgumentException e)
+			{
+				// Return BadRequest with the exception message
+				return BadRequest(new { message = e.Message });
+			}
+		}
+
+		[HttpGet("AllPlayers")]
+		public IActionResult GetListOfPlayers()
+		{
+			try
+			{
+				List<PlayerModel> allPlayers = _playerLogic.GetAllPlayers();
+				return Ok(allPlayers);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+	}
 }

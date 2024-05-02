@@ -23,6 +23,8 @@ namespace GameClientApi.DatabaseAccessors
 
 		PlayerModel GetPlayer(string userName);
 
+		List<PlayerModel> GetAllPlayers();
+
 		SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
 		void CommitTransaction(SqlTransaction sqlTransaction);
