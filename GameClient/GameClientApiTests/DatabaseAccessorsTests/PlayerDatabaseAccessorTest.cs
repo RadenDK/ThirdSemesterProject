@@ -5,8 +5,10 @@ using GameClientApi.Models;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,20 +36,22 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 
 			_testDatabaseHelper = new TestDatabaseHelper(_connectionString);
 
-            _testDatabaseHelper.TearDownAndBuildTestDatabase();
+			_testDatabaseHelper.TearDownAndBuildTestDatabase();
 
-        }
+		}
 
-        public void Dispose()
+		public void Dispose()
 		{
 			_testDatabaseHelper.TearDownAndBuildTestDatabase();
 		}
 
 		public void InsertMockPlayerInTestDatabase()
 		{
-			string insertMockPlayerQuery =
-				"INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) " +
-				"VALUES ('Player1', 'hash1', 'InGameName1', GETDATE(), 'player1@example.com');";
+			string insertMockPlayerQuery = @"
+				INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player1', 'hash1', 'InGameName1', GETDATE(), 'player1@example.com');
+				INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES ('Player2', 'hash2', 'InGameName2', GETDATE(), 'player2@example.com');";
+
+
 
 			_testDatabaseHelper.RunTransactionQuery(insertMockPlayerQuery);
 		}
@@ -107,18 +111,18 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Arrange
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
-            AccountRegistrationModel mockPlayer = new AccountRegistrationModel
-            {
-                Username = "username1",
-                Password = "password1",
-                Email = "email1@example.com",
-                InGameName = "InGameName1",
-                BirthDay = DateTime.Now // or any other DateTime value
-            };
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel
+			{
+				Username = "username1",
+				Password = "password1",
+				Email = "email1@example.com",
+				InGameName = "InGameName1",
+				BirthDay = DateTime.Now // or any other DateTime value
+			};
 
 
-            // Act
-            bool testResult = SUT.CreatePlayer(mockPlayer);
+			// Act
+			bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			// Assert
 			Assert.True(testResult);
@@ -263,6 +267,36 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 
 			// Assert
 			Assert.False(testResult);
+		}
+
+		[Fact]
+		public void GetAllPlayers_ReturnsExpectedPlayers()
+		{
+			// Arrange
+			InsertMockPlayerInTestDatabase();
+			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
+
+			//Act
+			List<PlayerModel> players = SUT.GetAllPlayers();
+
+			//Assert
+			Assert.NotNull(players);
+			Assert.Equal(2, players.Count);
+			Assert.Equal("Player1", players[0].Username);
+		}
+
+		[Fact]
+		public void GetAllPlayers_TC2_ReturnEmptyListWhenNoPlayersAreInDatabase()
+		{
+			// Arrange 
+			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
+
+			// Act
+			List<PlayerModel> players = SUT.GetAllPlayers();
+
+			// Assert
+			Assert.NotNull(players);
+			Assert.False(players.Any());
 		}
 	}
 }
