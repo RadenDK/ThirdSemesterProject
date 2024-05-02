@@ -28,7 +28,7 @@ namespace WebClient.Controllers
 		}
 
 		[HttpGet]
-        public async Task<IActionResult> JoinLobby()
+        public async Task<IActionResult> ViewAllGameLobbies()
         {
 
             IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
