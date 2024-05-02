@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using GameClientApiTests.TestHelpers;
 using GameClientApi.BusinessLogic;
 using Microsoft.OpenApi.Any;
+using Microsoft.Data.SqlClient;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
@@ -244,18 +245,35 @@ namespace GameClientApiTests.PlayerControllerTests
         {
             // Arrange
             int playerIdToBan = 1;
+            PlayerModel playerToBan = new PlayerModel { PlayerId = playerIdToBan, Banned = false };
 
-            _mockAccessor.Setup(a => a.BanPlayer(playerIdToBan)).Returns(true);
+            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns(playerToBan);
+            _mockAccessor.Setup(a => a.BanPlayer(It.IsAny<PlayerModel>(), It.IsAny<SqlTransaction>())).Returns(true);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-            //Act
-            IActionResult testResult = SUT.BanPlayer(playerIdToBan);
+            // Act
+            IActionResult testResult = SUT.BanPlayer(playerIdToBan.ToString());
 
             // Assert
             Assert.IsType<OkResult>(testResult);
         }
 
+        [Fact]
+        public void BanPlayer_TC2_ReturnsBadRequestWhenPlayerDoesNotExist()
+        {
+            // Arrange
+            string nonExistingPlayerId = "nonExistingUser";
 
+            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns((PlayerModel)null);
+
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            // Act
+            IActionResult testResult = SUT.BanPlayer(nonExistingPlayerId);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(testResult);
+        }
     }
 }

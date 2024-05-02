@@ -9,7 +9,9 @@ namespace GameClientApi.DatabaseAccessors
 
 		string? GetPassword(string userName);
 
-		bool CreatePlayer(AccountRegistrationModel newPlayer);
+		bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null);
+
+        bool CreatePlayer(AccountRegistrationModel newPlayer);
 
 		bool UsernameExists(string username);
 
@@ -31,6 +33,6 @@ namespace GameClientApi.DatabaseAccessors
 
 		void RollbackTransaction(SqlTransaction sqlTransaction);
 
-		bool BanPlayer(int id);
+		bool BanPlayer(PlayerModel player, SqlTransaction transaction);
 	}
 }

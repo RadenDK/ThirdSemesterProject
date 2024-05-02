@@ -27,6 +27,7 @@ namespace GameClientApi.BusinessLogic
             {
 				throw new ArgumentException("Player is banned");
 			}
+            _playerAccessor.SetOnlineStatus(player);
             return BC.Verify(password, storedHashedPassword);
         }
 
@@ -125,9 +126,38 @@ namespace GameClientApi.BusinessLogic
             return players;
         }
 
-        public bool BanPlayer(int id)
+        public bool BanPlayer(string username)
         {
-            return _playerAccessor.BanPlayer(id);
+            SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
+
+            try
+            {
+                PlayerModel player = GetPlayer(username);
+
+                player.Banned = true;
+                if(player.GameLobbyId > 0)
+                {
+                    GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = 0 };
+                    UpdatePlayerLobbyIdCreateGameLobby(player, emptyGameLobbyModel, transaction);
+                    if(player.IsOwner)
+                    {
+                        player.IsOwner = false;
+                        UpdatePlayerOwnership(player, transaction);
+                    }
+                }
+                player.OnlineStatus = false;
+
+                if(_playerAccessor.BanPlayer(player, transaction))
+                {
+                    _playerAccessor.CommitTransaction(transaction);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _playerAccessor.RollbackTransaction(transaction);
+                return false;
+            }
         }
     }
 }
