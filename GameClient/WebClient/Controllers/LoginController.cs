@@ -12,17 +12,18 @@ using WebClient.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
 
-using WebClient.Services;
+using WebClient.BusinessLogic;
+using Humanizer;
 
 namespace WebClient.Controllers
 {
 	public class LoginController : Controller
 	{
-		private readonly IHttpClientService _httpClientService;
+		private readonly ILoginLogic _loginLogic;
 
-		public LoginController(IHttpClientService httpClientService)
+		public LoginController(ILoginLogic loginLogic)
 		{
-			_httpClientService = httpClientService;
+			_loginLogic = loginLogic;
 		}
 
 		// GET: LoginController
@@ -41,52 +42,31 @@ namespace WebClient.Controllers
 		{
 			try
 			{
-				var response = await SendCredentialsToApi(username, password);
+				var response = await _loginLogic.VerifyCredentials(username, password);
 				if (response.IsSuccessStatusCode)
 				{
-					// Retrieve user information from the response or any other source
-					var claims = new List<Claim> {
-					new Claim(ClaimTypes.Name, username)
-					};
+					var player = await _loginLogic.GetPlayerFromResponse(response);
+					var principal = _loginLogic.CreatePrincipal(player);
 
-					var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-					var principal = new ClaimsPrincipal(identity);
-
-					// Sign in the user
+					//Creates an encrypted authentication ticket(cookie) containing the user's principal (identity) information and adds it to the current response.
 					await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-					// Store player's data in the session
-					var playerData = await response.Content.ReadAsStringAsync();
-					var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
-					HttpContext.Session.SetString("Player", JsonSerializer.Serialize(player));
-					HttpContext.Session.SetString("InGameName", player.InGameName);
-
-
-					// If the API returned a 200 status code, redirect to the new view
-					return RedirectToAction("HomePage", "Homepage");
+					return RedirectToAction("HomePage", "Homepage", player);
 				}
 				else
 				{
-					if (response.StatusCode == HttpStatusCode.BadRequest)
-					{
-						ViewBag.ErrorMessage = "Username or password is incorrect.";
-					}
-					// If the API returned a 400 status code, return the same view
-					return View("Index");
+                    if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        ViewBag.ErrorMessage = "Username or password is incorrect.";
+                    }
+                    // If the API returned a 400 status code, return the same view
+                    return View("Index");
 				}
 			}
 			catch
 			{
 				return View("Error");
 			}
-		}
-
-		private async Task<HttpResponseMessage> SendCredentialsToApi(string username, string password)
-		{
-			var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new { Username = username, Password = password }), System.Text.Encoding.UTF8, "application/json");
-			HttpResponseMessage response = await _httpClientService.PostAsync("Player/verify", content);
-			return response;
-
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

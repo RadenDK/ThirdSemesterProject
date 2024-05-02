@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using GameClientApiTests.TestHelpers;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
+using Microsoft.OpenApi.Any;
 
 namespace GameClientApiTests.PlayerControllerTests
 {
@@ -74,7 +75,7 @@ namespace GameClientApiTests.PlayerControllerTests
                 .Returns(false);
             _mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
                 .Returns(false);
-            _mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+            _mockAccessor.Setup(a => a.CreatePlayer(It.IsAny<AccountRegistrationModel>()))
                 .Returns(true);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);

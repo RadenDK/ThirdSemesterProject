@@ -1,5 +1,5 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using GameClientApi.Services;
+using GameClientApi.BusinessLogic;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,11 +16,11 @@ using Azure.Identity;
 using BC = BCrypt.Net.BCrypt;
 
 
-namespace GameClientApiTests.ServicesTests
+namespace GameClientApiTests.BusinessLogicTests
 {
 	[Collection("Sequential")]
 
-	public class PlayerServiceIntergrationTest : IDisposable
+	public class PlayerLogicIntergrationTest : IDisposable
     {
         private IConfiguration _configuration;
 
@@ -28,7 +28,7 @@ namespace GameClientApiTests.ServicesTests
 
         private TestDatabaseHelper _testDatabaseHelper;
 
-        public PlayerServiceIntergrationTest()
+        public PlayerLogicIntergrationTest()
         {
             _configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -53,7 +53,7 @@ namespace GameClientApiTests.ServicesTests
         {
             // Arrange
             IPlayerDatabaseAccessor playerTestDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
-            PlayerService SUT = new PlayerService(_configuration, playerTestDatabaseAccessor);
+            PlayerLogic SUT = new PlayerLogic(_configuration, playerTestDatabaseAccessor);
 
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel
             {

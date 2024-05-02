@@ -1,30 +1,32 @@
 @{
-	Layout = "_LayoutGameClient";
-
+    Layout = "_LayoutGameClient";
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
 }
 
 @section Styles {
-	<link rel="stylesheet" type="text/css" href="~/css/lobby/createLobbyStyle.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/lobby/createLobbyStyle.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/lobby/joinLobbyStyle.css" />
 }
+@RenderSection("Styles", required: false)
 
 <div class="header-layout-lobby">
-	<a asp-controller="GameLobby" asp-action="CreateLobby">Create Custom Lobby</a>
-	<a asp-controller="GameLobby" asp-action="JoinLobby">Join Custom Lobby</a>
+    <div class="custom-lobby-button">
+        <a asp-controller="GameLobby" asp-action="CreateLobby">Create Custom Lobby</a>
+    </div>
+    <div class="custom-lobby-button">
+        <a asp-controller="GameLobby" asp-action="ViewAllGameLobbies">Join Custom Lobby</a>
+    </div>
 </div>
 
 <div>
-	@RenderBody()
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
 </div>
 
 <div class="footer-layout-lobby">
-	<a asp-controller="Homepage" asp-action="Homepage" class="menu-item">
-		<button class="btn btn-dark">
-			<i class="bi bi-x"></i>
-		</button>
-	</a>
+    <a asp-controller="Homepage" asp-action="Homepage" class="menu-item">
+       <button class="noselect"><span class='text'>EXIT</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 15"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/></svg></span></button>
+    </a>
 
-	<button class="btn btn-dark">
-		Join Custom Lobby
-	</button>
 </div>
-

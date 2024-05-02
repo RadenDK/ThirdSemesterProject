@@ -1,0 +1,543 @@
+﻿:root {
+    --primary-gray: rgb(23, 23, 23);
+    --dark-gray: rgb(16, 16, 16);
+    --hover-gray: rgb(42, 42, 42);
+    --primary-blue: rgb(30, 120, 255);
+    --hover-blue: rgb(0, 91, 223);
+    --exit-button-color: rgb(255, 103, 103); /* The color for everything regarding the exit button */
+    --white: rgb(255, 255, 255); /* White color */
+}
+
+
+/* ---- STYLING TIL NAVBAR, FRIENDLIST, PLAY, STORE, COLLECTION, SOCIAL */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--primary-gray) !important;
+    color: var(--white);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+} 
+
+.wrapper {
+    display: flex;
+    height: 100%;
+    overflow: hidden; /* Prevents scrollbars, also on Lobby pages */
+}
+
+.sidebar {
+    width: 300px;
+    height: 100vh;
+    background-color: var(--primary-gray) ;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 300px;
+    overflow-y: hidden;
+}
+
+.main-content-container {
+    flex: 1;
+    z-index: 0;
+    background-color: rgb(16, 16, 16, 0); /* Havent found out how to make variable opacity*/
+}
+
+    .main-content-container h1 {
+        color: white;
+    }
+
+.main-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.section-1 {
+    margin-bottom: 20px;
+    text-decoration: none; /* Removes underline */
+}
+
+.section-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
+.bento-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease-in-out; /* Add transition for smooth color change */
+}
+
+.text-wrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+
+#bento-box-2:hover, #bento-box-3:hover, #bento-box-4:hover {
+    background-color: rgb(42, 42, 42);
+}
+
+#bento-box-1 {
+    padding: 20px 20px;
+    margin: 10px 0px;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+#bento-box-1:hover {
+    background-color: var(--hover-blue);
+    transform: scale(1.05);
+}
+
+#bento-box-1.pressed, #bento-box-2.pressed, #bento-box-3.pressed, #bento-box-4.pressed {
+    transform: scale(0.99);
+    transition: transform 0.1s ease-out;
+}
+
+#bento-box-2:hover, #bento-box-3:hover, #bento-box-4:hover {
+
+    transform: scale(1.05);
+}
+
+#bento-box-2 {
+    align-items: right;
+    align-content: right;
+    padding: 20px 20px;
+    margin: 10px 0px;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+#bento-box-3 {
+    padding: 20px 20px;
+    margin: 10px 0px;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+#bento-box-4 {
+    padding: 20px 20px;
+    margin: 10px 0px;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+#bento-box-5 {
+    padding: 10px 10px;
+}
+
+#bento-box-6 {
+}
+
+#bento-box-7 {
+}
+
+
+.bento-social {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bento-box:hover {
+}
+
+/* IKONER FOR SIDEBAR (FOLDER, SeARCH ICON & ADDFriend) */
+/* Default styling */
+.fas.fa-fire {
+    color: rgb(251, 88, 88); /* Default color */
+    font-size: 30px; /* Adjust size as needed */
+}
+
+    /* Hover effect */
+    .fas.fa-fire:hover {
+    }
+
+.fas.fa-folder {
+    color: rgb(255, 255, 255); /* Default color */
+    font-size: 20px; /* Adjust size as needed */
+    padding: 5px 5px;
+    vertical-align: middle; /* Aligns the icon vertically in the middle */
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+.fas.fa-folder:hover {
+    transform: scale(1.05);
+}
+
+.fas.fa-user-plus {
+    color: rgb(255, 255, 255); /* Default color */
+    font-size: 18px; /* Adjust size as needed */
+    padding: 5px 5px;
+    vertical-align: middle; /* Aligns the icon vertically in the middle */
+    transform: translateY(-1px);
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+.fas.fa-user-plus:hover {
+    transform: scale(1.05);
+}
+
+/* Styles for input[type="text"] not inside any of the bento box classes in createLobbyStyle, maybe there is better way to do this? */
+input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-bento-box input[type="text"]):not(.lobbyPassword-bento-box input[type="text"]):not(.Lobbychat-input input[type="text"]) {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    font-size: 14px;
+}
+
+/* Search bar styling */
+#friendSearch {
+    padding-left: 10px;
+    margin-right: 5px;
+    padding-bottom: 5px;
+}
+
+/* Search bar icon animation */
+.search {
+    border-radius: 30px;
+    background-color: var(--primary-gray);
+    display: table;
+    align-self: flex-start;
+
+    input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%; /* Adjust width to fit within the sidebar */
+    min-width: 0;
+    padding: 0;
+    z-index: 1;
+    position: relative;
+    line-height: 18px;
+    margin: 5px 0;
+    font-size: 14px;
+    -webkit-appearance: none;
+    font-family: inherit;
+    cursor: pointer;
+    color: #ffffff; /* Adjust color to match the sidebar */
+        transition: all 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+        background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+        transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+
+    & + div {
+    position: relative;
+    height: 28px;
+    width: 100%;
+    margin: -28px 0 0 0;
+
+    svg {
+    display: block;
+    position: absolute;
+    height: 28px;
+    width: 100%; /* Adjust width to fit within the sidebar */
+    left: -75%;
+    top: -10%;
+    fill: none;
+    stroke: #ffffff; /* Adjust color to match the sidebar */
+    stroke-width: 1.5px;
+    stroke-dashoffset: 212.908 + 59;
+    stroke-dasharray: 59 212.908;
+    transition: all .6s ease;
+}
+}
+}
+}
+
+.search:hover {
+        cursor: pointer;
+    background-color: rgba(37, 37, 37, 0.68);
+    backdrop-filter: blur(90%);
+    -webkit-backdrop-filter: blur(90%);
+    border-radius: 30px;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+@keyframes slideAndDraw {
+    0% {
+        left: -75%;
+        stroke-dasharray: 59 212.908;
+        stroke-dashoffset: 212.908 + 59;
+    }
+
+    50% {
+        left: 0;
+    }
+
+    100% {
+        left: 0;
+        stroke-dasharray: 150 212.908;
+        stroke-dashoffset: 300;
+    }
+}
+
+@keyframes slideAndDrawReverse {
+    0% {
+        left: 0;
+        stroke-dasharray: 150 212.908;
+        stroke-dashoffset: 300;
+    }
+
+    50% {
+        left: -85%;
+    }
+
+    100% {
+        stroke-dasharray: 59 212.908;
+        stroke-dashoffset: 212.908 + 59;
+    }
+}
+
+.search input.focused + div svg {
+    animation: slideAndDraw 1.2s forwards;
+}
+
+.search input:not(.focused) + div svg {
+    animation: slideAndDrawReverse 1.2s forwards;
+}
+
+/* Style for the friend list */
+
+.friend-list .bento-box {
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0, -0.66, 0.07, 1.33)
+}
+
+.friend-list .bento-box:hover {
+    transform: scale(1.05);
+
+}
+
+
+.friend img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.friends {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+    margin-top: 10px;
+    overflow-x: hidden;
+}
+
+
+.friend {
+    display: flex;
+    align-items: center;
+}
+
+    .friend div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .friend p {
+        margin: 0;
+        padding-top: 0;
+        padding-bottom: 7px;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+    }
+
+    .friend span {
+        font-size: 11px;
+        color: #878787;
+    }
+
+#online {
+    font-size: 11px;
+    color: #e3e3e3;
+}
+
+#play-text {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 35px;
+}
+
+#store-text {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 650;
+}
+
+#collection-text {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 650;
+}
+
+#profile-text {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 650;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: left; /* Aligns items horizontally in the center */
+    align-items: center; /* Aligns items vertically in the center */
+    width: 100%; /* Takes up the full width available */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+    .menu-item .fa-fire {
+        margin-left: 10px;
+        color: rgb(30, 120, 255);
+    }
+
+    .menu-item i, .menu-item img {
+        margin-right: 10px; /* Adds some space to the right of the icon */
+    }
+
+    .menu-item:hover {
+        text-decoration: none;
+    }
+
+    .menu-item img {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+    }
+
+.bento-box img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.footer-layout-lobby .menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.footer-layout-lobby .text{
+    margin-left: 15px;
+}
+
+    .footer-layout-lobby .menu-item:hover .icon {
+        transform: translateX(-5%); /* Moves the SVG to the right */
+    }
+
+
+.header-layout-lobby {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+    .header-layout-lobby a {
+    }
+
+.custom-lobby-button {
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    margin: 10px 10px;
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: color 0.6s cubic-bezier(0.49,-0.36, 0, 0.94),
+    background-color 0.3s cubic-bezier(0.85,-0.27, 0, 1.41),
+    transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
+}
+
+.custom-lobby-button:hover {
+    color: var(--white);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.custom-lobby-button a {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: var(--white);
+    text-decoration: none;
+
+    .custom-lobby-button a:hover {
+        color: var(--white);
+        text-decoration: none;
+    }
+
+    .custom-lobby-button:hover {
+        transform: scale(0.97);
+        transition: transform 0.3s ease;
+    }
+
+    .search-for-lobby-container {
+        display: flex;
+    }
+
+    .header-join-lobby {
+        display: flex;
+    }
+
+    /* SCROLLBAR STYLING, CURRENTLY AFFECTS ALL SCROLLBARS. WILL HAVE TO SPECIFY IF MORE SCROLLBARS ARE PROMINENT*/
+    /* width for scrollbar*/
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px var(--black);
+        border-radius: 30px;
+    }
+
+    /* Handle */
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary-blue);
+        border-radius: 30px;
+        box-shadow: #0a53be;
+    }
+
+    /* Handle on hover */
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--hover-blue);
+    }
+}
+
+
+
+
