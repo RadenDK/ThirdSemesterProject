@@ -64,5 +64,18 @@ namespace GameClientApi.Controllers
 				return BadRequest(new { message = e.Message });
 			}
 		}
+
+		public IActionResult GetListOfPlayers()
+		{
+			try
+			{
+				List<PlayerModel> allPlayers = _playerLogic.GetAllPlayers();
+				return Ok(allPlayers);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }

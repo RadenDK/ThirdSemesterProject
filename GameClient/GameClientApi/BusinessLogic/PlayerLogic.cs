@@ -24,9 +24,9 @@ namespace GameClientApi.BusinessLogic
             return BC.Verify(password, storedHashedPassword);
         }
 
-        public PlayerModel GetPlayer(string userName)
+        public PlayerModel GetPlayer(string username)
         {
-            PlayerModel playerData = _playerAccessor.GetPlayer(userName);
+            PlayerModel playerData = _playerAccessor.GetPlayer(username);
             if (playerData == null)
             {
                 throw new Exception("Player not found");
@@ -113,6 +113,11 @@ namespace GameClientApi.BusinessLogic
 
         }
 
+        public List<PlayerModel> GetAllPlayers()
+        {
+            List<PlayerModel> players = _playerAccessor.GetAllPlayers();
+            return players;
+        }
 
     }
 }
