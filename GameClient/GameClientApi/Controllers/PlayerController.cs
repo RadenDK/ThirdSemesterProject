@@ -65,6 +65,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
+		[HttpGet("AllPlayers")]
 		public IActionResult GetListOfPlayers()
 		{
 			try
