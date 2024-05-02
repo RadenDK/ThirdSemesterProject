@@ -28,5 +28,7 @@ namespace GameClientApi.DatabaseAccessors
 		void CommitTransaction(SqlTransaction sqlTransaction);
 
 		void RollbackTransaction(SqlTransaction sqlTransaction);
+
+		bool BanPlayer(int id);
 	}
 }

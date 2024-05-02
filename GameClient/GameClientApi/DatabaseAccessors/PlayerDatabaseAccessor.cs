@@ -183,8 +183,19 @@ namespace GameClientApi.DatabaseAccessors
 			}
 		}
 
+        public bool BanPlayer(int id)
+        {
+            string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
 
-		public SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                int rowsAffected = connection.Execute(banPlayerQuery, new { Banned = true, Id = id });
+                return rowsAffected > 0;
+            }
+        }
+
+        public SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
 		{
 			SqlConnection connection = new SqlConnection(_connectionString);
 			connection.Open();

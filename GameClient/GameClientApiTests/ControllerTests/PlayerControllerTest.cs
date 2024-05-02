@@ -239,6 +239,23 @@ namespace GameClientApiTests.PlayerControllerTests
             Assert.IsType<BadRequestObjectResult>(testResult);
         }
 
-		
-	}
+        [Fact]
+        public void BanPlayer_TC1_ReturnsOKWhenPlayerIsBanned()
+        {
+            // Arrange
+            int playerIdToBan = 1;
+
+            _mockAccessor.Setup(a => a.BanPlayer(playerIdToBan)).Returns(true);
+
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            //Act
+            IActionResult testResult = SUT.BanPlayer(playerIdToBan);
+
+            // Assert
+            Assert.IsType<OkResult>(testResult);
+        }
+
+
+    }
 }
