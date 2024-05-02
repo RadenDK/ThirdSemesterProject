@@ -23,8 +23,6 @@ namespace GameClientApi.DatabaseAccessors
 
 		PlayerModel GetPlayer(string userName);
 
-		bool BanPlayer(int id);
-
 		SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
 		void CommitTransaction(SqlTransaction sqlTransaction);

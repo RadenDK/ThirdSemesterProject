@@ -113,9 +113,6 @@ namespace GameClientApi.BusinessLogic
 
         }
 
-        public bool BanPlayer(int id)
-        {
-            return _playerAccessor.BanPlayer(id);
-        }
+
     }
 }
