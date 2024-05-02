@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameClientApiTests", "GameC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClientTest", "WebClientTest\WebClientTest.csproj", "{CC7866F3-B6F4-4D60-B291-FD63B901E13D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopClient", "DesktopClient\DesktopClient.csproj", "{C7CEABBE-0AB2-4EFD-9C37-F932C20EBA93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC7866F3-B6F4-4D60-B291-FD63B901E13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CEABBE-0AB2-4EFD-9C37-F932C20EBA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CEABBE-0AB2-4EFD-9C37-F932C20EBA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CEABBE-0AB2-4EFD-9C37-F932C20EBA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CEABBE-0AB2-4EFD-9C37-F932C20EBA93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
