@@ -15,12 +15,6 @@ namespace WebClient.Controllers
             _gameLobbyLogic = gameLobbyLogic;
         }
 
-        [HttpGet]
-        public IActionResult CreateLobby()
-        {
-            return View();
-        }
-
 		[HttpGet("GameLobby")]
 		public IActionResult GameLobby()
 		{
