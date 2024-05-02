@@ -66,17 +66,17 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPatch("ban")]
-        public IActionResult BanPlayer(int id)
+        public IActionResult BanPlayer(string username)
         {
             try
             {
-                if (_playerLogic.BanPlayer(id))
+                if (_playerLogic.BanPlayer(username))
                 {
                     return Ok();
                 }
                 else
                 {
-                    return BadRequest(new { message = "Player: " + id + "was not banned successfully" });
+                    return BadRequest(new { message = "Player: " + username + "was not banned successfully" });
                 }
 
             }
