@@ -146,12 +146,15 @@ namespace GameClientApi.BusinessLogic
                     }
                 }
                 player.OnlineStatus = false;
+                _playerAccessor.SetOnlineStatus(player, transaction);
 
-                if(_playerAccessor.BanPlayer(player, transaction))
+                if(!_playerAccessor.BanPlayer(player, transaction))
                 {
-                    _playerAccessor.CommitTransaction(transaction);
+                    return false;
                 }
+                _playerAccessor.CommitTransaction(transaction);
                 return true;
+
             }
             catch (Exception ex)
             {
