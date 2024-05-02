@@ -1,4 +1,4 @@
-    use [DMA-CSD-V23_10485521];
+use [DMA-CSD-V23_10485521];
 
     -- Drop tables in reverse order of creation
     DROP TABLE IF EXISTS [Order];
@@ -7,10 +7,13 @@
     DROP TABLE IF EXISTS ChatEmojis;
     DROP TABLE IF EXISTS Item;
     DROP TABLE IF EXISTS FriendList;
-    DROP TABLE IF EXISTS Message;
+    DROP TABLE IF EXISTS [Message];
     DROP TABLE IF EXISTS Player;
     DROP TABLE IF EXISTS GameLobby;
     DROP TABLE IF EXISTS Chat;
+    DROP TABLE IF EXISTS [Admin];
+    DROP TABLE IF EXISTS [Address];
+    DROP TABLE IF EXISTS [City];
 
 
     -- Creating the tables
@@ -27,7 +30,7 @@
         GameLobbyID INT IDENTITY(1,1) PRIMARY KEY,
         LobbyName NVARCHAR (50) NOT NULL,
         AmountOfPlayers INT DEFAULT 10,
-        PasswordHash NVARCHAR (50) DEFAULT NULL,
+        PasswordHash NVARCHAR (MAX) DEFAULT NULL,
         InviteLink VARCHAR (50) NOT NULL,
         LobbyChatId INT NOT NULL,
         FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID)
@@ -37,7 +40,7 @@
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR (50) NOT NULL,
-        PasswordHash NVARCHAR (200) NOT NULL,
+        PasswordHash NVARCHAR (MAX) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
         Email VARCHAR (50) DEFAULT NULL,
         Birthday DATETIME NOT NULL,
@@ -46,6 +49,7 @@
         CurrencyAmount INT DEFAULT 0,
         GameLobbyID INT DEFAULT NULL,
         OnlineStatus bit DEFAULT 0,
+        IsOwner bit DEFAULT 0,
         FOREIGN KEY (GameLobbyID) REFERENCES GameLobby(GameLobbyID)
     );
 
@@ -112,6 +116,34 @@
         FOREIGN KEY (ItemCopyID) REFERENCES ItemCopy(ItemCopyID),
         FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID)
     );
+
+     CREATE TABLE City (
+        ZipCode INT PRIMARY KEY,
+        CityName NVARCHAR (50) NOT NULL
+    );
+    
+    CREATE TABLE [Address] (
+            AddressId INT IDENTITY(1,1) PRIMARY KEY,
+            StreetName NVARCHAR (50) NOT NULL,
+            StreetNumber INT NOT NULL,
+            ZipCode INT NOT NULL,
+            FOREIGN KEY (ZipCode) REFERENCES City(ZipCode)
+        );
+
+    CREATE TABLE Admin (
+            AdminID INT IDENTITY(1,1) PRIMARY KEY,
+            [Name] NVARCHAR (50) NOT NULL,
+            Email VARCHAR (50) NOT NULL,
+            CprNumber VARCHAR (10) NOT NULL UNIQUE,
+            PhoneNumber VARCHAR (10) NOT NULL,
+            AddressId INT NOT NULL,
+            PasswordHash NVARCHAR (MAX) NOT NULL,
+            FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+        );
+
+   
+
+
 
 
     -- Inserting mock data
