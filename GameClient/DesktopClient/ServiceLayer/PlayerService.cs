@@ -19,7 +19,11 @@ namespace DesktopClient.ServiceLayer
 			_httpClientService = httpClientService;
 		}
 
-		public async Task<List<PlayerModel>> GetAllPlayers()
+        public PlayerService()
+        {
+        }
+
+        public async Task<List<PlayerModel>> GetAllPlayers()
 		{
 			string endpoint = "Player/AllPlayers";
 
@@ -41,7 +45,7 @@ namespace DesktopClient.ServiceLayer
 			string endpoint = "Player/ban";
 
 			StringContent content = new StringContent(
-				JsonConvert.SerializeObject(new { Userename = username }),
+				JsonConvert.SerializeObject(new { username = username }),
 				Encoding.UTF8,
 				"application/json");
 
