@@ -5,5 +5,5 @@ namespace GameClientApi.DatabaseAccessors;
 public interface IAdminDatabaseAccessor
 {
         string? GetPassword(int adminId);
-        AdminModel GetAdmin(int adminId);
+        AdminLoginModel GetAdmin(int adminId);
 }
