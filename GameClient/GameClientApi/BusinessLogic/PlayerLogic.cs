@@ -145,8 +145,10 @@ namespace GameClientApi.BusinessLogic
                         UpdatePlayerOwnership(player, transaction);
                     }
                 }
-                player.OnlineStatus = false;
-                _playerAccessor.SetOnlineStatus(player, transaction);
+                if (player.OnlineStatus) 
+                {
+                    _playerAccessor.SetOfflineStatus(player, transaction);
+                }
 
                 if(!_playerAccessor.BanPlayer(player, transaction))
                 {
