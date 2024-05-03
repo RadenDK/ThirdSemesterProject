@@ -4,7 +4,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace GameClientApi.BusinessLogic
 {
-    public class AdminLogic
+    public class AdminLogic : IAdminLogic
     {
         IAdminDatabaseAccessor _adminAccessor;
 
@@ -23,9 +23,9 @@ namespace GameClientApi.BusinessLogic
             return BC.Verify(password, storedHashedPassword);
         }
 
-        public AdminModel GetAdmin(int adminId)
+        public AdminLoginModel GetAdmin(int adminId)
         {
-            AdminModel adminData = _adminAccessor.GetAdmin(adminId);
+            AdminLoginModel adminData = _adminAccessor.GetAdmin(adminId);
             if (adminData == null)
             {
                 throw new Exception("Admin not found");
