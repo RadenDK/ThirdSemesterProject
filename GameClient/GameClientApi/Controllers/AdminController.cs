@@ -17,14 +17,15 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPost("verify")]
-        public IActionResult VerifyAdminLogin(int adminId, string password)
+        public IActionResult VerifyAdminLogin(AdminLoginModel adminLoginModel
+        )
         {
             try
             {
-                bool adminExists = _adminLogic.VerifyLogin(adminId, password);
+                bool adminExists = _adminLogic.VerifyLogin(adminLoginModel.AdminId, adminLoginModel.PasswordHash);
                 if (adminExists)
                 {
-                    var admin = _adminLogic.GetAdmin(adminId);
+                    var admin = _adminLogic.GetAdmin(adminLoginModel.AdminId);
                     return Ok(admin);
                 }
                 else
