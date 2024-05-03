@@ -25,14 +25,14 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public AdminModel GetAdmin(int adminId)
+        public AdminLoginModel GetAdmin(int adminId)
         {
             string selectQueryString = "SELECT * FROM Admin WHERE AdminId = @AdminId";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                var admin = connection.QuerySingleOrDefault<AdminModel>(selectQueryString, new { AdminId = adminId });
+                var admin = connection.QuerySingleOrDefault<AdminLoginModel>(selectQueryString, new { AdminId = adminId });
                 return admin;
             }
         }
