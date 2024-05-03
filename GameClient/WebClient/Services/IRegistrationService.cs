@@ -6,6 +6,6 @@ namespace WebClient.Services
 {
     public interface IRegistrationService
     {
-        Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount);
+        Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount, string accessToken);
     }
 }
