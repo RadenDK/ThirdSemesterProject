@@ -14,9 +14,12 @@ namespace WebClient.Services
         {
             _httpClientService = httpClientService;
         }
-        public async Task<HttpResponseMessage> VerifyPlayerCredentials(string username, string password)
+        public async Task<HttpResponseMessage> VerifyPlayerCredentials(string username, string password, string accessToken)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(new { Username = username, Password = password }), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(new { Username = username, Password = password }), Encoding.UTF8, "application/json");
+            
+            _httpClientService.SetAuthenticationHeader(accessToken);
+
             return await _httpClientService.PostAsync("Player/verify", content);
         }
 	}
