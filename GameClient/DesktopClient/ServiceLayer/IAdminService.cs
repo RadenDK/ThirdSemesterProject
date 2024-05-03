@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DesktopClient.ServiceLayer
 {
-    internal interface IAdminService
+    public interface IAdminService
     {
+        public Task<HttpResponseMessage> VerifyAdminLoginCredentials(int adminId, string password);
     }
 }

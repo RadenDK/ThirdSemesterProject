@@ -3,16 +3,24 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DesktopClient.ServiceLayer;
+using DesktopClient.Services;
 
 namespace DesktopClient.ServiceLayer
 {
     public class AdminService : IAdminService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientService _httpClientService;
 
-        public AdminService()
+        public AdminService(IHttpClientService httpClientService)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5198/") };
+            _httpClientService = httpClientService;
+        }
+
+
+        public async Task<HttpResponseMessage> VerifyAdminLoginCredentials(int adminId, string password)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(new { AdminId = adminId, PasswordHash = password }), Encoding.UTF8, "application/json");
+            return await _httpClientService.PostAsync("Admin/verify", content);
         }
     }
 }

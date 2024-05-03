@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopClient.ControllerLayer
 {
-    internal class AdminController
+    public class AdminController
     {
     }
 }
