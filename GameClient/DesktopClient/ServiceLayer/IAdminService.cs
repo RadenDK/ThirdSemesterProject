@@ -8,6 +8,6 @@ namespace DesktopClient.ServiceLayer
 {
     public interface IAdminService
     {
-        public Task<HttpResponseMessage> VerifyAdminLoginCredentials(int adminId, string password);
+        public Task<bool> VerifyAdminLoginCredentials(int adminId, string password);
     }
 }
