@@ -17,8 +17,7 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPost("verify")]
-        public IActionResult VerifyAdminLogin(AdminLoginModel adminLoginModel
-        )
+        public IActionResult VerifyAdminLogin(AdminLoginModel adminLoginModel)
         {
             try
             {
