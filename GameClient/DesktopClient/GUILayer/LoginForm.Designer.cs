@@ -28,64 +28,82 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBoxPassword = new TextBox();
             textboxUserName = new TextBox();
             loginLabel = new Label();
             userNameLabel = new Label();
             passwordLabel = new Label();
+            loginButton = new Button();
+            maskedTextBox1 = new MaskedTextBox();
             SuspendLayout();
-            // 
-            // textBoxPassword
-            // 
-            textBoxPassword.Location = new Point(293, 236);
-            textBoxPassword.Name = "textBoxPassword";
-            textBoxPassword.Size = new Size(274, 27);
-            textBoxPassword.TabIndex = 0;
             // 
             // textboxUserName
             // 
-            textboxUserName.Location = new Point(293, 147);
+            textboxUserName.Location = new Point(256, 110);
+            textboxUserName.Margin = new Padding(3, 2, 3, 2);
             textboxUserName.Name = "textboxUserName";
-            textboxUserName.Size = new Size(274, 27);
+            textboxUserName.Size = new Size(240, 23);
             textboxUserName.TabIndex = 1;
+            textboxUserName.TextChanged += textboxUserName_TextChanged;
             // 
             // loginLabel
             // 
             loginLabel.AutoSize = true;
-            loginLabel.Location = new Point(293, 50);
+            loginLabel.Location = new Point(256, 38);
             loginLabel.Name = "loginLabel";
-            loginLabel.Size = new Size(46, 20);
+            loginLabel.Size = new Size(37, 15);
             loginLabel.TabIndex = 2;
             loginLabel.Text = "Login";
             // 
             // userNameLabel
             // 
             userNameLabel.AutoSize = true;
-            userNameLabel.Location = new Point(293, 124);
+            userNameLabel.Location = new Point(256, 93);
             userNameLabel.Name = "userNameLabel";
-            userNameLabel.Size = new Size(78, 20);
+            userNameLabel.Size = new Size(63, 15);
             userNameLabel.TabIndex = 3;
             userNameLabel.Text = "Username:";
+            userNameLabel.Click += userNameLabel_Click;
             // 
             // passwordLabel
             // 
             passwordLabel.AutoSize = true;
-            passwordLabel.Location = new Point(293, 213);
+            passwordLabel.Location = new Point(256, 160);
             passwordLabel.Name = "passwordLabel";
-            passwordLabel.Size = new Size(73, 20);
+            passwordLabel.Size = new Size(60, 15);
             passwordLabel.TabIndex = 4;
             passwordLabel.Text = "Password:";
+            passwordLabel.Click += passwordLabel_Click;
+            // 
+            // loginButton
+            // 
+            loginButton.Location = new Point(256, 230);
+            loginButton.Name = "loginButton";
+            loginButton.Size = new Size(75, 23);
+            loginButton.TabIndex = 5;
+            loginButton.Text = "Login";
+            loginButton.UseVisualStyleBackColor = true;
+            loginButton.Click += loginButton_Click;
+            // 
+            // maskedTextBox1
+            // 
+            maskedTextBox1.Location = new Point(256, 182);
+            maskedTextBox1.Name = "maskedTextBox1";
+            maskedTextBox1.Size = new Size(240, 23);
+            maskedTextBox1.TabIndex = 6;
+            maskedTextBox1.MaskInputRejected += maskedTextBox1_MaskInputRejected;
             // 
             // LoginForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(700, 338);
+            Controls.Add(maskedTextBox1);
+            Controls.Add(loginButton);
             Controls.Add(passwordLabel);
             Controls.Add(userNameLabel);
             Controls.Add(loginLabel);
             Controls.Add(textboxUserName);
-            Controls.Add(textBoxPassword);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "LoginForm";
             Text = "Form1";
             ResumeLayout(false);
@@ -93,11 +111,11 @@
         }
 
         #endregion
-
-        private TextBox textBoxPassword;
         private TextBox textboxUserName;
         private Label loginLabel;
         private Label userNameLabel;
         private Label passwordLabel;
+        private Button loginButton;
+        private MaskedTextBox maskedTextBox1;
     }
 }
