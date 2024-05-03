@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPlayerDatabaseAccessor, PlayerDatabaseAccessor>();
 builder.Services.AddScoped<IGameLobbyDatabaseAccessor, GameLobbyDatabaseAccessor>();
+builder.Services.AddScoped<IAdminDatabaseAccessor, AdminDatabaseAccessor>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
