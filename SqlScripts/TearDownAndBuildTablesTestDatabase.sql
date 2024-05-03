@@ -137,6 +137,7 @@ use [DMA-CSD-V23_10478735];
             CprNumber VARCHAR (10) NOT NULL UNIQUE,
             PhoneNumber VARCHAR (10) NOT NULL,
             AddressId INT NOT NULL,
+            PasswordHash NVARCHAR (MAX) NOT NULL,
             FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
         );
 

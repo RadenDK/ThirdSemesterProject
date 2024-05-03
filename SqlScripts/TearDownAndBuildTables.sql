@@ -1,4 +1,4 @@
-    use [DMA-CSD-V23_10485521];
+use [DMA-CSD-V23_10485521];
 
     -- Drop tables in reverse order of creation
     DROP TABLE IF EXISTS [Order];
@@ -7,10 +7,13 @@
     DROP TABLE IF EXISTS ChatEmojis;
     DROP TABLE IF EXISTS Item;
     DROP TABLE IF EXISTS FriendList;
-    DROP TABLE IF EXISTS Message;
+    DROP TABLE IF EXISTS [Message];
     DROP TABLE IF EXISTS Player;
     DROP TABLE IF EXISTS GameLobby;
     DROP TABLE IF EXISTS Chat;
+    DROP TABLE IF EXISTS [Admin];
+    DROP TABLE IF EXISTS [Address];
+    DROP TABLE IF EXISTS [City];
 
 
     -- Creating the tables
@@ -27,7 +30,7 @@
         GameLobbyID INT IDENTITY(1,1) PRIMARY KEY,
         LobbyName NVARCHAR (50) NOT NULL,
         AmountOfPlayers INT DEFAULT 10,
-        PasswordHash NVARCHAR (50) DEFAULT NULL,
+        PasswordHash NVARCHAR (MAX) DEFAULT NULL,
         InviteLink VARCHAR (50) NOT NULL,
         LobbyChatId INT NOT NULL,
         FOREIGN KEY (LobbyChatId) REFERENCES Chat(ChatID)
@@ -37,7 +40,7 @@
     CREATE TABLE Player(
         PlayerID INT IDENTITY(1,1) PRIMARY KEY,
         Username NVARCHAR (50) NOT NULL,
-        PasswordHash NVARCHAR (200) NOT NULL,
+        PasswordHash NVARCHAR (MAX) NOT NULL,
         InGameName NVARCHAR (50) NOT NULL,
         Email VARCHAR (50) DEFAULT NULL,
         Birthday DATETIME NOT NULL,
@@ -46,6 +49,7 @@
         CurrencyAmount INT DEFAULT 0,
         GameLobbyID INT DEFAULT NULL,
         OnlineStatus bit DEFAULT 0,
+        IsOwner bit DEFAULT 0,
         FOREIGN KEY (GameLobbyID) REFERENCES GameLobby(GameLobbyID)
     );
 
@@ -113,6 +117,34 @@
         FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID)
     );
 
+     CREATE TABLE City (
+        ZipCode INT PRIMARY KEY,
+        CityName NVARCHAR (50) NOT NULL
+    );
+    
+    CREATE TABLE [Address] (
+            AddressId INT IDENTITY(1,1) PRIMARY KEY,
+            StreetName NVARCHAR (50) NOT NULL,
+            StreetNumber INT NOT NULL,
+            ZipCode INT NOT NULL,
+            FOREIGN KEY (ZipCode) REFERENCES City(ZipCode)
+        );
+
+    CREATE TABLE Admin (
+            AdminID INT IDENTITY(1,1) PRIMARY KEY,
+            [Name] NVARCHAR (50) NOT NULL,
+            Email VARCHAR (50) NOT NULL,
+            CprNumber VARCHAR (10) NOT NULL UNIQUE,
+            PhoneNumber VARCHAR (10) NOT NULL,
+            AddressId INT NOT NULL,
+            PasswordHash NVARCHAR (MAX) NOT NULL,
+            FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+        );
+
+   
+
+
+
 
     -- Inserting mock data
 
@@ -168,5 +200,20 @@ INSERT INTO Player (Username, PasswordHash, InGameName, Birthday, Email) VALUES 
     INSERT INTO FriendList (Player1ID, Player2ID) VALUES (7, 8);
     INSERT INTO FriendList (Player1ID, Player2ID) VALUES (1, 3);
     INSERT INTO FriendList (Player1ID, Player2ID, chatId) VALUES (1, 5, 4);
+
+
+    -- Insert data into City
+INSERT INTO City (ZipCode, CityName) VALUES (1000, 'Copenhagen');
+INSERT INTO City (ZipCode, CityName) VALUES (2000, 'Frederiksberg');
+
+
+-- Insert data into Address
+INSERT INTO Address (StreetName, StreetNumber, ZipCode) VALUES ('Main Street', 1, 1000);
+INSERT INTO Address (StreetName, StreetNumber, ZipCode) VALUES ('Second Street', 2, 2000);
+
+
+-- Insert an admin named admin1 with password admin1
+INSERT INTO Admin ([Name], Email, CprNumber, PhoneNumber, AddressId, PasswordHash) 
+VALUES ('admin1', 'admin1@example.com', '1234567890', '1234567890', 1, 'admin1');
 
 

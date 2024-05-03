@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopClient.ModelLayer
+namespace DesktopClient.ControllerLayer
 {
-    internal class ModelLayerClass
+    internal class AdminController
     {
     }
 }

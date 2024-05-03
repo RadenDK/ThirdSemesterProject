@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopClient.ServiceLayer
 {
-    internal class ServiceLayerClass
+    internal interface IAdminService
     {
     }
 }
