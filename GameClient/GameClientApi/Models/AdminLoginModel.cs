@@ -1,6 +1,6 @@
 namespace GameClientApi.Models;
 
-public class AdminModel
+public class AdminLoginModel
 {
         public int AdminId { get; }
         public string PasswordHash { get; set; }
