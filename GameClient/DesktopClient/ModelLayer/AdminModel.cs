@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DesktopClient.ModelLayer
 {
-    internal class Admin
+    public class AdminModel
+
     {
     }
 }
