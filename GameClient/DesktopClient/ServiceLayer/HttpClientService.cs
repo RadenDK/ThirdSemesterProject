@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace WebClient.Services
+namespace DesktopClient.Services
 {
 	public class HttpClientService : IHttpClientService
 	{
@@ -35,6 +35,11 @@ namespace WebClient.Services
 		public async Task<HttpResponseMessage> GetAsync(string url)
 		{
 			return await _httpClient.GetAsync(url);
+		}
+
+		public async Task<HttpResponseMessage> PatchAsync(string url, StringContent content)
+		{
+			return await _httpClient.PatchAsync(url, content);
 		}
 
 	}
