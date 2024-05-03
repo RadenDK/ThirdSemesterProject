@@ -1,4 +1,5 @@
 using GameClientApi.DatabaseAccessors;
+using GameClientApi.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPlayerDatabaseAccessor, PlayerDatabaseAccessor>();
 builder.Services.AddScoped<IGameLobbyDatabaseAccessor, GameLobbyDatabaseAccessor>();
+builder.Services.AddScoped<ISecurityHelper, SecurityHelper>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
