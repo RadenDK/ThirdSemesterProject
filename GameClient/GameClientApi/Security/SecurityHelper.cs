@@ -1,5 +1,4 @@
 ﻿using GameClientApi.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -94,7 +93,7 @@ namespace GameClientApi.Security
 			ClaimsPrincipal claims = GetPrincipalFromExpiredToken(refreshToken);
 			Claim roleClaim = claims.FindFirst(ClaimTypes.Role);
 
-			if (roleClaim != null)
+			if (roleClaim == null)
 			{
 				return null;
 			}
