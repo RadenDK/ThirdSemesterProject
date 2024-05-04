@@ -10,13 +10,11 @@ namespace WebClient.Security
 	{
 		private readonly IConfiguration _configuration;
 		private readonly ITokenService _tokenService;
-		private IHttpContextAccessor _httpContextAccessor;
 
-		public TokenManager(IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+		public TokenManager(IConfiguration configuration, ITokenService tokenService)
 		{
 			_configuration = configuration;
 			_tokenService = tokenService;
-			_httpContextAccessor = httpContextAccessor;
 		}
 		
 		public async Task<string> GetAccessToken()
@@ -29,7 +27,8 @@ namespace WebClient.Security
 
 			else if (TokenIsExpired(WebClientJwtContainer.AccessToken))
 			{
-				TokensModel newTokens = await _tokenService.RefreshTokens(WebClientJwtContainer.RefreshToken);
+				RefreshRequestModel refreshRequest = new RefreshRequestModel { RefreshToken = WebClientJwtContainer.RefreshToken};
+				TokensModel newTokens = await _tokenService.RefreshTokens(refreshRequest);
 				if (string.IsNullOrEmpty(newTokens.AccessToken))
 				{
 					newTokens = await GetNewTokens();
