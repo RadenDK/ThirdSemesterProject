@@ -7,13 +7,13 @@ namespace WebClient.Services
     public class HttpClientService : IHttpClientService
     {
         private readonly HttpClient _httpClient;
-        private Uri BaseAddress;
+        private Uri BaseAddress = new Uri("https://localhost:7092");
 
     public HttpClientService(HttpClient httpClient)
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("http://localhost:5198/")
+                BaseAddress = BaseAddress
             };
 
             _httpClient.DefaultRequestHeaders.Accept.Clear();
