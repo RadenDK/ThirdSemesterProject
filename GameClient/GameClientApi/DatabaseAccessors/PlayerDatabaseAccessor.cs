@@ -43,34 +43,34 @@ namespace GameClientApi.DatabaseAccessors
 
 		public bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null)
 		{
-            string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
+			string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
 
-            IDbConnection connection;
-            if (transaction != null)
-            {
-                connection = transaction.Connection;
-            }
-            else
-            {
-                connection = new SqlConnection(_connectionString);
-                connection.Open();
-            }
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
 
-            int rowsAffected = connection.Execute(updateQueryString, new
-            {
+			int rowsAffected = connection.Execute(updateQueryString, new
+			{
 				Username = player.Username
-            }, transaction: transaction);
+			}, transaction: transaction);
 
-            if (transaction == null)
-            {
-                connection.Close();
-            }
+			if (transaction == null)
+			{
+				connection.Close();
+			}
 
-            return rowsAffected > 0;
+			return rowsAffected > 0;
 
 
 
-        }
+		}
 
 		public List<PlayerModel> GetAllPlayers()
 		{
@@ -227,35 +227,35 @@ namespace GameClientApi.DatabaseAccessors
 			}
 		}
 
-        public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
-        {
-            string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
+		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		{
+			string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
 
-            IDbConnection connection;
-            if (transaction != null)
-            {
-                connection = transaction.Connection;
-            }
-            else
-            {
-                connection = new SqlConnection(_connectionString);
-                connection.Open();
-            }
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
 
-            int rowsAffected = connection.Execute(banPlayerQuery, new
-            {
-                Banned = player.Banned,
-                PlayerId = player.PlayerId
-            }, transaction: transaction);
+			int rowsAffected = connection.Execute(banPlayerQuery, new
+			{
+				Banned = player.Banned,
+				PlayerId = player.PlayerId
+			}, transaction: transaction);
 
-			if(transaction == null)
+			if (transaction == null)
 			{
 				connection.Close();
 			}
 			return rowsAffected > 0;
-        }
+		}
 
-        public SqlTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
+		public SqlTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
 		{
 			SqlConnection connection = new SqlConnection(_connectionString);
 			connection.Open();
@@ -266,42 +266,12 @@ namespace GameClientApi.DatabaseAccessors
 
 		public void CommitTransaction(SqlTransaction sqlTransaction)
 		{
-			try
-			{
-				sqlTransaction.Commit();
-			}
-			finally
-			{
-				try
-				{
-					sqlTransaction.Connection.Close();
-				}
-				catch (NullReferenceException ex)
-				{
-
-				}
-			}
+			sqlTransaction.Commit();
 		}
 
 		public void RollbackTransaction(SqlTransaction sqlTransaction)
 		{
-			try
-			{
-				sqlTransaction.Rollback();
-			}
-			finally
-			{
-				try
-				{
-					sqlTransaction.Connection.Close();
-				}
-				catch (NullReferenceException ex)
-				{
-
-				}
-			}
+			sqlTransaction.Rollback();
 		}
-
-
 	}
 }
