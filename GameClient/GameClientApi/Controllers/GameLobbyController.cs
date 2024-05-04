@@ -3,11 +3,13 @@ using GameClientApi.Models;
 using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameClientApi.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
+	[Authorize]
 	public class GameLobbyController : Controller
 	{
 

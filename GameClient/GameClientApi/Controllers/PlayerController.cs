@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
 using GameClientApi.DatabaseAccessors;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameClientApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class PlayerController : Controller
     {
 
