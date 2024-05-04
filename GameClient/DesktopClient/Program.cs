@@ -1,3 +1,7 @@
+using DesktopClient.ControllerLayer;
+using DesktopClient.ServiceLayer;
+using DesktopClient.Services;
+
 namespace DesktopClient
 {
     internal static class Program
@@ -8,10 +12,17 @@ namespace DesktopClient
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            // Create services required by AdminController
+            IAdminService adminService = new AdminService(new HttpClientService());
+
+            // Create an instance of AdminController
+            AdminController adminController = new AdminController(adminService);
+
+            
             ApplicationConfiguration.Initialize();
-            Application.Run(new LoginForm());
+
+
+            Application.Run(new LoginForm(adminController));
         }
     }
 }
