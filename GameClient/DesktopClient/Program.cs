@@ -12,8 +12,14 @@ namespace DesktopClient
         [STAThread]
         static void Main()
         {
+            // Create httpClient required by HttpClientService
+            HttpClient httpClient = new HttpClient();
+
+            // Create HttpClientService required by AdminService
+            IHttpClientService httpClientService = new HttpClientService(httpClient);
+
             // Create services required by AdminController
-            IAdminService adminService = new AdminService(new HttpClientService());
+            IAdminService adminService = new AdminService(httpClientService);
 
             // Create an instance of AdminController
             AdminController adminController = new AdminController(adminService);

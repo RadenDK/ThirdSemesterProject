@@ -43,7 +43,6 @@
             textboxUserName.Name = "textboxUserName";
             textboxUserName.Size = new Size(240, 23);
             textboxUserName.TabIndex = 1;
-            textboxUserName.TextChanged += textboxUserName_TextChanged;
             // 
             // loginLabel
             // 
