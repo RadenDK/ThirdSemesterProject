@@ -23,7 +23,7 @@
 
 
 // Attach a click event listener to each table header
-$('th').click(function () {
+$('th').dblclick(function () {
     var table = $(this).parents('table').eq(0);
     var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
     this.asc = !this.asc;
