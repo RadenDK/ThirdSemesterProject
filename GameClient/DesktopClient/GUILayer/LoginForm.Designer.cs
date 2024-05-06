@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textboxUserName = new TextBox();
+            textboxAdminId = new TextBox();
             loginLabel = new Label();
             userNameLabel = new Label();
             passwordLabel = new Label();
@@ -36,13 +36,13 @@
             maskedPasswordTextBox = new MaskedTextBox();
             SuspendLayout();
             // 
-            // textboxUserName
+            // textboxAdminId
             // 
-            textboxUserName.Location = new Point(256, 110);
-            textboxUserName.Margin = new Padding(3, 2, 3, 2);
-            textboxUserName.Name = "textboxUserName";
-            textboxUserName.Size = new Size(240, 23);
-            textboxUserName.TabIndex = 1;
+            textboxAdminId.Location = new Point(256, 110);
+            textboxAdminId.Margin = new Padding(3, 2, 3, 2);
+            textboxAdminId.Name = "textboxAdminId";
+            textboxAdminId.Size = new Size(240, 23);
+            textboxAdminId.TabIndex = 1;
             // 
             // loginLabel
             // 
@@ -101,7 +101,7 @@
             Controls.Add(passwordLabel);
             Controls.Add(userNameLabel);
             Controls.Add(loginLabel);
-            Controls.Add(textboxUserName);
+            Controls.Add(textboxAdminId);
             Margin = new Padding(3, 2, 3, 2);
             Name = "LoginForm";
             Text = "Form1";
@@ -110,7 +110,7 @@
         }
 
         #endregion
-        private TextBox textboxUserName;
+        private TextBox textboxAdminId;
         private Label loginLabel;
         private Label userNameLabel;
         private Label passwordLabel;

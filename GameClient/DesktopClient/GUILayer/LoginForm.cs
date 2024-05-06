@@ -15,13 +15,13 @@ namespace DesktopClient
 
         private async void loginButton_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(textboxUserName.Text, out int adminId))
+            if (!int.TryParse(textboxAdminId.Text, out int adminId))
             {
                 MessageBox.Show("Enter valid admin id");
                 return;
             }
 
-            string password = maskedTextBox1.Text;
+            string password = maskedPasswordTextBox.Text;
 
             try
             {
@@ -36,6 +36,10 @@ namespace DesktopClient
                 {
                     MessageBox.Show("Login Failed. Please check your credentials.");
                 }
+            } // Handles Exceptions from the VerifyLogin method
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -58,7 +62,7 @@ namespace DesktopClient
 
         }
 
-        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        private void maskedPasswordTextBox_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
 
         }
