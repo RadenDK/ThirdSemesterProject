@@ -13,14 +13,14 @@ namespace DesktopClient.GUILayer
 			ShowAdminDashboardForm();
 		}
 
-		public void ShowLoginForm()
-		{
-			CloseCurrentForm();
+		//public void ShowLoginForm()
+		//{
+		//	CloseCurrentForm();
 
-			LoginForm loginForm = GetLoginForm();
-			_currentForm = loginForm;
-			loginForm.Show();
-		}
+		//	LoginForm loginForm = GetLoginForm();
+		//	_currentForm = loginForm;
+		//	loginForm.Show();
+		//}
 
 		public void ShowAdminDashboardForm()
 		{
@@ -31,14 +31,14 @@ namespace DesktopClient.GUILayer
 			adminDashboardForm.Show();
 		}
 
-		public void ShowPlayerManagementForm()
-		{
-			CloseCurrentForm();
+		//public void ShowPlayerManagementForm()
+		//{
+		//	CloseCurrentForm();
 
-			PlayerManagement playerManagementForm = GetPlayerManagementForm();
-			_currentForm = playerManagementForm;
-			playerManagementForm.Show();
-		}
+		//	PlayerManagement playerManagementForm = GetPlayerManagementForm();
+		//	_currentForm = playerManagementForm;
+		//	playerManagementForm.Show();
+		//}
 
 		private void CloseCurrentForm()
 		{
@@ -49,16 +49,16 @@ namespace DesktopClient.GUILayer
 			}
 		}
 
-		private LoginForm GetLoginForm()
-		{
-			HttpClient httpClient = new HttpClient();
-			HttpClientService httpClientService = new HttpClientService(httpClient);
-			AdminService adminService = new AdminService(httpClientService);
-			AdminController adminController = new AdminController(adminService);
-			LoginForm loginForm = new LoginForm(this, adminController);
+		//private LoginForm GetLoginForm()
+		//{
+		//	HttpClient httpClient = new HttpClient();
+		//	HttpClientService httpClientService = new HttpClientService(httpClient);
+		//	AdminService adminService = new AdminService(httpClientService);
+		//	AdminController adminController = new AdminController(adminService);
+		//	LoginForm loginForm = new LoginForm(this, adminController);
 
-			return loginForm;
-		}
+		//	return loginForm;
+		//}
 
 		private AdminDashboardForm GetAdminForm()
 		{
@@ -67,14 +67,14 @@ namespace DesktopClient.GUILayer
 			return adminDashboardForm;
 		}
 
-		private PlayerManagement GetPlayerManagementForm()
-		{
-			IPlayerService playerService = new PlayerService();
-			PlayerController playerController = new PlayerController(playerService);
-			PlayerManagement playerManagementForm = new PlayerManagement(this, playerController);
+		//private PlayerManagement GetPlayerManagementForm()
+		//{
+		//	IPlayerService playerService = new PlayerService();
+		//	PlayerController playerController = new PlayerController(playerService);
+		//	PlayerManagement playerManagementForm = new PlayerManagement(this, playerController);
 
-			return playerManagementForm;
-		}
+		//	return playerManagementForm;
+		//}
 
 	}
 }
