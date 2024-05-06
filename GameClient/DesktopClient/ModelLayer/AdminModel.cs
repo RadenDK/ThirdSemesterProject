@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopClient.ServiceLayer
+namespace DesktopClient.ModelLayer
 {
-    internal class ServiceLayerClass
+    public class AdminModel
+
     {
     }
 }

@@ -22,5 +22,10 @@ namespace DesktopClient.ControllerLayer
 			allPlayers = await _playerService.GetAllPlayers();
 			return allPlayers;
 		}
+
+		public async Task<bool> BanPlayer(PlayerModel player)
+		{
+			return await _playerService.BanPlayer(player.Username);
+		}
 	}
 }

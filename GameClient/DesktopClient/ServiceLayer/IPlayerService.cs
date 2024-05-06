@@ -1,4 +1,5 @@
 ﻿using DesktopClient.ModelLayer;
+using DesktopClient.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,8 @@ namespace DesktopClient.ServiceLayer
 	public interface IPlayerService
 	{
 		Task<List<PlayerModel>> GetAllPlayers();
-	}
+
+		Task<bool> BanPlayer(string username);
+
+    }
 }
