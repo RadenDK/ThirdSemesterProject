@@ -31,7 +31,7 @@ namespace GameClientApi.BusinessLogic
             return BC.Verify(password, storedHashedPassword);
         }
 
-        public PlayerModel GetPlayer(string username)
+        public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
         {
             PlayerModel playerData = _playerAccessor.GetPlayer(username);
             if (playerData == null)
@@ -89,7 +89,7 @@ namespace GameClientApi.BusinessLogic
             }
         }
 
-        public void UpdatePlayerLobbyIdCreateGameLobby(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
+        public void UpdatePlayerLobbyIdCreateGameLobby(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
         {
             if (transaction == null)
             {
@@ -132,11 +132,11 @@ namespace GameClientApi.BusinessLogic
 
             try
             {
-                PlayerModel player = GetPlayer(username);
+                PlayerModel player = GetPlayer(username, transaction);
 
                 player.Banned = true;
 
-                if(player.GameLobbyId > 0)
+                if(player.GameLobbyId != null)
                 {
                     GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = null };
                     UpdatePlayerLobbyIdCreateGameLobby(player, emptyGameLobbyModel, transaction);

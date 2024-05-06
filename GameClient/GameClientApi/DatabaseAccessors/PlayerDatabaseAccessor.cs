@@ -29,16 +29,29 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public PlayerModel GetPlayer(string username)
+        public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
         {
             string selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            IDbConnection connection;
+            if (transaction != null)
             {
-                connection.Open();
-                var player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = username });
-                return player;
+                connection = transaction.Connection;
             }
+            else
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+            }
+
+            PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = username });
+
+            if (transaction == null)
+            {
+                connection.Close();
+            }
+
+            return player;
         }
 
         public bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null)
@@ -209,7 +222,7 @@ namespace GameClientApi.DatabaseAccessors
 
         }
 
-        public bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
+        public bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
         {
             string updatePlayerLobbyIdQuery = "UPDATE Player SET GameLobbyId = @GameLobbyId WHERE PlayerId = @PlayerId";
 

@@ -153,7 +153,7 @@ namespace GameClientApi.BusinessLogic
 				{
 					gameLobby.GameLobbyId = gameLobbyId;
 
-					PlayerModel player = _playerLogic.GetPlayer(username);
+					PlayerModel player = _playerLogic.GetPlayer(username, transaction);
 					player.IsOwner = true;
 					player.GameLobbyId = gameLobbyId;
 					_playerLogic.UpdatePlayerOwnership(player, transaction);

@@ -11,7 +11,7 @@ namespace GameClientApi.BusinessLogic
 		void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel);
 		void UpdatePlayerLobbyIdCreateGameLobby(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null);
 		void UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
-		PlayerModel GetPlayer(string username);
+		PlayerModel GetPlayer(string username, SqlTransaction transaction = null);
 		bool BanPlayer(string username);
 		List<PlayerModel> GetAllPlayers();
 	}

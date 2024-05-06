@@ -24,7 +24,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 
-		PlayerModel GetPlayer(string userName);
+		PlayerModel GetPlayer(string userName, SqlTransaction transaction = null);
 
 		List<PlayerModel> GetAllPlayers();
 
