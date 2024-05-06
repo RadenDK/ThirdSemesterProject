@@ -17,7 +17,7 @@ namespace DesktopClient.ModelLayer
 		public bool Banned { get; set; }
 		public int CurrencyAmount { get; set; }
 		public bool IsOwner { get; set; }
-		public int GameLobbyId { get; set; }
+		public int? GameLobbyId { get; set; }
 		public bool OnlineStatus { get; set; }
 	}
 }
