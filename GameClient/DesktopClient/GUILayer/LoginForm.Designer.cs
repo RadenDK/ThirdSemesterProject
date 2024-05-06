@@ -33,7 +33,7 @@
             userNameLabel = new Label();
             passwordLabel = new Label();
             loginButton = new Button();
-            maskedTextBox1 = new MaskedTextBox();
+            maskedPasswordTextBox = new MaskedTextBox();
             SuspendLayout();
             // 
             // textboxUserName
@@ -58,9 +58,9 @@
             userNameLabel.AutoSize = true;
             userNameLabel.Location = new Point(256, 93);
             userNameLabel.Name = "userNameLabel";
-            userNameLabel.Size = new Size(63, 15);
+            userNameLabel.Size = new Size(60, 15);
             userNameLabel.TabIndex = 3;
-            userNameLabel.Text = "Username:";
+            userNameLabel.Text = "Admin ID:";
             userNameLabel.Click += userNameLabel_Click;
             // 
             // passwordLabel
@@ -83,20 +83,20 @@
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;
             // 
-            // maskedTextBox1
+            // maskedPasswordTextBox
             // 
-            maskedTextBox1.Location = new Point(256, 182);
-            maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(240, 23);
-            maskedTextBox1.TabIndex = 6;
-            maskedTextBox1.MaskInputRejected += maskedTextBox1_MaskInputRejected;
+            maskedPasswordTextBox.Location = new Point(256, 182);
+            maskedPasswordTextBox.Name = "maskedPasswordTextBox";
+            maskedPasswordTextBox.Size = new Size(240, 23);
+            maskedPasswordTextBox.TabIndex = 6;
+            maskedPasswordTextBox.MaskInputRejected += maskedPasswordTextBox_MaskInputRejected;
             // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
-            Controls.Add(maskedTextBox1);
+            Controls.Add(maskedPasswordTextBox);
             Controls.Add(loginButton);
             Controls.Add(passwordLabel);
             Controls.Add(userNameLabel);
@@ -115,6 +115,6 @@
         private Label userNameLabel;
         private Label passwordLabel;
         private Button loginButton;
-        private MaskedTextBox maskedTextBox1;
+        private MaskedTextBox maskedPasswordTextBox;
     }
 }
