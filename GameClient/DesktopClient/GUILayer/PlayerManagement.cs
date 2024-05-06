@@ -72,7 +72,7 @@ namespace DesktopClient.GUILayer
 			}
 			else
 			{
-				filteredPlayers = _players.Where(p => p.Username.ToLower().Contains(searchInput) || p.InGameName.Contains(searchInput)).ToList();
+				filteredPlayers = _players.Where(p => p.Username.ToLower().Contains(searchInput) || p.InGameName.ToLower().Contains(searchInput) || p.Email.ToLower().Contains(searchInput)).ToList() ;
 			}
 			playerDataGridView.DataSource = filteredPlayers;
 		}
