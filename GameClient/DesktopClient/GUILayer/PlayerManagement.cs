@@ -38,7 +38,7 @@ namespace DesktopClient.GUILayer
 
 		private void SelectButton_Click(object sender, EventArgs e)
 		{
-			var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
+			PlayerModel selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
 			if (selectedPlayer != null)
 			{
 				EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
@@ -48,7 +48,7 @@ namespace DesktopClient.GUILayer
 
 		private void PlayerDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
-			var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
+			PlayerModel selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
 			if (selectedPlayer != null)
 			{
 				EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
