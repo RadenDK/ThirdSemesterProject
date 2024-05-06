@@ -18,8 +18,7 @@ namespace DesktopClient.ControllerLayer
 
 		public async Task<List<PlayerModel>> GetAllPlayers()
 		{
-			List<PlayerModel> allPlayers = new List<PlayerModel>();
-			allPlayers = await _playerService.GetAllPlayers();
+			List<PlayerModel> allPlayers = await _playerService.GetAllPlayers();
 			return allPlayers;
 		}
 
