@@ -56,6 +56,7 @@ namespace DesktopClient.ServiceLayer
             }
             else
             {
+				return false;
                 throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
             }
         }
