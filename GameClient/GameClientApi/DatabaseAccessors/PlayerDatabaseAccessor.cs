@@ -226,7 +226,7 @@ namespace GameClientApi.DatabaseAccessors
 
             int rowsAffected = connection.Execute(updatePlayerLobbyIdQuery, new
             {
-                GameLobbyId = newGameLobbyModel.GameLobbyId,
+                GameLobbyId = newGameLobbyModel?.GameLobbyId,
                 PlayerId = player.PlayerId
             }, transaction: transaction);
 

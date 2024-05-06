@@ -135,9 +135,10 @@ namespace GameClientApi.BusinessLogic
                 PlayerModel player = GetPlayer(username);
 
                 player.Banned = true;
+
                 if(player.GameLobbyId > 0)
                 {
-                    GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = 0 };
+                    GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = null };
                     UpdatePlayerLobbyIdCreateGameLobby(player, emptyGameLobbyModel, transaction);
                     if(player.IsOwner)
                     {
