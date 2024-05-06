@@ -25,7 +25,7 @@ namespace DesktopClient.GUILayer
 
 		private void logoutButton_Click(object sender, EventArgs e)
 		{
-			_applicationContextManager.ShowLoginForm();
+			//_applicationContextManager.ShowLoginForm();
 		}
 		private void administratePlayersButton_Click(object sender, EventArgs e)
 		{
