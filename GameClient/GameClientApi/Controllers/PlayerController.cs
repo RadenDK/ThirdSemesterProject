@@ -9,7 +9,7 @@ namespace GameClientApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    // [Authorize]
     public class PlayerController : Controller
     {
 

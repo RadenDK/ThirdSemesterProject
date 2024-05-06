@@ -1,6 +1,7 @@
 using DesktopClient.ControllerLayer;
 using DesktopClient.ServiceLayer;
 using DesktopClient.Services;
+using DesktopClient.GUILayer;
 
 namespace DesktopClient
 {
@@ -13,22 +14,29 @@ namespace DesktopClient
         static void Main()
         {
             // Create httpClient required by HttpClientService
-            HttpClient httpClient = new HttpClient();
+            // HttpClient httpClient = new HttpClient();
 
             // Create HttpClientService required by AdminService
-            IHttpClientService httpClientService = new HttpClientService(httpClient);
+            // IHttpClientService httpClientService = new HttpClientService(httpClient);
 
             // Create services required by AdminController
-            IAdminService adminService = new AdminService(httpClientService);
+            // IAdminService adminService = new AdminService(httpClientService);
 
             // Create an instance of AdminController
-            AdminController adminController = new AdminController(adminService);
+            // AdminController adminController = new AdminController(adminService);
 
             
             ApplicationConfiguration.Initialize();
+            // Create httpClient required by HttpClientService
+            HttpClient httpClient = new HttpClient();
 
+            // Create HttpClientService required by PlayerService
+            IHttpClientService httpClientService = new HttpClientService(httpClient);
 
-            Application.Run(new LoginForm(adminController));
+            // Create services required by PlayerController
+            IPlayerService playerService = new PlayerService(httpClientService);
+
+            Application.Run(new PlayerManagement(playerService));
         }
     }
 }

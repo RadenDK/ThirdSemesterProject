@@ -31,6 +31,9 @@
             components = new System.ComponentModel.Container();
             PlayerManagementLabel = new Label();
             PlayerDataGridView = new DataGridView();
+            playerModelBindingSource = new BindingSource(components);
+            ConfirmButton = new Button();
+            BackButton = new Button();
             PlayerId = new DataGridViewTextBoxColumn();
             usernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             inGameNameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -41,9 +44,6 @@
             isOwnerDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             gameLobbyIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             onlineStatusDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            playerModelBindingSource = new BindingSource(components);
-            ConfirmButton = new Button();
-            BackButton = new Button();
             ((System.ComponentModel.ISupportInitialize)PlayerDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)playerModelBindingSource).BeginInit();
             SuspendLayout();
@@ -70,90 +70,6 @@
             PlayerDataGridView.Size = new Size(992, 408);
             PlayerDataGridView.TabIndex = 3;
             // 
-            // PlayerId
-            // 
-            PlayerId.DataPropertyName = "PlayerId";
-            PlayerId.HeaderText = "PlayerId";
-            PlayerId.MinimumWidth = 8;
-            PlayerId.Name = "PlayerId";
-            PlayerId.Visible = false;
-            PlayerId.Width = 150;
-            // 
-            // usernameDataGridViewTextBoxColumn
-            // 
-            usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
-            usernameDataGridViewTextBoxColumn.HeaderText = "Username";
-            usernameDataGridViewTextBoxColumn.MinimumWidth = 8;
-            usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
-            usernameDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // inGameNameDataGridViewTextBoxColumn
-            // 
-            inGameNameDataGridViewTextBoxColumn.DataPropertyName = "InGameName";
-            inGameNameDataGridViewTextBoxColumn.HeaderText = "InGameName";
-            inGameNameDataGridViewTextBoxColumn.MinimumWidth = 8;
-            inGameNameDataGridViewTextBoxColumn.Name = "inGameNameDataGridViewTextBoxColumn";
-            inGameNameDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // eloDataGridViewTextBoxColumn
-            // 
-            eloDataGridViewTextBoxColumn.DataPropertyName = "Elo";
-            eloDataGridViewTextBoxColumn.HeaderText = "Elo";
-            eloDataGridViewTextBoxColumn.MinimumWidth = 8;
-            eloDataGridViewTextBoxColumn.Name = "eloDataGridViewTextBoxColumn";
-            eloDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            emailDataGridViewTextBoxColumn.MinimumWidth = 8;
-            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            emailDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // bannedDataGridViewCheckBoxColumn
-            // 
-            bannedDataGridViewCheckBoxColumn.DataPropertyName = "Banned";
-            bannedDataGridViewCheckBoxColumn.HeaderText = "Banned";
-            bannedDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            bannedDataGridViewCheckBoxColumn.Name = "bannedDataGridViewCheckBoxColumn";
-            bannedDataGridViewCheckBoxColumn.Width = 150;
-            // 
-            // currencyAmountDataGridViewTextBoxColumn
-            // 
-            currencyAmountDataGridViewTextBoxColumn.DataPropertyName = "CurrencyAmount";
-            currencyAmountDataGridViewTextBoxColumn.HeaderText = "CurrencyAmount";
-            currencyAmountDataGridViewTextBoxColumn.MinimumWidth = 8;
-            currencyAmountDataGridViewTextBoxColumn.Name = "currencyAmountDataGridViewTextBoxColumn";
-            currencyAmountDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // isOwnerDataGridViewCheckBoxColumn
-            // 
-            isOwnerDataGridViewCheckBoxColumn.DataPropertyName = "IsOwner";
-            isOwnerDataGridViewCheckBoxColumn.HeaderText = "IsOwner";
-            isOwnerDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            isOwnerDataGridViewCheckBoxColumn.Name = "isOwnerDataGridViewCheckBoxColumn";
-            isOwnerDataGridViewCheckBoxColumn.Visible = false;
-            isOwnerDataGridViewCheckBoxColumn.Width = 150;
-            // 
-            // gameLobbyIdDataGridViewTextBoxColumn
-            // 
-            gameLobbyIdDataGridViewTextBoxColumn.DataPropertyName = "GameLobbyId";
-            gameLobbyIdDataGridViewTextBoxColumn.HeaderText = "GameLobbyId";
-            gameLobbyIdDataGridViewTextBoxColumn.MinimumWidth = 8;
-            gameLobbyIdDataGridViewTextBoxColumn.Name = "gameLobbyIdDataGridViewTextBoxColumn";
-            gameLobbyIdDataGridViewTextBoxColumn.Visible = false;
-            gameLobbyIdDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // onlineStatusDataGridViewCheckBoxColumn
-            // 
-            onlineStatusDataGridViewCheckBoxColumn.DataPropertyName = "OnlineStatus";
-            onlineStatusDataGridViewCheckBoxColumn.HeaderText = "OnlineStatus";
-            onlineStatusDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            onlineStatusDataGridViewCheckBoxColumn.Name = "onlineStatusDataGridViewCheckBoxColumn";
-            onlineStatusDataGridViewCheckBoxColumn.Visible = false;
-            onlineStatusDataGridViewCheckBoxColumn.Width = 150;
-            // 
             // playerModelBindingSource
             // 
             playerModelBindingSource.DataSource = typeof(ModelLayer.PlayerModel);
@@ -177,6 +93,100 @@
             BackButton.Text = "Back";
             BackButton.UseVisualStyleBackColor = true;
             // 
+            // PlayerId
+            // 
+            PlayerId.DataPropertyName = "PlayerId";
+            PlayerId.HeaderText = "PlayerId";
+            PlayerId.MinimumWidth = 8;
+            PlayerId.Name = "PlayerId";
+            PlayerId.ReadOnly = true;
+            PlayerId.Visible = false;
+            PlayerId.Width = 150;
+            // 
+            // usernameDataGridViewTextBoxColumn
+            // 
+            usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
+            usernameDataGridViewTextBoxColumn.HeaderText = "Username";
+            usernameDataGridViewTextBoxColumn.MinimumWidth = 8;
+            usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
+            usernameDataGridViewTextBoxColumn.ReadOnly = true;
+            usernameDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // inGameNameDataGridViewTextBoxColumn
+            // 
+            inGameNameDataGridViewTextBoxColumn.DataPropertyName = "InGameName";
+            inGameNameDataGridViewTextBoxColumn.HeaderText = "InGameName";
+            inGameNameDataGridViewTextBoxColumn.MinimumWidth = 8;
+            inGameNameDataGridViewTextBoxColumn.Name = "inGameNameDataGridViewTextBoxColumn";
+            inGameNameDataGridViewTextBoxColumn.ReadOnly = true;
+            inGameNameDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // eloDataGridViewTextBoxColumn
+            // 
+            eloDataGridViewTextBoxColumn.DataPropertyName = "Elo";
+            eloDataGridViewTextBoxColumn.HeaderText = "Elo";
+            eloDataGridViewTextBoxColumn.MinimumWidth = 8;
+            eloDataGridViewTextBoxColumn.Name = "eloDataGridViewTextBoxColumn";
+            eloDataGridViewTextBoxColumn.ReadOnly = true;
+            eloDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // emailDataGridViewTextBoxColumn
+            // 
+            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
+            emailDataGridViewTextBoxColumn.HeaderText = "Email";
+            emailDataGridViewTextBoxColumn.MinimumWidth = 8;
+            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
+            emailDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // bannedDataGridViewCheckBoxColumn
+            // 
+            bannedDataGridViewCheckBoxColumn.DataPropertyName = "Banned";
+            bannedDataGridViewCheckBoxColumn.HeaderText = "Banned";
+            bannedDataGridViewCheckBoxColumn.MinimumWidth = 8;
+            bannedDataGridViewCheckBoxColumn.Name = "bannedDataGridViewCheckBoxColumn";
+            bannedDataGridViewCheckBoxColumn.ReadOnly = true;
+            bannedDataGridViewCheckBoxColumn.Width = 150;
+            // 
+            // currencyAmountDataGridViewTextBoxColumn
+            // 
+            currencyAmountDataGridViewTextBoxColumn.DataPropertyName = "CurrencyAmount";
+            currencyAmountDataGridViewTextBoxColumn.HeaderText = "CurrencyAmount";
+            currencyAmountDataGridViewTextBoxColumn.MinimumWidth = 8;
+            currencyAmountDataGridViewTextBoxColumn.Name = "currencyAmountDataGridViewTextBoxColumn";
+            currencyAmountDataGridViewTextBoxColumn.ReadOnly = true;
+            currencyAmountDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // isOwnerDataGridViewCheckBoxColumn
+            // 
+            isOwnerDataGridViewCheckBoxColumn.DataPropertyName = "IsOwner";
+            isOwnerDataGridViewCheckBoxColumn.HeaderText = "IsOwner";
+            isOwnerDataGridViewCheckBoxColumn.MinimumWidth = 8;
+            isOwnerDataGridViewCheckBoxColumn.Name = "isOwnerDataGridViewCheckBoxColumn";
+            isOwnerDataGridViewCheckBoxColumn.ReadOnly = true;
+            isOwnerDataGridViewCheckBoxColumn.Visible = false;
+            isOwnerDataGridViewCheckBoxColumn.Width = 150;
+            // 
+            // gameLobbyIdDataGridViewTextBoxColumn
+            // 
+            gameLobbyIdDataGridViewTextBoxColumn.DataPropertyName = "GameLobbyId";
+            gameLobbyIdDataGridViewTextBoxColumn.HeaderText = "GameLobbyId";
+            gameLobbyIdDataGridViewTextBoxColumn.MinimumWidth = 8;
+            gameLobbyIdDataGridViewTextBoxColumn.Name = "gameLobbyIdDataGridViewTextBoxColumn";
+            gameLobbyIdDataGridViewTextBoxColumn.ReadOnly = true;
+            gameLobbyIdDataGridViewTextBoxColumn.Visible = false;
+            gameLobbyIdDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // onlineStatusDataGridViewCheckBoxColumn
+            // 
+            onlineStatusDataGridViewCheckBoxColumn.DataPropertyName = "OnlineStatus";
+            onlineStatusDataGridViewCheckBoxColumn.HeaderText = "OnlineStatus";
+            onlineStatusDataGridViewCheckBoxColumn.MinimumWidth = 8;
+            onlineStatusDataGridViewCheckBoxColumn.Name = "onlineStatusDataGridViewCheckBoxColumn";
+            onlineStatusDataGridViewCheckBoxColumn.ReadOnly = true;
+            onlineStatusDataGridViewCheckBoxColumn.Visible = false;
+            onlineStatusDataGridViewCheckBoxColumn.Width = 150;
+            // 
             // PlayerManagement
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -198,6 +208,8 @@
         private Label PlayerManagementLabel;
         private DataGridView PlayerDataGridView;
         private BindingSource playerModelBindingSource;
+        private Button ConfirmButton;
+        private Button BackButton;
         private DataGridViewTextBoxColumn PlayerId;
         private DataGridViewTextBoxColumn usernameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn inGameNameDataGridViewTextBoxColumn;
@@ -208,7 +220,5 @@
         private DataGridViewCheckBoxColumn isOwnerDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn gameLobbyIdDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn onlineStatusDataGridViewCheckBoxColumn;
-        private Button ConfirmButton;
-        private Button BackButton;
     }
 }
