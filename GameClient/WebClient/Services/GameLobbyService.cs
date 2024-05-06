@@ -14,9 +14,11 @@ namespace WebClient.Services
 			_httpClientService = httpClientService;
 		}
 
-		public async Task<List<GameLobbyModel>> GetAllGameLobbies()
+		public async Task<List<GameLobbyModel>> GetAllGameLobbies(string accessToken)
 		{
 			string endpoint = "GameLobby/AllGameLobbies";
+
+			_httpClientService.SetAuthenticationHeader(accessToken);
 
 			HttpResponseMessage response = await _httpClientService.GetAsync(endpoint);
 
@@ -34,7 +36,7 @@ namespace WebClient.Services
 
 
 
-		public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request)
+		public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken)
 		{
 			string url = "GameLobby/Join";
 			var json = JsonConvert.SerializeObject(request);
@@ -42,6 +44,8 @@ namespace WebClient.Services
 
 			try
 			{
+				_httpClientService.SetAuthenticationHeader(accessToken);
+
 				var response = await _httpClientService.PostAsync(url, data);
 				if (response.IsSuccessStatusCode)
 				{
@@ -59,11 +63,14 @@ namespace WebClient.Services
 			}
 		}
 
-		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username)
+		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username, string accessToken)
 		{
 			string endpoint = "GameLobby/CreateGameLobby";
 			var payload = new { newLobby, username };
 			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+			_httpClientService.SetAuthenticationHeader(accessToken);
+
 			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
 			if (response.IsSuccessStatusCode)
 			{

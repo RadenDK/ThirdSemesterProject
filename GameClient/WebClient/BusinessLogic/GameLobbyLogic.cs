@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using WebClient.Security;
 
 public class GameLobbyLogic : IGameLobbyLogic
 {
 	private readonly IGameLobbyService _gameLobbyService;
+	private ITokenManager _tokenManager;
 
-	public GameLobbyLogic(IGameLobbyService gameLobbyService)
+	public GameLobbyLogic(IGameLobbyService gameLobbyService, ITokenManager tokenManager)
 	{
 		_gameLobbyService = gameLobbyService;
+		_tokenManager = tokenManager;
 	}
 
 
@@ -22,7 +25,8 @@ public class GameLobbyLogic : IGameLobbyLogic
 		List<GameLobbyModel> allGameLobbies = new List<GameLobbyModel>();
 		try
 		{
-			allGameLobbies = await _gameLobbyService.GetAllGameLobbies();
+			string accessToken = await _tokenManager.GetAccessToken();
+			allGameLobbies = await _gameLobbyService.GetAllGameLobbies(accessToken);
 		} catch (Exception ex)
 		{
 			// I dont know yet if the business logic should handle what happens when the API cant be called
@@ -33,12 +37,14 @@ public class GameLobbyLogic : IGameLobbyLogic
 
 	public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request)
 	{
-		return await _gameLobbyService.JoinGameLobby(request);
+		string accessToken = await _tokenManager.GetAccessToken();
+		return await _gameLobbyService.JoinGameLobby(request, accessToken);
 	}
 
 	public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username)
 	{
-		return await _gameLobbyService.CreateGameLobby(newLobby, username);
+		string accessToken = await _tokenManager.GetAccessToken();
+		return await _gameLobbyService.CreateGameLobby(newLobby, username, accessToken);
 	}
 
 	//Dette skal nok tilføjes til en Player klasse

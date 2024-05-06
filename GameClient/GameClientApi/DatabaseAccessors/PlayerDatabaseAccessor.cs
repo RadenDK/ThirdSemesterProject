@@ -72,16 +72,16 @@ namespace GameClientApi.DatabaseAccessors
         {
             string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
 
-            IDbConnection connection;
-            if (transaction != null)
-            {
-                connection = transaction.Connection;
-            }
-            else
-            {
-                connection = new SqlConnection(_connectionString);
-                connection.Open();
-            }
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
 
             int rowsAffected = connection.Execute(updateQueryString, new
             {
@@ -230,10 +230,10 @@ namespace GameClientApi.DatabaseAccessors
                 PlayerId = player.PlayerId
             }, transaction: transaction);
 
-            if (transaction == null)
-            {
-                connection.Close();
-            }
+			if (transaction == null)
+			{
+				connection.Close();
+			}
 
             return rowsAffected > 0;
         }
@@ -250,81 +250,51 @@ namespace GameClientApi.DatabaseAccessors
             }
         }
 
-        public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
-        {
-            string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
+		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		{
+			string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
 
-            IDbConnection connection;
-            if (transaction != null)
-            {
-                connection = transaction.Connection;
-            }
-            else
-            {
-                connection = new SqlConnection(_connectionString);
-                connection.Open();
-            }
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
 
-            int rowsAffected = connection.Execute(banPlayerQuery, new
-            {
-                Banned = player.Banned,
-                PlayerId = player.PlayerId
-            }, transaction: transaction);
+			int rowsAffected = connection.Execute(banPlayerQuery, new
+			{
+				Banned = player.Banned,
+				PlayerId = player.PlayerId
+			}, transaction: transaction);
 
-            if (transaction == null)
-            {
-                connection.Close();
-            }
-            return rowsAffected > 0;
-        }
+			if (transaction == null)
+			{
+				connection.Close();
+			}
+			return rowsAffected > 0;
+		}
 
-        public SqlTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
-        {
-            SqlConnection connection = new SqlConnection(_connectionString);
-            connection.Open();
-            SqlTransaction transaction = connection.BeginTransaction(isolationLevel);
-            return transaction;
-        }
-
-
-        public void CommitTransaction(SqlTransaction sqlTransaction)
-        {
-            try
-            {
-                sqlTransaction.Commit();
-            }
-            finally
-            {
-                try
-                {
-                    sqlTransaction.Connection.Close();
-                }
-                catch (NullReferenceException ex)
-                {
-
-                }
-            }
-        }
-
-        public void RollbackTransaction(SqlTransaction sqlTransaction)
-        {
-            try
-            {
-                sqlTransaction.Rollback();
-            }
-            finally
-            {
-                try
-                {
-                    sqlTransaction.Connection.Close();
-                }
-                catch (NullReferenceException ex)
-                {
-
-                }
-            }
-        }
+		public SqlTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
+		{
+			SqlConnection connection = new SqlConnection(_connectionString);
+			connection.Open();
+			SqlTransaction transaction = connection.BeginTransaction(isolationLevel);
+			return transaction;
+		}
 
 
-    }
+		public void CommitTransaction(SqlTransaction sqlTransaction)
+		{
+			sqlTransaction.Commit();
+		}
+
+		public void RollbackTransaction(SqlTransaction sqlTransaction)
+		{
+			sqlTransaction.Rollback();
+		}
+	}
 }
