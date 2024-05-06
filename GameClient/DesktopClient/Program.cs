@@ -36,7 +36,9 @@ namespace DesktopClient
             // Create services required by PlayerController
             IPlayerService playerService = new PlayerService(httpClientService);
 
-            Application.Run(new PlayerManagement(playerService));
+            PlayerController playerController = new PlayerController(playerService);
+
+            Application.Run(new PlayerManagement(playerController));
         }
     }
 }

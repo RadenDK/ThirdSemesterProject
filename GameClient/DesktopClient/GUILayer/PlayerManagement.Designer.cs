@@ -30,10 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             PlayerManagementLabel = new Label();
-            PlayerDataGridView = new DataGridView();
-            playerModelBindingSource = new BindingSource(components);
-            ConfirmButton = new Button();
-            BackButton = new Button();
+            playerDataGridView = new DataGridView();
             PlayerId = new DataGridViewTextBoxColumn();
             usernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             inGameNameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -44,7 +41,10 @@
             isOwnerDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             gameLobbyIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             onlineStatusDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)PlayerDataGridView).BeginInit();
+            playerModelBindingSource = new BindingSource(components);
+            backButton = new Button();
+            selectButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)playerDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)playerModelBindingSource).BeginInit();
             SuspendLayout();
             // 
@@ -60,38 +60,15 @@
             // 
             // PlayerDataGridView
             // 
-            PlayerDataGridView.AutoGenerateColumns = false;
-            PlayerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PlayerDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlayerId, usernameDataGridViewTextBoxColumn, inGameNameDataGridViewTextBoxColumn, eloDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, bannedDataGridViewCheckBoxColumn, currencyAmountDataGridViewTextBoxColumn, isOwnerDataGridViewCheckBoxColumn, gameLobbyIdDataGridViewTextBoxColumn, onlineStatusDataGridViewCheckBoxColumn });
-            PlayerDataGridView.DataSource = playerModelBindingSource;
-            PlayerDataGridView.Location = new Point(12, 80);
-            PlayerDataGridView.Name = "PlayerDataGridView";
-            PlayerDataGridView.RowHeadersWidth = 62;
-            PlayerDataGridView.Size = new Size(992, 408);
-            PlayerDataGridView.TabIndex = 3;
-            // 
-            // playerModelBindingSource
-            // 
-            playerModelBindingSource.DataSource = typeof(ModelLayer.PlayerModel);
-            // 
-            // ConfirmButton
-            // 
-            ConfirmButton.Location = new Point(892, 494);
-            ConfirmButton.Name = "ConfirmButton";
-            ConfirmButton.Size = new Size(112, 34);
-            ConfirmButton.TabIndex = 4;
-            ConfirmButton.Text = "Confirm";
-            ConfirmButton.UseVisualStyleBackColor = true;
-            ConfirmButton.Click += ConfirmButton_Click;
-            // 
-            // BackButton
-            // 
-            BackButton.Location = new Point(774, 494);
-            BackButton.Name = "BackButton";
-            BackButton.Size = new Size(112, 34);
-            BackButton.TabIndex = 5;
-            BackButton.Text = "Back";
-            BackButton.UseVisualStyleBackColor = true;
+            playerDataGridView.AutoGenerateColumns = false;
+            playerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            playerDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlayerId, usernameDataGridViewTextBoxColumn, inGameNameDataGridViewTextBoxColumn, eloDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, bannedDataGridViewCheckBoxColumn, currencyAmountDataGridViewTextBoxColumn, isOwnerDataGridViewCheckBoxColumn, gameLobbyIdDataGridViewTextBoxColumn, onlineStatusDataGridViewCheckBoxColumn });
+            playerDataGridView.DataSource = playerModelBindingSource;
+            playerDataGridView.Location = new Point(12, 80);
+            playerDataGridView.Name = "PlayerDataGridView";
+            playerDataGridView.RowHeadersWidth = 62;
+            playerDataGridView.Size = new Size(992, 408);
+            playerDataGridView.TabIndex = 3;
             // 
             // PlayerId
             // 
@@ -187,18 +164,40 @@
             onlineStatusDataGridViewCheckBoxColumn.Visible = false;
             onlineStatusDataGridViewCheckBoxColumn.Width = 150;
             // 
+            // playerModelBindingSource
+            // 
+            playerModelBindingSource.DataSource = typeof(ModelLayer.PlayerModel);
+            // 
+            // backButton
+            // 
+            backButton.Location = new Point(774, 494);
+            backButton.Name = "backButton";
+            backButton.Size = new Size(112, 34);
+            backButton.TabIndex = 5;
+            backButton.Text = "Back";
+            backButton.UseVisualStyleBackColor = true;
+            // 
+            // selectButton
+            // 
+            selectButton.Location = new Point(892, 494);
+            selectButton.Name = "selectButton";
+            selectButton.Size = new Size(112, 34);
+            selectButton.TabIndex = 6;
+            selectButton.Text = "Select";
+            selectButton.UseVisualStyleBackColor = true;
+            // 
             // PlayerManagement
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1016, 540);
-            Controls.Add(BackButton);
-            Controls.Add(ConfirmButton);
-            Controls.Add(PlayerDataGridView);
+            Controls.Add(selectButton);
+            Controls.Add(backButton);
+            Controls.Add(playerDataGridView);
             Controls.Add(PlayerManagementLabel);
             Name = "PlayerManagement";
             Text = "PlayerManagement";
-            ((System.ComponentModel.ISupportInitialize)PlayerDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)playerDataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)playerModelBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -206,10 +205,9 @@
 
         #endregion
         private Label PlayerManagementLabel;
-        private DataGridView PlayerDataGridView;
+        private DataGridView playerDataGridView;
         private BindingSource playerModelBindingSource;
-        private Button ConfirmButton;
-        private Button BackButton;
+        private Button backButton;
         private DataGridViewTextBoxColumn PlayerId;
         private DataGridViewTextBoxColumn usernameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn inGameNameDataGridViewTextBoxColumn;
@@ -220,5 +218,6 @@
         private DataGridViewCheckBoxColumn isOwnerDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn gameLobbyIdDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn onlineStatusDataGridViewCheckBoxColumn;
+        private Button selectButton;
     }
 }

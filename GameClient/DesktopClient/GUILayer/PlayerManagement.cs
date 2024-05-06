@@ -17,38 +17,39 @@ namespace DesktopClient.GUILayer
     {
         private readonly PlayerController _playerController;
 
-        public PlayerManagement(IPlayerService playerService)
+        public PlayerManagement(PlayerController playerController)
         {
             InitializeComponent();
-            _playerController = new PlayerController(playerService);
+            _playerController = playerController;
             this.Load += PopulatePlayerList;
-            ConfirmButton.Click += ConfirmButton_Click;
+            playerDataGridView.CellDoubleClick += PlayerDataGridView_CellDoubleClick;
+            selectButton.Click += SelectButton_Click;
+
         }
 
         private async void PopulatePlayerList(object sender, EventArgs e)
         {
             List<PlayerModel> players = await _playerController.GetAllPlayers();
-            PlayerDataGridView.DataSource = players;
+            playerDataGridView.DataSource = players;
         }
 
-        private async void ConfirmButton_Click(object sender, EventArgs e)
+        private void SelectButton_Click(object sender, EventArgs e)
         {
-            var selectedPlayer = PlayerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
-
+            var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
             if (selectedPlayer != null)
             {
-                selectedPlayer.Banned = true;
+                EditPlayerForm editPlayerForm = new EditPlayerForm(selectedPlayer);
+                editPlayerForm.Show();
+            }
+        }
 
-                var result = await _playerController.BanPlayer(selectedPlayer);
-
-                if (result)
-                {
-                    MessageBox.Show("Player: " + selectedPlayer.Username + "banned successfully.");
-                }
-                else
-                {
-                    MessageBox.Show("Failed to ban player.");
-                }
+        private void PlayerDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
+            if (selectedPlayer != null)
+            {
+                EditPlayerForm editPlayerForm = new EditPlayerForm(selectedPlayer);
+                editPlayerForm.Show();
             }
         }
     }
