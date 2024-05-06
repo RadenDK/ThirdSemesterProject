@@ -38,8 +38,8 @@ namespace DesktopClient.GUILayer
             var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
             if (selectedPlayer != null)
             {
-                EditPlayerForm editPlayerForm = new EditPlayerForm(selectedPlayer);
-                editPlayerForm.Show();
+                EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
+                editPlayerForm.ShowDialog();
             }
         }
 
@@ -48,8 +48,8 @@ namespace DesktopClient.GUILayer
             var selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
             if (selectedPlayer != null)
             {
-                EditPlayerForm editPlayerForm = new EditPlayerForm(selectedPlayer);
-                editPlayerForm.Show();
+                EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
+                editPlayerForm.ShowDialog();
             }
         }
     }
