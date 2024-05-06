@@ -11,9 +11,9 @@ namespace GameClientApi.Controllers
     {
         private AdminLogic _adminLogic;
 
-        public AdminController(IConfiguration configuration, IAdminDatabaseAccessor adminDatabaseAccessor)
+        public AdminController(IAdminDatabaseAccessor adminDatabaseAccessor)
         {
-            _adminLogic = new AdminLogic(configuration, adminDatabaseAccessor);
+            _adminLogic = new AdminLogic(adminDatabaseAccessor);
         }
 
         [HttpPost("verify")]

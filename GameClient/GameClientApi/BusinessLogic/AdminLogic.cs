@@ -8,7 +8,7 @@ namespace GameClientApi.BusinessLogic
     {
         IAdminDatabaseAccessor _adminAccessor;
 
-        public AdminLogic(IConfiguration configuration, IAdminDatabaseAccessor adminDatabaseAccessor)
+        public AdminLogic(IAdminDatabaseAccessor adminDatabaseAccessor)
         {
             _adminAccessor = adminDatabaseAccessor;
         }
