@@ -159,7 +159,7 @@ namespace GameClientApi.BusinessLogic
                 return true;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 _playerAccessor.RollbackTransaction(transaction);
                 return false;
