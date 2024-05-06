@@ -4,7 +4,7 @@ namespace GameClientApi.Security
 {
 	public interface ISecurityHelper
 	{
-		TokenModel GenerateWebClientTokens(TokenRequestModel tokenRequest);
+		TokenModel GenerateTokens(TokenRequestModel tokenRequest);
 
 		TokenModel RefreshTokens(string refreshToken);
 	}

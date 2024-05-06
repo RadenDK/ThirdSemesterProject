@@ -18,7 +18,7 @@ namespace GameClientApi.Controllers
 		//Generate and return a JWT token
 		public IActionResult GenerateTokens([FromBody] TokenRequestModel request)
 		{
-			TokenModel tokens = _securityHelper.GenerateWebClientTokens(request);
+			TokenModel tokens = _securityHelper.GenerateTokens(request);
 
 			if (!string.IsNullOrEmpty(tokens.AccessToken) && !string.IsNullOrEmpty(tokens.RefreshToken))
 			{
