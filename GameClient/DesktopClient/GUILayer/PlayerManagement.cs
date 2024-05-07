@@ -1,15 +1,8 @@
 ﻿using DesktopClient.ControllerLayer;
 using DesktopClient.ModelLayer;
-using DesktopClient.ServiceLayer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace DesktopClient.GUILayer
 {
@@ -17,8 +10,9 @@ namespace DesktopClient.GUILayer
 	{
 		private readonly PlayerController _playerController;
 		private List<PlayerModel> _players;
+		private ApplicationContextManager _applicationContextManager;
 
-		public PlayerManagement(PlayerController playerController)
+		public PlayerManagement(ApplicationContextManager applicationContextManager, PlayerController playerController)
 		{
 			InitializeComponent();
 			_playerController = playerController;
@@ -28,6 +22,8 @@ namespace DesktopClient.GUILayer
 			selectButton.Click += SelectButton_Click;
 			searchTextBox.TextChanged += searchTextBox_TextChanged;
 			reloadPictureBox.Click += ReloadPictureBox_Click;
+
+			_applicationContextManager = applicationContextManager;
 		}
 
 		private async void PopulatePlayerList(object sender, EventArgs e)
@@ -72,7 +68,7 @@ namespace DesktopClient.GUILayer
 			}
 			else
 			{
-				filteredPlayers = _players.Where(p => p.Username.ToLower().Contains(searchInput) || p.InGameName.ToLower().Contains(searchInput) || p.Email.ToLower().Contains(searchInput)).ToList() ;
+				filteredPlayers = _players.Where(p => p.Username.ToLower().Contains(searchInput) || p.InGameName.ToLower().Contains(searchInput) || p.Email.ToLower().Contains(searchInput)).ToList();
 			}
 			playerDataGridView.DataSource = filteredPlayers;
 		}
@@ -80,6 +76,11 @@ namespace DesktopClient.GUILayer
 		private async void ReloadPictureBox_Click(object sender, EventArgs e)
 		{
 			PopulatePlayerList(sender, e);
+		}
+
+		private void backButton_Click(object sender, EventArgs e)
+		{
+			_applicationContextManager.ShowAdminDashboardForm();
 		}
 	}
 }
