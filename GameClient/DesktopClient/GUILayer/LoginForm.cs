@@ -46,26 +46,6 @@ namespace DesktopClient
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
-
-
-
-
-
-
-        private void passwordLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void userNameLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void maskedPasswordTextBox_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
     }
 } 
 

@@ -61,7 +61,6 @@
             userNameLabel.Size = new Size(60, 15);
             userNameLabel.TabIndex = 3;
             userNameLabel.Text = "Admin ID:";
-            userNameLabel.Click += userNameLabel_Click;
             // 
             // passwordLabel
             // 
@@ -71,7 +70,6 @@
             passwordLabel.Size = new Size(60, 15);
             passwordLabel.TabIndex = 4;
             passwordLabel.Text = "Password:";
-            passwordLabel.Click += passwordLabel_Click;
             // 
             // loginButton
             // 
@@ -89,11 +87,11 @@
             maskedPasswordTextBox.Name = "maskedPasswordTextBox";
             maskedPasswordTextBox.Size = new Size(240, 23);
             maskedPasswordTextBox.TabIndex = 6;
-            maskedPasswordTextBox.MaskInputRejected += maskedPasswordTextBox_MaskInputRejected;
-            // 
-            // LoginForm
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+			maskedPasswordTextBox.PasswordChar = '*';
+			// 
+			// LoginForm
+			// 
+			AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
             Controls.Add(maskedPasswordTextBox);
