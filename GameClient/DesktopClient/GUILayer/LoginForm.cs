@@ -33,8 +33,6 @@ namespace DesktopClient
 
 				if (loginSuccessful)
 				{
-					MessageBox.Show("Login Successful");
-					// Proceed to the next part of your application
 					_applicationContextManager.ShowAdminDashboardForm();
 				}
 				else

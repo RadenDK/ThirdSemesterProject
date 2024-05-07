@@ -45,7 +45,7 @@
 			textboxAdminId.Margin = new Padding(3, 2, 3, 2);
 			textboxAdminId.Name = "textboxAdminId";
 			textboxAdminId.Size = new Size(294, 23);
-			textboxAdminId.TabIndex = 1;
+			textboxAdminId.TabIndex = 0;
 			// 
 			// passwordLabel
 			// 
@@ -74,7 +74,7 @@
 			maskedPasswordTextBox.Name = "maskedPasswordTextBox";
 			maskedPasswordTextBox.PasswordChar = '*';
 			maskedPasswordTextBox.Size = new Size(294, 23);
-			maskedPasswordTextBox.TabIndex = 6;
+			maskedPasswordTextBox.TabIndex = 1;
 			// 
 			// loginLabel
 			// 
@@ -96,6 +96,8 @@
 			loginButton.Text = "Login";
 			loginButton.UseVisualStyleBackColor = true;
 			loginButton.Click += loginButton_Click;
+			loginButton.TabIndex = 2;
+			this.AcceptButton = loginButton;
 			// 
 			// loginPanel
 			// 
