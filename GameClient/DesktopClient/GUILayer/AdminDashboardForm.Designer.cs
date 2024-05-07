@@ -32,14 +32,17 @@
 			administratePlayersButton = new Button();
 			administrateLobbiesButton = new Button();
 			administrateStoreButton = new Button();
+			dashboardPanel = new Panel();
+			dashboardPanel.SuspendLayout();
 			SuspendLayout();
 			// 
 			// logoutButton
 			// 
-			logoutButton.Font = new Font("Segoe UI", 11F);
-			logoutButton.Location = new Point(12, 12);
+			logoutButton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			logoutButton.Location = new Point(415, 385);
+			logoutButton.Margin = new Padding(3, 2, 3, 2);
 			logoutButton.Name = "logoutButton";
-			logoutButton.Size = new Size(93, 56);
+			logoutButton.Size = new Size(81, 25);
 			logoutButton.TabIndex = 0;
 			logoutButton.Text = "Logout";
 			logoutButton.UseVisualStyleBackColor = true;
@@ -48,49 +51,62 @@
 			// administratePlayersButton
 			// 
 			administratePlayersButton.Font = new Font("Segoe UI", 12F);
-			administratePlayersButton.Location = new Point(251, 80);
+			administratePlayersButton.Location = new Point(363, 114);
+			administratePlayersButton.Margin = new Padding(3, 2, 3, 2);
 			administratePlayersButton.Name = "administratePlayersButton";
-			administratePlayersButton.Size = new Size(213, 64);
+			administratePlayersButton.Size = new Size(186, 48);
 			administratePlayersButton.TabIndex = 1;
 			administratePlayersButton.Text = "Administrate Players";
 			administratePlayersButton.UseVisualStyleBackColor = true;
-			administratePlayersButton.Click += this.administratePlayersButton_Click;
+			administratePlayersButton.Click += administratePlayersButton_Click;
 			// 
 			// administrateLobbiesButton
 			// 
 			administrateLobbiesButton.Font = new Font("Segoe UI", 12F);
-			administrateLobbiesButton.Location = new Point(251, 160);
+			administrateLobbiesButton.Location = new Point(363, 200);
+			administrateLobbiesButton.Margin = new Padding(3, 2, 3, 2);
 			administrateLobbiesButton.Name = "administrateLobbiesButton";
-			administrateLobbiesButton.Size = new Size(213, 64);
+			administrateLobbiesButton.Size = new Size(186, 48);
 			administrateLobbiesButton.TabIndex = 2;
 			administrateLobbiesButton.Text = "Administrate Lobbies";
 			administrateLobbiesButton.UseVisualStyleBackColor = true;
-			administrateLobbiesButton.Click += this.administrateLobbiesButton_Click;
+			administrateLobbiesButton.Click += administrateShopButton_Click;
 			// 
 			// administrateStoreButton
 			// 
 			administrateStoreButton.Font = new Font("Segoe UI", 12F);
-			administrateStoreButton.Location = new Point(251, 244);
+			administrateStoreButton.Location = new Point(363, 285);
+			administrateStoreButton.Margin = new Padding(3, 2, 3, 2);
 			administrateStoreButton.Name = "administrateStoreButton";
-			administrateStoreButton.Size = new Size(213, 64);
+			administrateStoreButton.Size = new Size(186, 48);
 			administrateStoreButton.TabIndex = 3;
 			administrateStoreButton.Text = "Administrate Store";
 			administrateStoreButton.UseVisualStyleBackColor = true;
-			administrateLobbiesButton.Click += this.administrateShopButton_Click;
-
+			// 
+			// dashboardPanel
+			// 
+			dashboardPanel.Anchor = AnchorStyles.None;
+			dashboardPanel.Controls.Add(administratePlayersButton);
+			dashboardPanel.Controls.Add(logoutButton);
+			dashboardPanel.Controls.Add(administrateStoreButton);
+			dashboardPanel.Controls.Add(administrateLobbiesButton);
+			dashboardPanel.Location = new Point(12, 12);
+			dashboardPanel.Name = "dashboardPanel";
+			dashboardPanel.Size = new Size(911, 503);
+			dashboardPanel.TabIndex = 4;
 			// 
 			// AdminDashboardForm
 			// 
-			AutoScaleDimensions = new SizeF(8F, 20F);
+			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(800, 450);
-			Controls.Add(administrateStoreButton);
-			Controls.Add(administrateLobbiesButton);
-			Controls.Add(administratePlayersButton);
-			Controls.Add(logoutButton);
+			ClientSize = new Size(935, 527);
+			Controls.Add(dashboardPanel);
+			Margin = new Padding(3, 2, 3, 2);
 			Name = "AdminDashboardForm";
+			StartPosition = FormStartPosition.CenterScreen;
 			Text = "AdminDashboard";
 			Load += AdminDashboard_Load;
+			dashboardPanel.ResumeLayout(false);
 			ResumeLayout(false);
 		}
 
@@ -100,5 +116,6 @@
 		private Button administratePlayersButton;
 		private Button administrateLobbiesButton;
 		private Button administrateStoreButton;
+		private Panel dashboardPanel;
 	}
 }
