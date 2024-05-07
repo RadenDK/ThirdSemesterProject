@@ -67,8 +67,8 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpPatch("ban")]
-        public IActionResult BanPlayer(string username)
+        [HttpPost("ban")]
+        public IActionResult BanPlayer([FromBody] string username)
         {
             try
             {
