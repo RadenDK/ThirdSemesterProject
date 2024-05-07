@@ -17,6 +17,7 @@ namespace DesktopClient.GUILayer
 		{
 			InitializeComponent();
 			_applicationContextManager = applicationContextManager;
+			this.Resize += AdminDashboardForm_Resize;
 		}
 
 		private void AdminDashboard_Load(object sender, EventArgs e)
@@ -39,6 +40,13 @@ namespace DesktopClient.GUILayer
 		private void administrateShopButton_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void AdminDashboardForm_Resize(object sender, EventArgs e)
+		{
+			dashboardPanel.Location = new Point(
+				this.ClientSize.Width / 2 - dashboardPanel.Size.Width / 2,
+				this.ClientSize.Height / 2 - dashboardPanel.Size.Height / 2);
 		}
 
 	}

@@ -17,6 +17,8 @@ namespace DesktopClient.GUILayer
 			InitializeComponent();
 			_playerController = playerController;
 			_players = new List<PlayerModel>();
+			searchTextBox.Enter += searchTextBox_Enter;
+			searchTextBox.Leave += searchTextBox_Leave;
 			this.Load += PopulatePlayerList;
 			playerDataGridView.CellDoubleClick += PlayerDataGridView_CellDoubleClick;
 			selectButton.Click += SelectButton_Click;
@@ -69,7 +71,11 @@ namespace DesktopClient.GUILayer
 			string searchInput = searchTextBox.Text.ToLower();
 			List<PlayerModel> filteredPlayers;
 
-			if (string.IsNullOrEmpty(searchInput))
+			if(_players == null)
+			{
+				filteredPlayers = new List<PlayerModel>();
+			}
+			else if (string.IsNullOrEmpty(searchInput) || searchInput == "search...")
 			{
 				filteredPlayers = _players;
 			}
@@ -88,6 +94,26 @@ namespace DesktopClient.GUILayer
 		private void backButton_Click(object sender, EventArgs e)
 		{
 			_applicationContextManager.ShowAdminDashboardForm();
+		}
+
+		private void searchTextBox_Enter(object sender, EventArgs e)
+		{
+			if (searchTextBox.Text == "Search...")
+			{
+				searchTextBox.Text = "";
+				searchTextBox.ForeColor = Color.Black;
+			}
+		}
+
+		private void searchTextBox_Leave(object sender, EventArgs e)
+		{
+			if (searchTextBox.Text == "")
+			{
+				searchTextBox.TextChanged -= searchTextBox_TextChanged;
+				searchTextBox.Text = "Search...";
+				searchTextBox.ForeColor = Color.Gray;
+				searchTextBox.TextChanged += searchTextBox_TextChanged;
+			}
 		}
 	}
 }
