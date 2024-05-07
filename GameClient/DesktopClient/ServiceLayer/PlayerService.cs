@@ -42,23 +42,30 @@ namespace DesktopClient.ServiceLayer
 
 		public async Task<bool> BanPlayer(string username)
 		{
-			string endpoint = "Player/ban";
+			try
+			{
+				string endpoint = "Player/ban";
 
-			StringContent content = new StringContent(
-				JsonConvert.SerializeObject(new { username = username }),
-				Encoding.UTF8,
-				"application/json");
+				StringContent content = new StringContent(
+					JsonConvert.SerializeObject(username),
+					Encoding.UTF8,
+					"application/json");
 
-			HttpResponseMessage response = await _httpClientService.PatchAsync(endpoint, content);
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-				return false;
-                throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
-            }
-        }
+				HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, content);
+				if (response.IsSuccessStatusCode)
+				{
+					return true;
+				}
+				else
+				{
+					throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($"Failed to ban player. Error: {ex.Message}");
+			}
+		}
 	}
 }
