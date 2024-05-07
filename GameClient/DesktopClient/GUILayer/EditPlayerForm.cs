@@ -17,7 +17,8 @@ namespace DesktopClient.GUILayer
 	{
 		private PlayerController _playerController;
 		private PlayerModel _player;
-		public EditPlayerForm(PlayerController playerController, PlayerModel player)
+        public event Action PlayerEdited;
+        public EditPlayerForm(PlayerController playerController, PlayerModel player)
 		{
 			InitializeComponent();
 			_playerController = playerController;
@@ -45,7 +46,8 @@ namespace DesktopClient.GUILayer
 				bool result = await _playerController.BanPlayer(_player);
 				if (result)
 				{
-					MessageBox.Show(_player.Username + " was successfully banned.", "Ban Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PlayerEdited?.Invoke();
+                    MessageBox.Show(_player.Username + " was successfully banned.", "Ban Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					this.Close();
 				}
                 else
