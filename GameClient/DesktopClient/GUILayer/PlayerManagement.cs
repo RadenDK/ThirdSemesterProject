@@ -38,21 +38,28 @@ namespace DesktopClient.GUILayer
 			if (selectedPlayer != null)
 			{
 				EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
+				editPlayerForm.PlayerEdited += UpdatePlayerList;
 				editPlayerForm.ShowDialog();
 			}
 		}
 
-		private void PlayerDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void PlayerDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
 		{
 			PlayerModel selectedPlayer = playerDataGridView.CurrentRow.DataBoundItem as PlayerModel;
 			if (selectedPlayer != null)
 			{
 				EditPlayerForm editPlayerForm = new EditPlayerForm(_playerController, selectedPlayer);
-				editPlayerForm.ShowDialog();
+                editPlayerForm.PlayerEdited += UpdatePlayerList;
+                editPlayerForm.ShowDialog();
 			}
 		}
 
-		private async void searchTextBox_TextChanged(object sender, EventArgs e)
+        private void UpdatePlayerList()
+        {
+            PopulatePlayerList(this, EventArgs.Empty);
+        }
+
+        private async void searchTextBox_TextChanged(object sender, EventArgs e)
 		{
 			FilterPlayer();
 		}
