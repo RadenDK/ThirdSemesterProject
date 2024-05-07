@@ -30,11 +30,5 @@ namespace DesktopClient.Services
 		{
 			return await _httpClient.GetAsync(url);
 		}
-
-		public async Task<HttpResponseMessage> PatchAsync(string url, StringContent content)
-		{
-			return await _httpClient.PatchAsync(url, content);
-		}
-
 	}
 }
