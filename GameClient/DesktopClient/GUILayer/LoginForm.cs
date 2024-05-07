@@ -1,4 +1,5 @@
 using DesktopClient.ControllerLayer;
+using DesktopClient.GUILayer;
 
 namespace DesktopClient
 {
@@ -6,10 +7,12 @@ namespace DesktopClient
     {
 
         private AdminController _adminController;
-        public LoginForm(AdminController adminController)
+        private ApplicationContextManager _applicationContextManager;
+		public LoginForm(ApplicationContextManager applicationContextManager, AdminController adminController)
         {
             InitializeComponent();
             _adminController = adminController;
+            _applicationContextManager = applicationContextManager;
         }
 
 
@@ -31,6 +34,7 @@ namespace DesktopClient
                 {
                     MessageBox.Show("Login Successful");
                     // Proceed to the next part of your application
+                    _applicationContextManager.ShowAdminDashboardForm();
                 }
                 else
                 {
