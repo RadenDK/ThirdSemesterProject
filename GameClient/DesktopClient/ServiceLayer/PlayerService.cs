@@ -19,10 +19,6 @@ namespace DesktopClient.ServiceLayer
 			_httpClientService = httpClientService;
 		}
 
-        public PlayerService()
-        {
-        }
-
         public async Task<List<PlayerModel>> GetAllPlayers()
 		{
 			string endpoint = "Player/AllPlayers";
