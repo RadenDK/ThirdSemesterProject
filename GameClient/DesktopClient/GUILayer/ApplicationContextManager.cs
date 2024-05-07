@@ -1,6 +1,8 @@
 ﻿using DesktopClient.ControllerLayer;
+using DesktopClient.Security;
 using DesktopClient.ServiceLayer;
 using DesktopClient.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace DesktopClient.GUILayer
 {
@@ -9,11 +11,13 @@ namespace DesktopClient.GUILayer
 		private Form _currentForm;
 		private readonly HttpClient _httpClient;
 		private readonly HttpClientService _httpClientService;
+		private ITokenManager _tokenManager;
 
-		public ApplicationContextManager()
+		public ApplicationContextManager(IConfiguration configuration)
 		{
 			_httpClient = new HttpClient();
 			_httpClientService = new HttpClientService(_httpClient);
+			_tokenManager = new TokenManager(configuration, new TokenService(_httpClientService));
 
 			// This is the form that starts up when the program launches
 			ShowForm(GetLoginForm());
@@ -70,7 +74,7 @@ namespace DesktopClient.GUILayer
 		private LoginForm GetLoginForm()
 		{
 			AdminService adminService = new AdminService(_httpClientService);
-			AdminController adminController = new AdminController(adminService);
+			AdminController adminController = new AdminController(adminService, _tokenManager);
 			return new LoginForm(this, adminController);
 		}
 
@@ -82,7 +86,7 @@ namespace DesktopClient.GUILayer
 		private PlayerManagement GetPlayerManagementForm()
 		{
 			IPlayerService playerService = new PlayerService(_httpClientService);
-			PlayerController playerController = new PlayerController(playerService);
+			PlayerController playerController = new PlayerController(playerService, _tokenManager);
 			return new PlayerManagement(this, playerController);
 		}
 	}
