@@ -151,11 +151,10 @@ namespace GameClientApi.BusinessLogic
                     _playerAccessor.SetOfflineStatus(player, transaction);
                 }
 
-                if(!_playerAccessor.BanPlayer(player, transaction))
+                if(_playerAccessor.BanPlayer(player, transaction))
                 {
-                    return false;
+                    _playerAccessor.CommitTransaction(transaction);
                 }
-                _playerAccessor.CommitTransaction(transaction);
                 return true;
 
             }
