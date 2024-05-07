@@ -7,74 +7,83 @@ namespace DesktopClient.GUILayer
 	public class ApplicationContextManager : ApplicationContext
 	{
 		private Form _currentForm;
+		private readonly HttpClient _httpClient;
+		private readonly HttpClientService _httpClientService;
 
 		public ApplicationContextManager()
 		{
-			ShowAdminDashboardForm();
+			_httpClient = new HttpClient();
+			_httpClientService = new HttpClientService(_httpClient);
+
+			// This is the form that starts up when the program launches
+			ShowForm(GetLoginForm());
 		}
 
-		//public void ShowLoginForm()
-		//{
-		//	CloseCurrentForm();
-
-		//	LoginForm loginForm = GetLoginForm();
-		//	_currentForm = loginForm;
-		//	loginForm.Show();
-		//}
+		public void ShowLoginForm()
+		{
+			ShowForm(GetLoginForm());
+		}
 
 		public void ShowAdminDashboardForm()
 		{
-			CloseCurrentForm();
-
-			AdminDashboardForm adminDashboardForm = GetAdminForm();
-			_currentForm = adminDashboardForm;
-			adminDashboardForm.Show();
+			ShowForm(GetAdminForm());
 		}
 
-		//public void ShowPlayerManagementForm()
-		//{
-		//	CloseCurrentForm();
+		public void ShowPlayerManagementForm()
+		{
+			ShowForm(GetPlayerManagementForm());
+		}
 
-		//	PlayerManagement playerManagementForm = GetPlayerManagementForm();
-		//	_currentForm = playerManagementForm;
-		//	playerManagementForm.Show();
-		//}
+		// Helper method in showing a form
+		private void ShowForm(Form form)
+		{
+			// Closes the current form
+			CloseCurrentForm();
+
+			_currentForm = form;
+
+			// Adds the event of Exiting the program so that if the exit button is pressed it closes down the whole program
+			form.FormClosed += ExitProgram;
+
+			form.Show();
+		}
+
+		// This is to exit the whole program
+		private void ExitProgram(object sender, FormClosedEventArgs e)
+		{
+			Application.Exit();
+		}
 
 		private void CloseCurrentForm()
 		{
 			if (_currentForm != null)
 			{
+				// Removes the event of closing down the program so that when switching between forms does not straight up shut down the whole program
+				_currentForm.FormClosed -= ExitProgram;
+
 				_currentForm.Close();
+
 				_currentForm = null;
 			}
 		}
 
-		//private LoginForm GetLoginForm()
-		//{
-		//	HttpClient httpClient = new HttpClient();
-		//	HttpClientService httpClientService = new HttpClientService(httpClient);
-		//	AdminService adminService = new AdminService(httpClientService);
-		//	AdminController adminController = new AdminController(adminService);
-		//	LoginForm loginForm = new LoginForm(this, adminController);
-
-		//	return loginForm;
-		//}
+		private LoginForm GetLoginForm()
+		{
+			AdminService adminService = new AdminService(_httpClientService);
+			AdminController adminController = new AdminController(adminService);
+			return new LoginForm(this, adminController);
+		}
 
 		private AdminDashboardForm GetAdminForm()
 		{
-			AdminDashboardForm adminDashboardForm = new AdminDashboardForm(this);
-
-			return adminDashboardForm;
+			return new AdminDashboardForm(this);
 		}
 
-		//private PlayerManagement GetPlayerManagementForm()
-		//{
-		//	IPlayerService playerService = new PlayerService();
-		//	PlayerController playerController = new PlayerController(playerService);
-		//	PlayerManagement playerManagementForm = new PlayerManagement(this, playerController);
-
-		//	return playerManagementForm;
-		//}
-
+		private PlayerManagement GetPlayerManagementForm()
+		{
+			IPlayerService playerService = new PlayerService(_httpClientService);
+			PlayerController playerController = new PlayerController(playerService);
+			return new PlayerManagement(this, playerController);
+		}
 	}
 }
