@@ -10,9 +10,9 @@ namespace DesktopClient.ServiceLayer
 {
 	public interface IPlayerService
 	{
-		Task<List<PlayerModel>> GetAllPlayers();
+		Task<List<PlayerModel>> GetAllPlayers(string accessToken);
 
-		Task<bool> BanPlayer(string username);
+		Task<bool> BanPlayer(string username, string accessToken);
 
     }
 }
