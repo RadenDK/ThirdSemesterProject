@@ -10,58 +10,62 @@ using DesktopClient.Services;
 
 namespace DesktopClient.ServiceLayer
 {
-	public class PlayerService : IPlayerService
-	{
-		private readonly IHttpClientService _httpClientService;
+    public class PlayerService : IPlayerService
+    {
+        private readonly IHttpClientService _httpClientService;
 
-		public PlayerService(IHttpClientService httpClientService)
-		{
-			_httpClientService = httpClientService;
-		}
+        public PlayerService(IHttpClientService httpClientService)
+        {
+            _httpClientService = httpClientService;
+        }
 
-        public async Task<List<PlayerModel>> GetAllPlayers()
-		{
-			string endpoint = "Player/AllPlayers";
+        public async Task<List<PlayerModel>> GetAllPlayers(string accessToken)
+        {
+            string endpoint = "Player/AllPlayers";
+            
+            _httpClientService.SetAuthenticationHeader(accessToken);
+            HttpResponseMessage response = await _httpClientService.GetAsync(endpoint);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<PlayerModel> allPlayers = JsonConvert.DeserializeObject<List<PlayerModel>>(responseBody);
+                return allPlayers;
+            }
+            else
+            {
+                throw new Exception($"Failed to get players. HTTP status code: {response.StatusCode}");
+            }
+        }
 
-			HttpResponseMessage response = await _httpClientService.GetAsync(endpoint);
-			if (response.IsSuccessStatusCode)
-			{
-				string responseBody = await response.Content.ReadAsStringAsync();
-				List<PlayerModel> allPlayers = JsonConvert.DeserializeObject<List<PlayerModel>>(responseBody);
-				return allPlayers;
-			}
-			else
-			{
-				throw new Exception($"Failed to get players. HTTP status code: {response.StatusCode}");
-			}
-		}
+        public async Task<bool> BanPlayer(string username, string accessToken)
+        {
+            try
+            {
+                string endpoint = "Player/ban";
 
-		public async Task<bool> BanPlayer(string username)
-		{
-			try
-			{
-				string endpoint = "Player/ban";
+                StringContent content = new StringContent(
+                    JsonConvert.SerializeObject(username),
+                    Encoding.UTF8,
+                    "application/json");
 
-				StringContent content = new StringContent(
-					JsonConvert.SerializeObject(username),
-					Encoding.UTF8,
-					"application/json");
+                _httpClientService.SetAuthenticationHeader(accessToken);
+                HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, content);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
 
-				HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, content);
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-				else
-				{
-					throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
-
-				}
-			}
-			catch (Exception ex)
-			{
-				throw new Exception($"Failed to ban player. Error: {ex.Message}");
-			}
-		}
-	}
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to ban player. Error: {ex.Message}");
+            }
+        }
+    }
 }
