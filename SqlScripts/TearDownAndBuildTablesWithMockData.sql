@@ -1,4 +1,4 @@
-    use [DMA-CSD-V23_10485521];
+    use [GameClient];
 
     -- Drop tables in reverse order of creation
     DROP TABLE IF EXISTS [Order];
@@ -15,7 +15,7 @@
     DROP TABLE IF EXISTS [Address];
      DROP TABLE IF EXISTS [City];
 
-
+GO
     -- Creating the tables
 
 
@@ -138,11 +138,12 @@
             CprNumber VARCHAR (10) NOT NULL UNIQUE,
             PhoneNumber VARCHAR (10) NOT NULL,
             AddressId INT NOT NULL,
+            PasswordHash NVARCHAR (MAX) NOT NULL,
             FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
         );
 
    
-
+GO
 
 
     -- Inserting mock data
@@ -224,3 +225,18 @@ INSERT INTO GameLobby (LobbyName, PasswordHash, inviteLink, lobbyChatId) VALUES 
     INSERT INTO FriendList (Player1ID, Player2ID) VALUES (7, 8);
     INSERT INTO FriendList (Player1ID, Player2ID) VALUES (1, 3);
     INSERT INTO FriendList (Player1ID, Player2ID, chatId) VALUES (1, 5, 4);
+
+    -- Insert data into City
+INSERT INTO City (ZipCode, CityName) VALUES (1000, 'Copenhagen');
+INSERT INTO City (ZipCode, CityName) VALUES (2000, 'Frederiksberg');
+
+
+-- Insert data into Address
+INSERT INTO Address (StreetName, StreetNumber, ZipCode) VALUES ('Main Street', 1, 1000);
+INSERT INTO Address (StreetName, StreetNumber, ZipCode) VALUES ('Second Street', 2, 2000);
+
+-- Insert data into Admin
+
+    INSERT INTO Admin ([Name], Email, CprNumber, PhoneNumber, AddressId, PasswordHash) 
+VALUES ('admin1', 'admin1@example.com', '1234567890', '1234567890', 1, '$2a$11$GsmfIz3OPipR6f5avJUDTuFMItDbPZtiCmYScex0uZxo1z4Q6iP/i');
+
