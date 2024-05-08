@@ -112,10 +112,7 @@ namespace GameClientApi.BusinessLogic
 
         public void UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null)
         {
-            if (transaction == null)
-            {
-                transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-            }
+            
             _playerAccessor.UpdatePlayerOwnership(player, transaction);
 
         }
