@@ -2,6 +2,7 @@
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Transactions;
 using BC = BCrypt.Net.BCrypt;
 namespace GameClientApi.BusinessLogic
 {
@@ -71,29 +72,28 @@ namespace GameClientApi.BusinessLogic
 
         }
 
-        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
+        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
         {
-            SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-
-            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
-
-            if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
+            if(transaction == null)
             {
-                _playerAccessor.CommitTransaction(transaction);
+                transaction = _playerAccessor.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
 
+                if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
+                {
+                    _playerAccessor.CommitTransaction(transaction);
+
+                }
+                else
+                {
+                    _playerAccessor.RollbackTransaction(transaction);
+                    throw new ArgumentException("Too many players in lobby");
+                }
             }
             else
             {
-                _playerAccessor.RollbackTransaction(transaction);
-                throw new ArgumentException("Too many players in lobby");
+                _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
             }
-        }
-
-        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
-        {
-
-            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
-
         }
 
         private bool TooManyPlayersInLobby(GameLobbyModel gameLobby, SqlTransaction transaction)
@@ -121,7 +121,7 @@ namespace GameClientApi.BusinessLogic
 
         public bool BanPlayer(string username)
         {
-            SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
+            SqlTransaction transaction = _playerAccessor.BeginTransaction();
 
             try
             {
