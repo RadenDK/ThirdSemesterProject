@@ -145,7 +145,7 @@ namespace GameClientApi.BusinessLogic
 
 				gameLobby.InviteLink = GenerateInviteLink();
 
-				transaction = _gameLobbyAccessor.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+				transaction = _gameLobbyAccessor.BeginTransaction();
 
 				int gameLobbyId = _gameLobbyAccessor.CreateGameLobby(gameLobby, transaction);
 
@@ -154,10 +154,12 @@ namespace GameClientApi.BusinessLogic
 					gameLobby.GameLobbyId = gameLobbyId;
 
 					PlayerModel player = _playerLogic.GetPlayer(username, transaction);
-					player.IsOwner = true;
+
 					player.GameLobbyId = gameLobbyId;
-					_playerLogic.UpdatePlayerOwnership(player, transaction);
-					_playerLogic.UpdatePlayerLobbyIdCreateGameLobby(player, gameLobby, transaction);
+                    _playerLogic.UpdatePlayerLobbyId(player, gameLobby, transaction);
+
+                    player.IsOwner = true;
+                    _playerLogic.UpdatePlayerOwnership(player, transaction);
 
 					_gameLobbyAccessor.CommitTransaction(transaction);
 

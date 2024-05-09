@@ -89,12 +89,8 @@ namespace GameClientApi.BusinessLogic
             }
         }
 
-        public void UpdatePlayerLobbyIdCreateGameLobby(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
+        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
         {
-            if (transaction == null)
-            {
-                transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-            }
 
             _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
 
@@ -136,7 +132,7 @@ namespace GameClientApi.BusinessLogic
                 if(player.GameLobbyId != null)
                 {
                     GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = null };
-                    UpdatePlayerLobbyIdCreateGameLobby(player, emptyGameLobbyModel, transaction);
+                    UpdatePlayerLobbyId(player, emptyGameLobbyModel, transaction);
                     if(player.IsOwner)
                     {
                         player.IsOwner = false;
