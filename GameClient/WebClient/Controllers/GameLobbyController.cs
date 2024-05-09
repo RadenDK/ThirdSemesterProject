@@ -21,6 +21,12 @@ namespace WebClient.Controllers
 			return View();
 		}
 
+        [HttpGet("GameLobby")]
+        public IActionResult GameLobby()
+        {
+            return View();
+        }
+
 		[HttpGet]
         public async Task<IActionResult> ViewAllGameLobbies()
         {
