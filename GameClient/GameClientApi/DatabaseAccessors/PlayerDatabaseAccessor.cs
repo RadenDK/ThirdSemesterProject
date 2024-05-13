@@ -24,12 +24,12 @@ namespace GameClientApi.DatabaseAccessors
 
 			if (playerId.HasValue)
 			{
-				selectQueryString = "SELECT * FROM Player WHERE PlayerId = @PlayerId";
+				selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE PlayerId = @PlayerId";
 				queryParameters = new { PlayerId = playerId };
 			}
 			else
 			{
-				selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
+				selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE Username = @Username";
 				queryParameters = new { Username = username };
 			}
 
