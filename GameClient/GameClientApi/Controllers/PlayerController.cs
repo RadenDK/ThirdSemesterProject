@@ -88,7 +88,28 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpGet("AllPlayers")]
+		[HttpPost("unban")]
+		public IActionResult UnbanPlayer([FromBody] string username)
+		{
+			try
+			{
+				if (_playerLogic.UnbanPlayer(username))
+				{
+					return Ok();
+				}
+				else
+				{
+					return BadRequest(new { message = "Player: " + username + "was not unbanned successfully" });
+				}
+
+			}
+			catch (ArgumentException e)
+			{
+				return BadRequest($"{e.Message}");
+			}
+		}
+
+		[HttpGet("AllPlayers")]
         public IActionResult GetListOfPlayers()
         {
             try
