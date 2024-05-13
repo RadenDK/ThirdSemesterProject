@@ -208,7 +208,7 @@ namespace GameClientApiTests.PlayerControllerTests
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
 
             _mockAccessor.Setup(a => a.GetPassword(mockLogin.Username)).Returns(hashedPassword);
-			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username)).Returns(expectedPlayer);
+			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username, null)).Returns(expectedPlayer);
 
 			// Insert a mock player into the test database
 
@@ -247,7 +247,7 @@ namespace GameClientApiTests.PlayerControllerTests
             int playerIdToBan = 1;
             PlayerModel playerToBan = new PlayerModel { PlayerId = playerIdToBan, Banned = false };
 
-            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns(playerToBan);
+            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>(), null)).Returns(playerToBan);
             _mockAccessor.Setup(a => a.BanPlayer(It.IsAny<PlayerModel>(), It.IsAny<SqlTransaction>())).Returns(true);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
@@ -265,7 +265,7 @@ namespace GameClientApiTests.PlayerControllerTests
             // Arrange
             string nonExistingPlayerId = "nonExistingUser";
 
-            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns((PlayerModel)null);
+            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>(), null)).Returns((PlayerModel)null);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
