@@ -39,42 +39,55 @@ namespace DesktopClient.GUILayer
             this.Close();
         }
 
-        private async void confirmButton_Click(object sender, EventArgs e)
-        {
-            if (!ChangesCheck())
-            {
-                MessageBox.Show("No changes was made", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (bannedCheckBox.Checked)
-            {
-                bool result = await _playerController.BanPlayer(_player);
-                if (result)
-                {
-                    PlayerEdited?.Invoke();
-                    MessageBox.Show(_player.Username + " was successfully banned.", "Ban Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show(_player.Username + " was not banned.", "Ban Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            if (!bannedCheckBox.Checked)
-            {
-                bool result = await _playerController.UnbanPlayer(_player);
-                if (result)
-                {
-                    PlayerEdited?.Invoke();
-                    MessageBox.Show(_player.Username + " was successfully unbanned.", "Unban Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show(_player.Username + " was not unbanned.", "Unban Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+		private async void confirmButton_Click(object sender, EventArgs e)
+		{
+			if (!ChangesCheck())
+			{
+				MessageBox.Show("No changes was made", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
+			if (int.Parse(currencyTextBox.Text) < 0)
+			{
+				MessageBox.Show("Invalid amount for currency", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				currencyTextBox.Text = _player.CurrencyAmount.ToString();
+				return;
+			}
+			if (int.Parse(eloTextBox.Text) < 0)
+			{
+				MessageBox.Show("Invalid amount for elo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				eloTextBox.Text = _player.Elo.ToString();
+				return;
+			}
+
+			if (bannedCheckBox.Checked)
+			{
+				_player.Banned = true;
+			}
+			if (!bannedCheckBox.Checked)
+			{
+				_player.Banned = false;
+			}
+
+			_player.Username = usernameTextBox.Text;
+			_player.InGameName = inGameNameTextBox.Text;
+			_player.Email = emailTextBox.Text;
+			_player.Elo = int.Parse(eloTextBox.Text);
+			_player.CurrencyAmount = int.Parse(currencyTextBox.Text);
+
+			bool result = await _playerController.UpdatePlayer(_player);
+
+			if (result)
+			{
+				MessageBox.Show("Updated player successfully", "Update success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				PlayerEdited?.Invoke();
+				this.Close();
+			}
+			else
+			{
+				MessageBox.Show("Failed to update player", "Update error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
+		}
 
         private bool ChangesCheck()
         {

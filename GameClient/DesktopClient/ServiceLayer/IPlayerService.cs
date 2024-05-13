@@ -12,10 +12,8 @@ namespace DesktopClient.ServiceLayer
 	{
 		Task<List<PlayerModel>> GetAllPlayers(string accessToken);
 
-		Task<bool> BanPlayer(string username, string accessToken);
-
-		Task<bool> UnbanPlayer(string username, string accessToken);
-
 		Task<bool> DeletePlayer(string username, string accessToken);
+		
+		Task<bool> UpdatePlayer(PlayerModel player, string accessToken);
     }
 }
