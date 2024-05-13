@@ -127,15 +127,44 @@ namespace GameClientApi.BusinessLogic
 			return players;
 		}
 
-		public bool BanPlayer(string username)
+		public bool UpdatePlayer(PlayerModel newPlayer)
 		{
+			PlayerModel oldPlayer = _playerAccessor.GetPlayer(playerId: newPlayer.PlayerId);
+
 			SqlTransaction transaction = _playerAccessor.BeginTransaction();
 
 			try
 			{
-				PlayerModel player = GetPlayer(username, transaction);
-				player.Banned = true;
+				if (newPlayer.Banned == true && oldPlayer.Banned == false)
+				{
+					BanPlayer(newPlayer, transaction);
+				}
+				if (_playerAccessor.UsernameExists(newPlayer.Username) && newPlayer.Username != oldPlayer.Username)
+				{
+					throw new ArgumentException("Username already exists");
+				}
+				if (_playerAccessor.InGameNameExists(newPlayer.InGameName) && newPlayer.InGameName != oldPlayer.InGameName)
+				{
+					throw new ArgumentException("InGameName already exists");
+				}
 
+				if (_playerAccessor.UpdatePlayer(newPlayer, transaction))
+				{
+					_playerAccessor.CommitTransaction(transaction);
+				}
+				return true;
+			}
+			catch
+			{
+				_playerAccessor.RollbackTransaction(transaction);
+				return false;
+			}
+		}
+
+		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		{
+			try
+			{
 				if (player.GameLobbyId != null)
 				{
 					GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = null };
@@ -151,39 +180,11 @@ namespace GameClientApi.BusinessLogic
 					player.OnlineStatus = false;
 					_playerAccessor.SetOnlineStatus(player, transaction);
 				}
-
-				if (_playerAccessor.BanPlayer(player, transaction))
-				{
-					_playerAccessor.CommitTransaction(transaction);
-				}
 				return true;
 			}
-			catch
+			catch (Exception ex)
 			{
-				_playerAccessor.RollbackTransaction(transaction);
-				return false;
-			}
-		}
-
-		public bool UnbanPlayer(string username)
-		{
-			SqlTransaction transaction = _playerAccessor.BeginTransaction();
-			try
-			{
-				PlayerModel player = GetPlayer(username, transaction);
-
-				player.Banned = false;
-
-				if (_playerAccessor.BanPlayer(player, transaction))
-				{
-					_playerAccessor.CommitTransaction(transaction);
-				}
-				return true;
-			}
-			catch
-			{
-				_playerAccessor.RollbackTransaction(transaction);
-				return false;
+				throw new Exception("Failed to ban player: " + ex.Message);
 			}
 		}
         public bool DeletePlayer(string username)
@@ -192,3 +193,4 @@ namespace GameClientApi.BusinessLogic
         }
     }
 }
+

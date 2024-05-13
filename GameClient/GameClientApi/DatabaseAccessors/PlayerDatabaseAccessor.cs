@@ -17,9 +17,21 @@ namespace GameClientApi.DatabaseAccessors
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
+		public PlayerModel GetPlayer(string username = null, int? playerId = null, SqlTransaction transaction = null)
 		{
-			string selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE Username = @Username";
+			string selectQueryString;
+			object queryParameters;
+
+			if (playerId.HasValue)
+			{
+				selectQueryString = "SELECT * FROM Player WHERE PlayerId = @PlayerId";
+				queryParameters = new { PlayerId = playerId };
+			}
+			else
+			{
+				selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
+				queryParameters = new { Username = username };
+			}
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -32,7 +44,7 @@ namespace GameClientApi.DatabaseAccessors
 				connection.Open();
 			}
 
-			PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = username });
+			PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, queryParameters);
 
 			if (transaction == null)
 			{
@@ -238,9 +250,9 @@ namespace GameClientApi.DatabaseAccessors
             return rowsAffected > 0;
 		}
 
-		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		public bool UpdatePlayer(PlayerModel player, SqlTransaction transaction = null)
 		{
-			string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
+			string updatePlayerQuery = "UPDATE Player SET Username = @Username, InGameName = @InGameName, Elo = @Elo, Email = @Email, Banned = @Banned, CurrencyAmount = @CurrencyAmount WHERE PlayerId = @PlayerId";
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -253,9 +265,14 @@ namespace GameClientApi.DatabaseAccessors
 				connection.Open();
 			}
 
-			int rowsAffected = connection.Execute(banPlayerQuery, new
+			int rowsAffected = connection.Execute(updatePlayerQuery, new
 			{
+				Username = player.Username,
+				InGameName = player.InGameName,
+				Elo = player.Elo,
+				Email = player.Email,
 				Banned = player.Banned,
+				CurrencyAmount = player.CurrencyAmount,
 				PlayerId = player.PlayerId
 			}, transaction: transaction);
 
