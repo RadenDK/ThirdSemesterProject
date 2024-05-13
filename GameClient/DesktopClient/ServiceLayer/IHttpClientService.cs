@@ -6,7 +6,10 @@
 
 		Task<HttpResponseMessage> GetAsync(string url);
 
-        void SetAuthenticationHeader(string accessToken);
         Task<HttpResponseMessage> DeleteAsync(string requestUri);
+		
+		Task<HttpResponseMessage> PutAsync(string url, StringContent content);
+
+		void SetAuthenticationHeader(string accessToken);
     }
 }
