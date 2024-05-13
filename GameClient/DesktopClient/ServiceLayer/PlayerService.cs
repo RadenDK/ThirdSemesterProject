@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DesktopClient.Services;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DesktopClient.ServiceLayer
 {
@@ -38,19 +39,19 @@ namespace DesktopClient.ServiceLayer
 			}
 		}
 
-		public async Task<bool> BanPlayer(string username, string accessToken)
+		public async Task<bool> UpdatePlayer(PlayerModel player, string accessToken)
 		{
 			try
 			{
-				string endpoint = "Player/ban";
+				string endpoint = "Player/update";
 
 				StringContent content = new StringContent(
-					JsonConvert.SerializeObject(username),
+					JsonConvert.SerializeObject(player),
 					Encoding.UTF8,
 					"application/json");
 
 				_httpClientService.SetAuthenticationHeader(accessToken);
-				HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, content);
+				HttpResponseMessage response = await _httpClientService.PutAsync(endpoint, content);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -58,40 +59,32 @@ namespace DesktopClient.ServiceLayer
 				}
 				else
 				{
-					throw new Exception($"Failed to ban player. HTTP status code: {response.StatusCode}");
-
+					throw new Exception($"Failed to update player. HTTP status code: {response.StatusCode}");
 				}
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"Failed to ban player. Error: {ex.Message}");
+				throw new Exception($"Failed to update player. Error: {ex.Message}");
 			}
+
 		}
 
-		public async Task<bool> UnbanPlayer(string username, string accessToken)
-		{
-			try
-			{
-				string endpoint = "Player/unban";
+        public async Task<bool> DeletePlayer(string username, string accessToken)
+        {
+            string endpoint = "Player/delete";
 
-				StringContent content = new StringContent(JsonConvert.SerializeObject(username), Encoding.UTF8, "application/json");
-				_httpClientService.SetAuthenticationHeader(accessToken);
-				HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, content);
+            _httpClientService.SetAuthenticationHeader(accessToken);
+            HttpResponseMessage response = await _httpClientService.DeleteAsync(endpoint + "/" + username);
 
-				if (response.IsSuccessStatusCode)
-				{
-					return true;
-				}
-				else
-				{
-					throw new Exception($"Failed to unban player. HTTP status code: {response.StatusCode}");
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                throw new Exception($"Failed to delete player. HTTP status code: {response.StatusCode}");
+            }
+        }
 
-				}
-			}
-			catch (Exception ex)
-			{
-				throw new Exception($"Failed to unban player. Error: {ex.Message}");
-			}
-		}
-	}
+    }
 }

@@ -31,9 +31,18 @@ namespace DesktopClient.Services
 			return await _httpClient.GetAsync(url);
 		}
 
+		public async Task<HttpResponseMessage> PutAsync(string url, StringContent content)
+		{
+			return await _httpClient.PutAsync(url, content);
+		}
+
 		public void SetAuthenticationHeader(string accessToken)
 		{
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
-	}
+        public async Task<HttpResponseMessage> DeleteAsync(string requestUri)
+        {
+            return await _httpClient.DeleteAsync(requestUri);
+        }
+    }
 }

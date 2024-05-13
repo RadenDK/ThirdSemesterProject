@@ -4,6 +4,7 @@ using GameClientApi.Models;
 using GameClientApi.DatabaseAccessors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Authorization;
+using Azure.Identity;
 
 namespace GameClientApi.Controllers
 {
@@ -69,47 +70,26 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpPost("ban")]
-        public IActionResult BanPlayer([FromBody] string username)
+
+        [HttpPut("update")]
+        public IActionResult UpdatePlayer([FromBody] PlayerModel player)
         {
             try
             {
-                if (_playerLogic.BanPlayer(username))
+                if (_playerLogic.UpdatePlayer(player))
                 {
                     return Ok();
                 }
                 else
                 {
-                    return BadRequest(new { message = "Player: " + username + "was not banned successfully" });
+                    return BadRequest(new { message = "Player: " + player.Username + "was not successfully updated" });
                 }
-
             }
-            catch (ArgumentException e)
+            catch (ArgumentException ex)
             {
-                return BadRequest($"{e.Message}");
+				return BadRequest(new { message = ex.Message });
             }
         }
-
-		[HttpPost("unban")]
-		public IActionResult UnbanPlayer([FromBody] string username)
-		{
-			try
-			{
-				if (_playerLogic.UnbanPlayer(username))
-				{
-					return Ok();
-				}
-				else
-				{
-					return BadRequest(new { message = "Player: " + username + "was not unbanned successfully" });
-				}
-
-			}
-			catch (ArgumentException e)
-			{
-				return BadRequest($"{e.Message}");
-			}
-		}
 
 		[HttpGet("AllPlayers")]
         public IActionResult GetListOfPlayers()
@@ -124,5 +104,19 @@ namespace GameClientApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("delete/{username}")]
+        public IActionResult DeletePlayer(string username)
+        {
+            if (_playerLogic.DeletePlayer(username))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { message = "Player: " + username + " was not deleted successfully" });
+            }
+        }
+
     }
 }

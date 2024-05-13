@@ -21,7 +21,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 
-		PlayerModel GetPlayer(string userName, SqlTransaction transaction = null);
+		PlayerModel GetPlayer(string username = null, int? playerId = null, SqlTransaction transaction = null);
 
 		List<PlayerModel> GetAllPlayers();
 
@@ -31,6 +31,8 @@ namespace GameClientApi.DatabaseAccessors
 
 		void RollbackTransaction(SqlTransaction sqlTransaction);
 
-		bool BanPlayer(PlayerModel player, SqlTransaction transaction);
-	}
+		bool UpdatePlayer(PlayerModel player, SqlTransaction transaction);
+
+        bool DeletePlayer(string username);
+    }
 }
