@@ -30,7 +30,7 @@ namespace GameClientApi.Controllers
                 bool playerExists = _playerLogic.VerifyLogin(loginModel.Username, loginModel.Password);
                 if (playerExists)
                 {
-                    var player = _playerLogic.GetPlayer(loginModel.Username);
+                    PlayerModel player = _playerLogic.GetPlayer(loginModel.Username);
                     return Ok(player);
                 }
                 else
@@ -42,9 +42,11 @@ namespace GameClientApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
-        }
+			catch (ArgumentException ex)
+			{
+				return Forbid();
+			}
+		}
 
         [HttpPost("create")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
