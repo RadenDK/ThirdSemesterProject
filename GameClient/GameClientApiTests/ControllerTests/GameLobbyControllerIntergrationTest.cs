@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.Data;
 
 namespace GameClientApiTests.ControllerTests
 {
+	[Collection("Sequential")]
 	public class GameLobbyControllerIntergrationTest : IDisposable
 	{
 
