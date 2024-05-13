@@ -124,5 +124,19 @@ namespace GameClientApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("delete/{username}")]
+        public IActionResult DeletePlayer(string username)
+        {
+            if (_playerLogic.DeletePlayer(username))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { message = "Player: " + username + " was not deleted successfully" });
+            }
+        }
+
     }
 }

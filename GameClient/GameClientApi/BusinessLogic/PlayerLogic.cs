@@ -1,4 +1,5 @@
-﻿using GameClientApi.DatabaseAccessors;
+﻿using Dapper;
+using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -185,5 +186,9 @@ namespace GameClientApi.BusinessLogic
 				return false;
 			}
 		}
-	}
+        public bool DeletePlayer(string username)
+        {
+            return _playerAccessor.DeletePlayer(username);
+        }
+    }
 }

@@ -37,5 +37,12 @@ namespace DesktopClient.ControllerLayer
 			string accessToken = await _tokenManager.GetAccessToken();
 			return await _playerService.UnbanPlayer(player.Username, accessToken);
 		}
-	}
+
+        public async Task<bool> DeletePlayer(PlayerModel player)
+        {
+            string accessToken = await _tokenManager.GetAccessToken();
+            return await _playerService.DeletePlayer(player.Username, accessToken);
+        }
+
+    }
 }

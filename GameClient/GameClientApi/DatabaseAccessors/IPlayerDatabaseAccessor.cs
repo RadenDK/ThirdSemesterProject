@@ -32,5 +32,7 @@ namespace GameClientApi.DatabaseAccessors
 		void RollbackTransaction(SqlTransaction sqlTransaction);
 
 		bool BanPlayer(PlayerModel player, SqlTransaction transaction);
-	}
+
+        bool DeletePlayer(string username);
+    }
 }

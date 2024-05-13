@@ -284,5 +284,14 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			sqlTransaction.Rollback();
 		}
-	}
+
+        public bool DeletePlayer(string username)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Execute("DELETE FROM Player WHERE Username = @Username", new { Username = username });
+                return result > 0;
+            }
+        }
+    }
 }
