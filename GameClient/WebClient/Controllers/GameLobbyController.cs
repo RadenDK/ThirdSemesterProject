@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
@@ -38,15 +39,29 @@ namespace WebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> GameLobby([FromBody] JoinGameLobbyRequest request)
         {
-            // TODO get the players id to pass along
-            // request.playerId = PLAYERS ACTUALLY ID
+			ClaimsPrincipal userPrincipal = HttpContext.User;
 
-            request.PlayerId = 1;
+            int playerId = int.Parse(userPrincipal.FindFirst("PlayerId").Value);
+
+            request.PlayerId = playerId;
 
 			GameLobbyModel gameLobby = await _gameLobbyLogic.JoinGameLobby(request);
 
+            ViewBag.GameLobbyModel = gameLobby;
 
             return View(gameLobby);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LeaveGameLobby(int gameLobbyId)
+        {
+            ClaimsPrincipal userPrincipal = HttpContext.User;
+
+			int playerId = int.Parse(userPrincipal.FindFirst("PlayerId").Value);
+
+            bool successfullyLeft = await _gameLobbyLogic.LeaveGameLobby(playerId, gameLobbyId);
+
+            return RedirectToAction("ViewAllGameLobbies");
         }
 
         [HttpPost]
@@ -54,7 +69,7 @@ namespace WebClient.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userPrincipal = HttpContext.User;
+                ClaimsPrincipal userPrincipal = HttpContext.User;
                 string username = _gameLobbyLogic.GetUsername(userPrincipal);
 				GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
                 return RedirectToAction("GameLobby", "GameLobby");
