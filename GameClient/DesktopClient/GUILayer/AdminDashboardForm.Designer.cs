@@ -104,7 +104,7 @@
 			Margin = new Padding(3, 2, 3, 2);
 			Name = "AdminDashboardForm";
 			StartPosition = FormStartPosition.CenterScreen;
-			Text = "AdminDashboard";
+			Text = "Dashboard";
 			Load += AdminDashboard_Load;
 			dashboardPanel.ResumeLayout(false);
 			ResumeLayout(false);
