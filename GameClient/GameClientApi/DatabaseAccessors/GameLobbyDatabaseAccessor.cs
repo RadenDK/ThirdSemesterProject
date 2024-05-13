@@ -9,6 +9,7 @@ namespace GameClientApi.DatabaseAccessors
     public class GameLobbyDatabaseAccessor : IGameLobbyDatabaseAccessor
     {
         private readonly string _connectionString;
+
         public GameLobbyDatabaseAccessor(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -18,25 +19,41 @@ namespace GameClientApi.DatabaseAccessors
         {
             List<GameLobbyModel> gameLobbies = new List<GameLobbyModel>();
             string getAllGameLobbies = "SELECT GameLobbyID, LobbyName, AmountOfPlayers, PasswordHash, InviteLink FROM GameLobby";
+
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 gameLobbies = connection.Query<GameLobbyModel>(getAllGameLobbies).ToList();
             }
+
             return gameLobbies;
         }
 
-        public bool DeleteGameLobby(int? gameLobbyId)
+        public bool DeleteGameLobby(int? gameLobbyId, SqlTransaction transaction = null)
         {
             bool deletionSucces = false;
 
             string deleteLobbyQuery = "DELETE FROM GameLobby WHERE GameLobbyId = @GameLobbyId";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            IDbConnection connection;
+
+            if (transaction != null)
             {
+                connection = transaction.Connection;
+            }
+            else
+            {
+                connection = new SqlConnection(_connectionString);
                 connection.Open();
-                int rowsAffected = connection.Execute(deleteLobbyQuery, new { GameLobbyId = gameLobbyId });
-                if (rowsAffected > 0) deletionSucces = true;
+            }
+
+            int rowsAffected = connection.Execute(deleteLobbyQuery, new { GameLobbyId = gameLobbyId });
+            
+            if (rowsAffected > 0) deletionSucces = true;
+
+            if (transaction == null)
+            {
+                connection.Close();
             }
 
             return deletionSucces;
@@ -61,6 +78,7 @@ namespace GameClientApi.DatabaseAccessors
             string createGameLobbyQuery = "INSERT INTO GameLobby (LobbyName, AmountOfPlayers, PasswordHash, InviteLink, LobbyChatId) OUTPUT INSERTED.GameLobbyID VALUES (@LobbyName, @AmountOfPlayers, @PasswordHash, @InviteLink, @LobbyChatId)";
 
             IDbConnection connection;
+
             if (transaction != null)
             {
                 connection = transaction.Connection;
@@ -162,38 +180,15 @@ namespace GameClientApi.DatabaseAccessors
             {
                 throw new ArgumentNullException(nameof(sqlTransaction));
             }
-
-            try
-            {
-                sqlTransaction.Commit();
-            }
-            finally
-            {
-                if(sqlTransaction.Connection != null)
-                {
-                    sqlTransaction.Connection.Close();
-                } 
-            }
+            
+            sqlTransaction.Commit();
         }
 
         public void RollbackTransaction(SqlTransaction sqlTransaction)
         {
-            try
-            {
                 sqlTransaction.Rollback();
-            }
-            finally
-            {
-                try
-                {
-                    sqlTransaction.Connection.Close();
-                }
-                catch (NullReferenceException ex)
-                {
-
-                }
-            }
         }
+        
 
     }
 }
