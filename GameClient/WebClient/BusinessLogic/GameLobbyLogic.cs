@@ -53,4 +53,10 @@ public class GameLobbyLogic : IGameLobbyLogic
         var usernameClaim = userPrincipal.FindFirst("Username");
         return usernameClaim?.Value;
     }
+
+	public async Task<bool> LeaveGameLobby(int playerId, int gameLobbyId)
+	{
+		string accessToken = await _tokenManager.GetAccessToken();
+		return await _gameLobbyService.LeaveGameLobby(playerId, gameLobbyId, accessToken);
+	}
 }
