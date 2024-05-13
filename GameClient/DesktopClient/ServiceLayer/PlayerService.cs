@@ -93,5 +93,23 @@ namespace DesktopClient.ServiceLayer
 				throw new Exception($"Failed to unban player. Error: {ex.Message}");
 			}
 		}
-	}
+
+        public async Task<bool> DeletePlayer(string username, string accessToken)
+        {
+            string endpoint = "Player/delete";
+
+            _httpClientService.SetAuthenticationHeader(accessToken);
+            HttpResponseMessage response = await _httpClientService.DeleteAsync(endpoint + "/" + username);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                throw new Exception($"Failed to delete player. HTTP status code: {response.StatusCode}");
+            }
+        }
+
+    }
 }

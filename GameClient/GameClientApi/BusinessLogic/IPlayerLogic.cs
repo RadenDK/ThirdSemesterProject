@@ -13,5 +13,6 @@ namespace GameClientApi.BusinessLogic
 		PlayerModel GetPlayer(string username, SqlTransaction transaction = null);
 		bool BanPlayer(string username);
 		List<PlayerModel> GetAllPlayers();
+		bool DeletePlayer(string username);
 	}
 }

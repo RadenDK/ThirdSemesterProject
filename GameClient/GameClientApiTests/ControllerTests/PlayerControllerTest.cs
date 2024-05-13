@@ -208,7 +208,7 @@ namespace GameClientApiTests.PlayerControllerTests
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
 
             _mockAccessor.Setup(a => a.GetPassword(mockLogin.Username)).Returns(hashedPassword);
-			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username)).Returns(expectedPlayer);
+			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username, null)).Returns(expectedPlayer);
 
 			// Insert a mock player into the test database
 

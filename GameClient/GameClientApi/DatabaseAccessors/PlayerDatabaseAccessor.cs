@@ -17,21 +17,9 @@ namespace GameClientApi.DatabaseAccessors
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public string? GetPassword(string username)
-		{
-			string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
-
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = username });
-				return password;
-			}
-		}
-
 		public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
 		{
-			string selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
+			string selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE Username = @Username";
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -54,36 +42,9 @@ namespace GameClientApi.DatabaseAccessors
 			return player;
 		}
 
-		public bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null)
-		{
-			string updateQueryString = "UPDATE Player SET OnlineStatus = 0 WHERE Username = @Username";
-
-			IDbConnection connection;
-			if (transaction != null)
-			{
-				connection = transaction.Connection;
-			}
-			else
-			{
-				connection = new SqlConnection(_connectionString);
-				connection.Open();
-			}
-
-			int rowsAffected = connection.Execute(updateQueryString, new
-			{
-				Username = player.Username
-			}, transaction: transaction);
-
-			if (transaction == null)
-			{
-				connection.Close();
-			}
-			return rowsAffected > 0;
-		}
-
 		public bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null)
 		{
-			string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
+			string updateQueryString = "UPDATE Player SET OnlineStatus = @OnlineStatus WHERE Username = @Username";
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -98,6 +59,7 @@ namespace GameClientApi.DatabaseAccessors
 
 			int rowsAffected = connection.Execute(updateQueryString, new
 			{
+				OnlineStatus = player.OnlineStatus,
 				Username = player.Username
 			}, transaction: transaction);
 
@@ -322,5 +284,14 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			sqlTransaction.Rollback();
 		}
-	}
+
+        public bool DeletePlayer(string username)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Execute("DELETE FROM Player WHERE Username = @Username", new { Username = username });
+                return result > 0;
+            }
+        }
+    }
 }

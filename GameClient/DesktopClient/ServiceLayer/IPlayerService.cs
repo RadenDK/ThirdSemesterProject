@@ -15,5 +15,7 @@ namespace DesktopClient.ServiceLayer
 		Task<bool> BanPlayer(string username, string accessToken);
 
 		Task<bool> UnbanPlayer(string username, string accessToken);
+
+		Task<bool> DeletePlayer(string username, string accessToken);
     }
 }

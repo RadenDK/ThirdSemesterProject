@@ -35,5 +35,9 @@ namespace DesktopClient.Services
 		{
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
-	}
+        public async Task<HttpResponseMessage> DeleteAsync(string requestUri)
+        {
+            return await _httpClient.DeleteAsync(requestUri);
+        }
+    }
 }

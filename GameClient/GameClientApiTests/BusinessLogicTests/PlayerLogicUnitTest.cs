@@ -24,9 +24,12 @@ namespace GameClientApiTests.BusinessLogicTests
 			string testUsername = "Username";
 			string testPassword = "password";
 			string testHashedPassword = "$2a$11$kueqhMMKYY55XvbWELUkjOvGO0BP4f/VjQbMCO27NtLqf8L.smoYm"; // this is 'password' hashed by bcrypt
+			PlayerModel testPlayer = new PlayerModel { Banned = false };
+
 
 			_mockAccessor.Setup(a => a.GetPassword(testUsername))
 				.Returns(testHashedPassword);
+			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null)).Returns(testPlayer);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 

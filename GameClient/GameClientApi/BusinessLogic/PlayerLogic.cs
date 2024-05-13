@@ -1,4 +1,5 @@
-﻿using GameClientApi.DatabaseAccessors;
+﻿using Dapper;
+using GameClientApi.DatabaseAccessors;
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -17,8 +18,14 @@ namespace GameClientApi.BusinessLogic
 
 		public bool VerifyLogin(string userName, string password)
 		{
-			string? storedHashedPassword = _playerAccessor.GetPassword(userName);
 			PlayerModel player = _playerAccessor.GetPlayer(userName);
+
+			string? storedHashedPassword = null;
+
+			if (player != null)
+			{
+				storedHashedPassword = player.PasswordHash;
+			}
 
 			if (storedHashedPassword == null || userName == null)
 			{
@@ -28,6 +35,7 @@ namespace GameClientApi.BusinessLogic
 			{
 				throw new ArgumentException("Player is banned");
 			}
+			player.OnlineStatus = true;
 			_playerAccessor.SetOnlineStatus(player);
 			return BC.Verify(password, storedHashedPassword);
 		}
@@ -126,7 +134,6 @@ namespace GameClientApi.BusinessLogic
 			try
 			{
 				PlayerModel player = GetPlayer(username, transaction);
-
 				player.Banned = true;
 
 				if (player.GameLobbyId != null)
@@ -141,7 +148,8 @@ namespace GameClientApi.BusinessLogic
 				}
 				if (player.OnlineStatus)
 				{
-					_playerAccessor.SetOfflineStatus(player, transaction);
+					player.OnlineStatus = false;
+					_playerAccessor.SetOnlineStatus(player, transaction);
 				}
 
 				if (_playerAccessor.BanPlayer(player, transaction))
@@ -149,7 +157,6 @@ namespace GameClientApi.BusinessLogic
 					_playerAccessor.CommitTransaction(transaction);
 				}
 				return true;
-
 			}
 			catch
 			{
@@ -179,5 +186,9 @@ namespace GameClientApi.BusinessLogic
 				return false;
 			}
 		}
-	}
+        public bool DeletePlayer(string username)
+        {
+            return _playerAccessor.DeletePlayer(username);
+        }
+    }
 }
