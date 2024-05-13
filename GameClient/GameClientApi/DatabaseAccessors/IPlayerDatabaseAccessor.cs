@@ -7,9 +7,6 @@ namespace GameClientApi.DatabaseAccessors
 	public interface IPlayerDatabaseAccessor
 	{
 
-		string? GetPassword(string userName);
-
-		bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null);
 		bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null);
 
         bool CreatePlayer(AccountRegistrationModel newPlayer);
