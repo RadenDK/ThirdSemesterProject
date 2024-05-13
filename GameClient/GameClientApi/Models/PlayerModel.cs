@@ -2,9 +2,8 @@
 {
     public class PlayerModel
     {
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
         public string InGameName { get; set; }
         public int Elo { get; set; }
         public string Email { get; set; }
