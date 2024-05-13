@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Security.Claims;
 using System.Text.Json;
 using WebClient.Models;
+using WebClient.Security;
 using WebClient.Services;
 
 namespace WebClient.BusinessLogic
@@ -10,15 +11,18 @@ namespace WebClient.BusinessLogic
     public class LoginLogic : ILoginLogic
     {
         private readonly ILoginService _loginService;
+        private ITokenManager _tokenManager;
 
-        public LoginLogic(ILoginService loginService)
+        public LoginLogic(ILoginService loginService, ITokenManager tokenManager)
         {
             _loginService = loginService;
+            _tokenManager = tokenManager;
         }
 
         public async Task<HttpResponseMessage> VerifyCredentials(string username, string password)
         {
-            return await _loginService.VerifyPlayerCredentials(username, password);
+			string accessToken = await _tokenManager.GetAccessToken();
+			return await _loginService.VerifyPlayerCredentials(username, password, accessToken);
         }
 
         public ClaimsPrincipal CreatePrincipal(PlayerModel player)

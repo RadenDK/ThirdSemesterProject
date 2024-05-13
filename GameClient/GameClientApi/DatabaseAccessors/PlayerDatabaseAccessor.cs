@@ -2,6 +2,8 @@
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Numerics;
+using System.Transactions;
 
 namespace GameClientApi.DatabaseAccessors
 {
@@ -15,30 +17,108 @@ namespace GameClientApi.DatabaseAccessors
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public string? GetPassword(string userName)
+		public string? GetPassword(string username)
 		{
 			string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
 
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
-				var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = userName });
+				var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = username });
 				return password;
 			}
 		}
 
-		public PlayerModel GetPlayer(string userName)
+		public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
 		{
-			string selectQueryString = "SELECT * FROM Player WHERE Username = @UserName";
-			string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @UserName";
+			string selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
+
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
+
+			PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = username });
+
+			if (transaction == null)
+			{
+				connection.Close();
+			}
+
+			return player;
+		}
+
+		public bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null)
+		{
+			string updateQueryString = "UPDATE Player SET OnlineStatus = 0 WHERE Username = @Username";
+
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
+
+			int rowsAffected = connection.Execute(updateQueryString, new
+			{
+				Username = player.Username
+			}, transaction: transaction);
+
+			if (transaction == null)
+			{
+				connection.Close();
+			}
+			return rowsAffected > 0;
+		}
+
+		public bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null)
+		{
+			string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
+
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
+
+			int rowsAffected = connection.Execute(updateQueryString, new
+			{
+				Username = player.Username
+			}, transaction: transaction);
+
+			if (transaction == null)
+			{
+				connection.Close();
+			}
+			return rowsAffected > 0;
+		}
+
+		public List<PlayerModel> GetAllPlayers()
+		{
+			List<PlayerModel> players = new List<PlayerModel>();
+			string getAllPlayersQuery = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player";
 
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
-				connection.Execute(updateQueryString, new { UserName = userName });
-				var player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = userName });
-				return player;
+				players = connection.Query<PlayerModel>(getAllPlayersQuery).ToList();
 			}
+			return players;
 		}
 
 		public bool CreatePlayer(AccountRegistrationModel newPlayer)
@@ -142,7 +222,7 @@ namespace GameClientApi.DatabaseAccessors
 
 		}
 
-		public bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
+		public bool UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel? newGameLobbyModel, SqlTransaction transaction = null)
 		{
 			string updatePlayerLobbyIdQuery = "UPDATE Player SET GameLobbyId = @GameLobbyId WHERE PlayerId = @PlayerId";
 
@@ -159,7 +239,7 @@ namespace GameClientApi.DatabaseAccessors
 
 			int rowsAffected = connection.Execute(updatePlayerLobbyIdQuery, new
 			{
-				GameLobbyId = newGameLobbyModel.GameLobbyId,
+				GameLobbyId = newGameLobbyModel?.GameLobbyId,
 				PlayerId = player.PlayerId
 			}, transaction: transaction);
 
@@ -175,16 +255,56 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			string updateOwnershipQuery = "UPDATE Player SET IsOwner = @IsOwner WHERE PlayerId = @PlayerId";
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
+			IDbConnection connection;
+
+			if (transaction != null)
 			{
-				connection.Open();
-				int rowsAffected = connection.Execute(updateOwnershipQuery, new { IsOwner = player.IsOwner, PlayerId = player.PlayerId });
-				return rowsAffected > 0;
+				connection = transaction.Connection;
 			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
+
+			int rowsAffected = connection.Execute(updateOwnershipQuery, new { IsOwner = player.IsOwner, PlayerId = player.PlayerId }, transaction: transaction);
+
+            if (transaction == null)
+            {
+				connection.Close();
+            }
+            return rowsAffected > 0;
 		}
 
+		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		{
+			string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
 
-		public SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+			IDbConnection connection;
+			if (transaction != null)
+			{
+				connection = transaction.Connection;
+			}
+			else
+			{
+				connection = new SqlConnection(_connectionString);
+				connection.Open();
+			}
+
+			int rowsAffected = connection.Execute(banPlayerQuery, new
+			{
+				Banned = player.Banned,
+				PlayerId = player.PlayerId
+			}, transaction: transaction);
+
+			if (transaction == null)
+			{
+				connection.Close();
+			}
+			return rowsAffected > 0;
+		}
+
+		public SqlTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
 		{
 			SqlConnection connection = new SqlConnection(_connectionString);
 			connection.Open();
@@ -195,42 +315,12 @@ namespace GameClientApi.DatabaseAccessors
 
 		public void CommitTransaction(SqlTransaction sqlTransaction)
 		{
-			try
-			{
-				sqlTransaction.Commit();
-			}
-			finally
-			{
-				try
-				{
-					sqlTransaction.Connection.Close();
-				}
-				catch (NullReferenceException ex)
-				{
-
-				}
-			}
+			sqlTransaction.Commit();
 		}
 
 		public void RollbackTransaction(SqlTransaction sqlTransaction)
 		{
-			try
-			{
-				sqlTransaction.Rollback();
-			}
-			finally
-			{
-				try
-				{
-					sqlTransaction.Connection.Close();
-				}
-				catch (NullReferenceException ex)
-				{
-
-				}
-			}
+			sqlTransaction.Rollback();
 		}
-
-
 	}
 }

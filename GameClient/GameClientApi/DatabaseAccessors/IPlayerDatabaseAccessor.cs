@@ -9,7 +9,10 @@ namespace GameClientApi.DatabaseAccessors
 
 		string? GetPassword(string userName);
 
-		bool CreatePlayer(AccountRegistrationModel newPlayer);
+		bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null);
+		bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null);
+
+        bool CreatePlayer(AccountRegistrationModel newPlayer);
 
 		bool UsernameExists(string username);
 
@@ -21,12 +24,16 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 
-		PlayerModel GetPlayer(string userName);
+		PlayerModel GetPlayer(string userName, SqlTransaction transaction = null);
+
+		List<PlayerModel> GetAllPlayers();
 
 		SqlTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
 		void CommitTransaction(SqlTransaction sqlTransaction);
 
 		void RollbackTransaction(SqlTransaction sqlTransaction);
+
+		bool BanPlayer(PlayerModel player, SqlTransaction transaction);
 	}
 }

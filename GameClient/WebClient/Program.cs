@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebClient.BusinessLogic;
+using WebClient.Security;
 using WebClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,16 @@ builder.Services.AddHttpClient<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IGameLobbyService, GameLobbyService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 
 // Register Logic to the container.
 builder.Services.AddScoped<ILoginLogic, LoginLogic>();
 builder.Services.AddScoped<IRegistrationLogic, RegistrationLogic>();
 builder.Services.AddScoped<IGameLobbyLogic, GameLobbyLogic>();
+
+builder.Services.AddScoped<ITokenManager, TokenManager>();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

@@ -15,16 +15,21 @@ namespace WebClient.Controllers
             _gameLobbyLogic = gameLobbyLogic;
         }
 
-		[HttpGet("GameLobby")]
-		public IActionResult GameLobby()
+		[HttpGet("CreateLobby")]
+		public IActionResult CreateLobby()
 		{
 			return View();
 		}
 
+        [HttpGet("GameLobby")]
+        public IActionResult GameLobby()
+        {
+            return View();
+        }
+
 		[HttpGet]
         public async Task<IActionResult> ViewAllGameLobbies()
         {
-
             IEnumerable<GameLobbyModel> gameLobbies = await _gameLobbyLogic.GetAllGameLobbies();
 
             return View(gameLobbies.ToList());
@@ -38,7 +43,7 @@ namespace WebClient.Controllers
 
             request.PlayerId = 1;
 
-            GameLobbyModel gameLobby = await _gameLobbyLogic.JoinGameLobby(request);
+			GameLobbyModel gameLobby = await _gameLobbyLogic.JoinGameLobby(request);
 
 
             return View(gameLobby);
@@ -51,7 +56,7 @@ namespace WebClient.Controllers
             {
                 var userPrincipal = HttpContext.User;
                 string username = _gameLobbyLogic.GetUsername(userPrincipal);
-                GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
+				GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
                 return RedirectToAction("GameLobby", "GameLobby");
             }
             return View("CreateLobby");

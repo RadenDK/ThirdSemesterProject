@@ -2,6 +2,6 @@
 {
     public interface ILoginService
     {
-        Task<HttpResponseMessage> VerifyPlayerCredentials(string username, string password);
+        Task<HttpResponseMessage> VerifyPlayerCredentials(string username, string password, string accessToken);
     }
 }

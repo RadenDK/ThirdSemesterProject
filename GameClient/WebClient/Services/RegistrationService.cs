@@ -14,7 +14,7 @@ namespace WebClient.Services
         {
             _httpClientService = httpClientService;
         }
-        public async Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount)
+        public async Task<HttpResponseMessage> SendAccountToApi(AccountRegistrationModel newAccount, string accessToken)
         {
             var apiModel = new AccountRegistrationModel
             {
@@ -30,7 +30,9 @@ namespace WebClient.Services
 
             try
             {
-                return await _httpClientService.PostAsync("Player/create", data);
+				_httpClientService.SetAuthenticationHeader(accessToken);
+
+				return await _httpClientService.PostAsync("Player/create", data);
             }
             catch (HttpRequestException)
             {

@@ -2,6 +2,7 @@
 using GameClientApi.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Transactions;
 using BC = BCrypt.Net.BCrypt;
 namespace GameClientApi.BusinessLogic
 {
@@ -17,16 +18,23 @@ namespace GameClientApi.BusinessLogic
         public bool VerifyLogin(string userName, string password)
         {
             string? storedHashedPassword = _playerAccessor.GetPassword(userName);
+            PlayerModel player = _playerAccessor.GetPlayer(userName);
+
             if (storedHashedPassword == null || userName == null)
             {
                 throw new ArgumentNullException("Stored HashedPassword or username is null");
             }
+            if (player.Banned == true)
+            {
+				throw new ArgumentException("Player is banned");
+			}
+            _playerAccessor.SetOnlineStatus(player);
             return BC.Verify(password, storedHashedPassword);
         }
 
-        public PlayerModel GetPlayer(string userName)
+        public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
         {
-            PlayerModel playerData = _playerAccessor.GetPlayer(userName);
+            PlayerModel playerData = _playerAccessor.GetPlayer(username);
             if (playerData == null)
             {
                 throw new Exception("Player not found");
@@ -64,33 +72,28 @@ namespace GameClientApi.BusinessLogic
 
         }
 
-        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel)
+        public void UpdatePlayerLobbyId(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
         {
-            SqlTransaction transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-
-            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
-
-            if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
+            if(transaction == null)
             {
-                _playerAccessor.CommitTransaction(transaction);
+                transaction = _playerAccessor.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
 
+                if (!TooManyPlayersInLobby(newGameLobbyModel, transaction))
+                {
+                    _playerAccessor.CommitTransaction(transaction);
+
+                }
+                else
+                {
+                    _playerAccessor.RollbackTransaction(transaction);
+                    throw new ArgumentException("Too many players in lobby");
+                }
             }
             else
             {
-                _playerAccessor.RollbackTransaction(transaction);
-                throw new ArgumentException("Too many players in lobby");
+                _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
             }
-        }
-
-        public void UpdatePlayerLobbyIdCreateGameLobby(PlayerModel player, GameLobbyModel newGameLobbyModel, SqlTransaction transaction = null)
-        {
-            if (transaction == null)
-            {
-                transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-            }
-
-            _playerAccessor.UpdatePlayerLobbyId(player, newGameLobbyModel, transaction);
-
         }
 
         private bool TooManyPlayersInLobby(GameLobbyModel gameLobby, SqlTransaction transaction)
@@ -105,14 +108,54 @@ namespace GameClientApi.BusinessLogic
 
         public void UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null)
         {
-            if (transaction == null)
-            {
-                transaction = _playerAccessor.BeginTransaction(IsolationLevel.ReadUncommitted);
-            }
+            
             _playerAccessor.UpdatePlayerOwnership(player, transaction);
 
         }
 
+        public List<PlayerModel> GetAllPlayers()
+        {
+            List<PlayerModel> players = _playerAccessor.GetAllPlayers();
+            return players;
+        }
 
+        public bool BanPlayer(string username)
+        {
+            SqlTransaction transaction = _playerAccessor.BeginTransaction();
+
+            try
+            {
+                PlayerModel player = GetPlayer(username, transaction);
+
+                player.Banned = true;
+
+                if(player.GameLobbyId != null)
+                {
+                    GameLobbyModel emptyGameLobbyModel = new GameLobbyModel { GameLobbyId = null };
+                    UpdatePlayerLobbyId(player, emptyGameLobbyModel, transaction);
+                    if(player.IsOwner)
+                    {
+                        player.IsOwner = false;
+                        UpdatePlayerOwnership(player, transaction);
+                    }
+                }
+                if (player.OnlineStatus) 
+                {
+                    _playerAccessor.SetOfflineStatus(player, transaction);
+                }
+
+                if(_playerAccessor.BanPlayer(player, transaction))
+                {
+                    _playerAccessor.CommitTransaction(transaction);
+                }
+                return true;
+
+            }
+            catch 
+            {
+                _playerAccessor.RollbackTransaction(transaction);
+                return false;
+            }
+        }
     }
 }
