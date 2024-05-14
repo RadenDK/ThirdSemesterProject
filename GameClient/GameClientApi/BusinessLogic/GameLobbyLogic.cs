@@ -238,7 +238,7 @@ namespace GameClientApi.BusinessLogic
 
                 PlayerModel player = new PlayerModel { PlayerId = leaveRequestModel.PlayerId, IsOwner = false };
                 GameLobbyModel gameLobby = new GameLobbyModel { GameLobbyId = null };
-                _playerLogic.UpdatePlayerLobbyId(player, gameLobby);
+                _playerLogic.UpdatePlayerLobbyId(player, gameLobby, transaction);
 
                 gameLobby.PlayersInLobby =
                     _playerLogic.GetAllPlayersInLobby(leaveRequestModel.GameLobbyId, transaction);

@@ -84,14 +84,13 @@ namespace GameClientApi.Controllers
 		}
 
         [HttpPost("leave")]
-
         public IActionResult LeaveGameLobby([FromBody] LeaveGameLobbyRequestModel leaveRequest)
         {
             try
             {
-                bool succes = _gameLobbyLogic.LeaveGameLobby(leaveRequest);
+                bool success = _gameLobbyLogic.LeaveGameLobby(leaveRequest);
 
-                if (succes)
+                if (success)
                 {
                     return Ok();
                 }
