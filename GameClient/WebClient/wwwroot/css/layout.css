@@ -106,47 +106,78 @@ body {
     border-radius: 15px;
 }
 
+
+
 #bento-box-0 #user-icon, #bento-box-0 #user-text {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#bento-box-0 #currency-icon, #bento-box-0 #elo-icon, #bento-box-0 #currency-text, #bento-box-0 #elo-text {
+#bento-box-0 #currency, #bento-box-0 #elo {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
+#elo\&currency {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px;
+}
+
+
 #user-text {
     text-decoration: none;
     font-weight: 650;
-    padding: 10px;
+    font-size: 20px;
     color: white;
 }
 
 #bento-box-0 #user-icon {
     align-self: center;
+    padding-right: 5px;
     color: var(--primary-blue);
 }
 #bento-box-0 #currency-icon {
     color: var(--primary-blue);
+    padding: 5px;
 }
 #bento-box-0 #elo-icon {
     color: var(--primary-blue);
+    padding: 5px;
 }
 
+#user-text {
+    text-decoration: none;
+    color: white;
+}
 
 #elo-text {
     text-decoration: none;
     font-weight: 650;
     color: white;
+    font-size: 12px;
 }
 
 #currency-text {
     text-decoration: none;
     font-weight: 650;
     color: white;
+    font-size: 12px;
+}
+
+#user-icon {
+    font-size: 40px;
+}
+
+#elo-icon {
+    font-size: 15px;
+}
+
+#currency-icon {
+    font-size: 15px;
 }
 
 #bento-box-1 {
