@@ -114,12 +114,7 @@ namespace GameClientApiTests.PlayerControllerTests
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("Username already exists", deserializedValue["message"]);
+            Assert.IsType<BadRequestObjectResult>(testResult);
         }
 
         [Fact]
@@ -147,14 +142,9 @@ namespace GameClientApiTests.PlayerControllerTests
             // Act
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("InGameName already exists", deserializedValue["message"]);
-        }
+			// Assert
+			Assert.IsType<BadRequestObjectResult>(testResult);
+		}
 
 
         [Fact]

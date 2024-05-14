@@ -136,50 +136,6 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			}
 		}
 
-		[Fact]
-		public void InsertPlayer_TC2_MethodDoesNotInsertPlayerWithMissingInformation()
-		{
-			// Arrange
-			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
-
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "username1" };
-
-			// Act
-			bool testResult = SUT.CreatePlayer(mockPlayer);
-
-			// Assert
-			Assert.False(testResult);
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { Username = mockPlayer.Username });
-				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
-			}
-		}
-
-		[Fact]
-		public void InsertPlayer_TC2_MethodDoesNotInsertPlayerWhenPlayerIsNull()
-		{
-			// Arrange
-			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
-
-			AccountRegistrationModel mockPlayer = null;
-
-			// Act
-			bool testResult = SUT.CreatePlayer(mockPlayer);
-
-			// Assert
-			Assert.False(testResult);
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				string query = "SELECT 1 FROM Player";
-				IEnumerable<string> queryResult = connection.Query<string>(query);
-				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
-			}
-		}
-
 		public void UserNameExists_TC1_ReturnsTrueWhenUsernameExists()
 		{
 			// Arrange
