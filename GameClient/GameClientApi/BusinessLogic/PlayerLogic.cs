@@ -53,25 +53,49 @@ namespace GameClientApi.BusinessLogic
 
 		public bool CreatePlayer(AccountRegistrationModel newPlayerAccount)
 		{
-			if (_playerAccessor.UsernameExists(newPlayerAccount.Username))
+			if (AccountHasValues(newPlayerAccount))
 			{
-				throw new ArgumentException("Username already exists");
+				AccountRegistrationModel newPlayerAccountWithHashedPassword = new AccountRegistrationModel
+				{
+					Username = newPlayerAccount.Username,
+					Password = BC.HashPassword(newPlayerAccount.Password),
+					Email = newPlayerAccount.Email,
+					InGameName = newPlayerAccount.InGameName,
+					BirthDay = newPlayerAccount.BirthDay
+				};
+				return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
 			}
-			if (_playerAccessor.InGameNameExists(newPlayerAccount.InGameName))
+			return false;
+		}
+
+		private bool AccountHasValues(AccountRegistrationModel newAccount)
+		{
+			if (newAccount == null)
 			{
-				throw new ArgumentException("InGameName already exists");
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.Username) || _playerAccessor.UsernameExists(newAccount.Username))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.Password))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.Email))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.InGameName) || _playerAccessor.InGameNameExists(newAccount.InGameName))
+			{
+				return false;
+			}
+			if (newAccount.BirthDay == null || newAccount.BirthDay < new DateTime(1753, 1, 1) || newAccount.BirthDay > new DateTime(9999, 12, 31))
+			{
+				return false;
 			}
 
-			AccountRegistrationModel newPlayerAccountWithHashedPassword = new AccountRegistrationModel
-			{
-				Username = newPlayerAccount.Username,
-				Password = BC.HashPassword(newPlayerAccount.Password),
-				Email = newPlayerAccount.Email,
-				InGameName = newPlayerAccount.InGameName,
-				BirthDay = newPlayerAccount.BirthDay
-			};
-
-			return _playerAccessor.CreatePlayer(newPlayerAccountWithHashedPassword);
+			return true;
 		}
 
 		public List<PlayerModel> GetAllPlayersInLobby(int? lobbyId, SqlTransaction transaction = null)
@@ -127,38 +151,62 @@ namespace GameClientApi.BusinessLogic
 			return players;
 		}
 
-		public bool UpdatePlayer(PlayerModel newPlayer)
+		public bool UpdatePlayer(PlayerModel updatedPlayer)
 		{
-			PlayerModel oldPlayer = _playerAccessor.GetPlayer(playerId: newPlayer.PlayerId);
+			PlayerModel oldPlayer = _playerAccessor.GetPlayer(playerId: updatedPlayer.PlayerId);
 
 			SqlTransaction transaction = _playerAccessor.BeginTransaction();
 
 			try
 			{
-				if (newPlayer.Banned == true && oldPlayer.Banned == false)
+				if (UpdatedPlayerHasValues(updatedPlayer))
 				{
-					BanPlayer(newPlayer, transaction);
+					if (updatedPlayer.Banned == true && oldPlayer.Banned == false)
+					{
+						BanPlayer(updatedPlayer, transaction);
+					}
+					if (_playerAccessor.UpdatePlayer(updatedPlayer, transaction))
+					{
+						_playerAccessor.CommitTransaction(transaction);
+					}
+					return true;
 				}
-				if (_playerAccessor.UsernameExists(newPlayer.Username))
-				{
-					throw new ArgumentException("Username already exists");
-				}
-				if (_playerAccessor.InGameNameExists(newPlayer.InGameName))
-				{
-					throw new ArgumentException("InGameName already exists");
-				}
-
-				if (_playerAccessor.UpdatePlayer(newPlayer, transaction))
-				{
-					_playerAccessor.CommitTransaction(transaction);
-				}
-				return true;
 			}
 			catch
 			{
 				_playerAccessor.RollbackTransaction(transaction);
+			}
+			return false;
+		}
+
+		private bool UpdatedPlayerHasValues(PlayerModel updatedPlayer)
+		{
+			if (updatedPlayer == null)
+			{
 				return false;
 			}
+
+			if (string.IsNullOrEmpty(updatedPlayer.Username) || _playerAccessor.UsernameExists(updatedPlayer.Username))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(updatedPlayer.Email))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(updatedPlayer.InGameName) || _playerAccessor.InGameNameExists(updatedPlayer.InGameName))
+			{
+				return false;
+			}
+			if (updatedPlayer.Elo < 0)
+			{
+				return false;
+			}
+			if (updatedPlayer.CurrencyAmount < 0)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
