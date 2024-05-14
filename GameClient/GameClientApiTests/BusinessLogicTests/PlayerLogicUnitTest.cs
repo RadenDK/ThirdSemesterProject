@@ -4,6 +4,7 @@ using GameClientApi.Models;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Xunit.Sdk;
+using Microsoft.Data.SqlClient;
 
 namespace GameClientApiTests.BusinessLogicTests
 {
@@ -150,7 +151,7 @@ namespace GameClientApiTests.BusinessLogicTests
 		}
 
 		[Fact]
-		public void CreatePlayer_TC2_ThrowsExpectionIfUsernameDoesNotExist()
+		public void CreatePlayer_TC2_ReturnsFalseIfUsernameDoesExist()
 		{
             // Arrange
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel
@@ -171,17 +172,16 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
-			// Assert
-			Assert.Throws<ArgumentException>(() =>
-			{
-				// Act
-				bool testResult = SUT.CreatePlayer(mockPlayer);
+			//Act
+			bool testResult = SUT.CreatePlayer(mockPlayer);
 
-			});
+			// Assert
+			Assert.False(testResult);
+			
 		}
 
 		[Fact]
-		public void CreatePlayer_TC3_ThrowsExpectionIfIngamenameDoesNotExist()
+		public void CreatePlayer_TC3_ReturnsFalseIfIngamenameDoesExist()
 		{
             // Arrange
             AccountRegistrationModel mockPlayer = new AccountRegistrationModel
@@ -202,13 +202,11 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
-			// Assert
-			Assert.Throws<ArgumentException>(() =>
-			{
-				// Act
-				bool testResult = SUT.CreatePlayer(mockPlayer);
+			//Act
+			bool testResult = SUT.CreatePlayer(mockPlayer);
 
-			});
+			// Assert
+			Assert.False(testResult);
 		}
 
 		[Fact]
@@ -239,6 +237,28 @@ namespace GameClientApiTests.BusinessLogicTests
 			// Assert
 			Assert.False(testResult);
 		}
+
+		[Fact]
+		public void CreatePlayer_TC5_MethodDoesNotCreatePlayerWithMissingInformation()
+		{
+			// Arrange
+			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "username1" };
+
+			_mockAccessor.Setup(a => a.UsernameExists(mockPlayer.Username))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.InGameNameExists(mockPlayer.InGameName))
+				.Returns(false);
+			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
+				.Returns(false);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+
+			// Act
+			bool testResult = SUT.CreatePlayer(mockPlayer);
+
+			// Assert
+			Assert.False(testResult);
+		}
+
 
 		[Fact]
 		public void UpdatePlayer_TC1_ReturnsTrueWhenPlayerIsUpdated()

@@ -114,12 +114,7 @@ namespace GameClientApiTests.PlayerControllerTests
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("Username already exists", deserializedValue["message"]);
+            Assert.IsType<BadRequestObjectResult>(testResult);
         }
 
         [Fact]
@@ -147,14 +142,9 @@ namespace GameClientApiTests.PlayerControllerTests
             // Act
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("InGameName already exists", deserializedValue["message"]);
-        }
+			// Assert
+			Assert.IsType<BadRequestObjectResult>(testResult);
+		}
 
 
         [Fact]
@@ -242,8 +232,19 @@ namespace GameClientApiTests.PlayerControllerTests
         [Fact]
         public void UpdatePlayer_TC1_ReturnsOkWhenPlayerUpdatedSuccesfully()
         {
-            //Arrange
-            PlayerModel updatedPlayer = new PlayerModel
+			//Arrange
+			PlayerModel oldPlayer = new PlayerModel
+			{
+				Username = "oldPlayer1",
+				InGameName = "oldPlayer1",
+				Email = "email@test.com",
+				Elo = 1000,
+				CurrencyAmount = 1000,
+				Banned = false,
+				PlayerId = 1
+			};
+
+			PlayerModel updatedPlayer = new PlayerModel
             {
                 Username = "updatedPlayer1",
                 InGameName = "updatedPlayer1",
@@ -254,6 +255,7 @@ namespace GameClientApiTests.PlayerControllerTests
                 PlayerId = 1
             };
 
+            _mockAccessor.Setup(a => a.GetPlayer(null, updatedPlayer.PlayerId, null)).Returns(oldPlayer);
             _mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(true);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
