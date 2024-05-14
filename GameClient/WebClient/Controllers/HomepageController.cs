@@ -16,11 +16,10 @@ public class HomePageController: Controller
 
 	[Authorize]
     [HttpGet("Homepage")]
-    public ActionResult Homepage(PlayerModel player)
+    public ActionResult Homepage()
     {
-        // Pass the in-game name to the view
-        ViewBag.InGameName = player.InGameName;
-        // Return the HomePageTest (Homepage) view
+
+        // Return the HomePage view
         return View("~/Views/HomePage/Homepage.cshtml");
     }
 }

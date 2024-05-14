@@ -99,17 +99,51 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			bool playerInserted = false;
 
-			string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
-				"VALUES (@Username, @Password, @InGameName, @Email, @Birthday)";
-
-			using (SqlConnection connection = new SqlConnection(_connectionString))
+			if (AccountHasValues(newPlayer))
 			{
-				connection.Open();
-				var rowsAffected = connection.Execute(insertQuery, newPlayer);
-				playerInserted = rowsAffected == 1;
+				string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
+					"VALUES (@Username, @Password, @InGameName, @Email, @Birthday)";
+
+				using (SqlConnection connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					var rowsAffected = connection.Execute(insertQuery, newPlayer);
+					playerInserted = rowsAffected == 1;
+				}
 			}
 
 			return playerInserted;
+		}
+
+		private bool AccountHasValues(AccountRegistrationModel newAccount)
+		{
+			if (newAccount == null)
+			{
+				return false;
+			}
+
+			if (string.IsNullOrEmpty(newAccount.Username))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.Password))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.Email))
+			{
+				return false;
+			}
+			if (string.IsNullOrEmpty(newAccount.InGameName))
+			{
+				return false;
+			}
+			if (newAccount.BirthDay == null || newAccount.BirthDay < new DateTime(1753, 1, 1) || newAccount.BirthDay > new DateTime(9999, 12, 31))
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		public bool UsernameExists(string username)
@@ -209,11 +243,11 @@ namespace GameClientApi.DatabaseAccessors
 
 			int rowsAffected = connection.Execute(updateOwnershipQuery, new { IsOwner = player.IsOwner, PlayerId = player.PlayerId }, transaction: transaction);
 
-			if (transaction == null)
-			{
+            if (transaction == null)
+            {
 				connection.Close();
-			}
-			return rowsAffected > 0;
+            }
+            return rowsAffected > 0;
 		}
 
 		public bool UpdatePlayer(PlayerModel player, SqlTransaction transaction = null)
@@ -268,13 +302,13 @@ namespace GameClientApi.DatabaseAccessors
 			sqlTransaction.Rollback();
 		}
 
-		public bool DeletePlayer(int? playerId)
-		{
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				var result = connection.Execute("DELETE FROM Player WHERE PlayerID = @PlayerId", new { PlayerID = playerId });
-				return result > 0;
-			}
-		}
-	}
+        public bool DeletePlayer(int? playerId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Execute("DELETE FROM Player WHERE PlayerID = @PlayerId", new { PlayerID = playerId });
+                return result > 0;
+            }
+        }
+    }
 }

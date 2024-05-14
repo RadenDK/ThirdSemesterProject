@@ -51,7 +51,7 @@ namespace WebClient.Controllers
 					//Creates an encrypted authentication ticket(cookie) containing the user's principal (identity) information and adds it to the current response.
 					await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-					return RedirectToAction("HomePage", "Homepage", player);
+					return RedirectToAction("HomePage", "Homepage");
 				}
 				else
 				{
