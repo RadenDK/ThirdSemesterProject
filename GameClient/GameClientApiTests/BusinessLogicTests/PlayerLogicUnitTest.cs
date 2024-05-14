@@ -24,13 +24,11 @@ namespace GameClientApiTests.BusinessLogicTests
 			string testUsername = "Username";
 			string testPassword = "password";
 			string testHashedPassword = "$2a$11$kueqhMMKYY55XvbWELUkjOvGO0BP4f/VjQbMCO27NtLqf8L.smoYm"; // this is 'password' hashed by bcrypt
-			PlayerModel testPlayer = new PlayerModel { Banned = false };
+			PlayerModel testPlayer = new PlayerModel { Banned = false, Username = testUsername, PasswordHash = testHashedPassword };
 
 
-			_mockAccessor.Setup(a => a.GetPassword(testUsername))
-				.Returns(testHashedPassword);
-			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null)).Returns(testPlayer);
-
+			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null)).Returns(testPlayer);
+			
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
@@ -46,9 +44,10 @@ namespace GameClientApiTests.BusinessLogicTests
 			// Arrange
 			string testUsername = "Username";
 			string testPassword = "password";
+			PlayerModel testPlayer = new PlayerModel { Username = testUsername, PasswordHash = testPassword};
 
-			_mockAccessor.Setup(a => a.GetPassword("invalidUsername"))
-				.Returns("");
+			_mockAccessor.Setup(a => a.GetPlayer("invalidUsername", null, null))
+				.Returns(testPlayer);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
@@ -67,7 +66,7 @@ namespace GameClientApiTests.BusinessLogicTests
 			string testUsername = "Username";
 			string testPassword = "password";
 
-			_mockAccessor.Setup(a => a.GetPassword("Username"))
+			_mockAccessor.Setup(a => a.GetPlayer("Username", null, null))
 				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
@@ -87,7 +86,7 @@ namespace GameClientApiTests.BusinessLogicTests
 			string testUsername = "";
 			string testPassword = "";
 
-			_mockAccessor.Setup(a => a.GetPassword(testUsername))
+			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null))
 				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
@@ -107,7 +106,7 @@ namespace GameClientApiTests.BusinessLogicTests
 			string testUsername = null;
 			string testPassword = null;
 
-			_mockAccessor.Setup(a => a.GetPassword(testUsername))
+			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null))
 				.Returns<string?>(null);
 
 			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);

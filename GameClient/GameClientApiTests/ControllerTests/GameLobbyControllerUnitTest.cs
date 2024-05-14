@@ -49,7 +49,7 @@ namespace GameClientApiTests.ControllerTests
             _gameLobbyMockAccessor.Setup(a => a.CreateGameLobby(mockGameLobby, It.IsAny<SqlTransaction>())).Returns(1);
            
             PlayerModel mockPlayerModel = new PlayerModel { Username = "testPlayer", InGameName = "testPlayer", IsOwner = true };
-            _playerMockAccessor.Setup(a => a.GetPlayer("testPlayer", null)).Returns(mockPlayerModel);
+            _playerMockAccessor.Setup(a => a.GetPlayer("testPlayer", null, null)).Returns(mockPlayerModel);
 
             List<PlayerModel> mockPlayersInLobby = new List<PlayerModel>();
             _playerMockAccessor.Setup(a => a.GetAllPlayersInLobby(1, null)).Returns(mockPlayersInLobby);
