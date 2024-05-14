@@ -302,11 +302,11 @@ namespace GameClientApi.DatabaseAccessors
 			sqlTransaction.Rollback();
 		}
 
-        public bool DeletePlayer(string username)
+        public bool DeletePlayer(int? playerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var result = connection.Execute("DELETE FROM Player WHERE Username = @Username", new { Username = username });
+                var result = connection.Execute("DELETE FROM Player WHERE PlayerID = @PlayerId", new { PlayerID = playerId });
                 return result > 0;
             }
         }

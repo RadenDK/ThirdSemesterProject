@@ -187,9 +187,9 @@ namespace GameClientApi.BusinessLogic
 				throw new Exception("Failed to ban player: " + ex.Message);
 			}
 		}
-        public bool DeletePlayer(string username)
+        public bool DeletePlayer(int? playerId)
         {
-            return _playerAccessor.DeletePlayer(username);
+            return _playerAccessor.DeletePlayer(playerId);
         }
     }
 }

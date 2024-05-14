@@ -35,7 +35,7 @@ namespace DesktopClient.ControllerLayer
         public async Task<bool> DeletePlayer(PlayerModel player)
         {
             string accessToken = await _tokenManager.GetAccessToken();
-            return await _playerService.DeletePlayer(player.Username, accessToken);
+            return await _playerService.DeletePlayer(player.PlayerId, accessToken);
         }
 
     }

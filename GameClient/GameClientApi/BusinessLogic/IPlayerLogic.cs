@@ -12,7 +12,7 @@ namespace GameClientApi.BusinessLogic
 		void UpdatePlayerOwnership(PlayerModel player, SqlTransaction transaction = null);
 		PlayerModel GetPlayer(string username, SqlTransaction transaction = null);
 		List<PlayerModel> GetAllPlayers();
-		bool DeletePlayer(string username);
+		bool DeletePlayer(int? playerId);
 		bool UpdatePlayer(PlayerModel player);
 	}
 }

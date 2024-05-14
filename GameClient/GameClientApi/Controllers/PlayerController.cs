@@ -105,16 +105,16 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpDelete("delete/{username}")]
-        public IActionResult DeletePlayer(string username)
+        [HttpDelete("delete/{playerId}")]
+        public IActionResult DeletePlayer(int? playerId)
         {
-            if (_playerLogic.DeletePlayer(username))
+            if (_playerLogic.DeletePlayer(playerId))
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(new { message = "Player: " + username + " was not deleted successfully" });
+                return BadRequest(new { message = "Player: " + playerId + " was not deleted successfully" });
             }
         }
 

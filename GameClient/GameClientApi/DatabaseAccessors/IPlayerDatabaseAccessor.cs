@@ -33,6 +33,6 @@ namespace GameClientApi.DatabaseAccessors
 
 		bool UpdatePlayer(PlayerModel player, SqlTransaction transaction);
 
-        bool DeletePlayer(string username);
+        bool DeletePlayer(int? playerId);
     }
 }
