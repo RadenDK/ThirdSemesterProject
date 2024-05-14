@@ -4,6 +4,7 @@ using GameClientApi.Models;
 using GameClientApi.DatabaseAccessors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Authorization;
+using Azure.Identity;
 
 namespace GameClientApi.Controllers
 {
@@ -30,7 +31,7 @@ namespace GameClientApi.Controllers
                 bool playerExists = _playerLogic.VerifyLogin(loginModel.Username, loginModel.Password);
                 if (playerExists)
                 {
-                    var player = _playerLogic.GetPlayer(loginModel.Username);
+                    PlayerModel player = _playerLogic.GetPlayer(loginModel.Username);
                     return Ok(player);
                 }
                 else
@@ -42,9 +43,11 @@ namespace GameClientApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
-        }
+			catch (ArgumentException ex)
+			{
+				return Forbid();
+			}
+		}
 
         [HttpPost("create")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
@@ -67,28 +70,28 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpPost("ban")]
-        public IActionResult BanPlayer([FromBody] string username)
+
+        [HttpPut("update")]
+        public IActionResult UpdatePlayer([FromBody] PlayerModel player)
         {
             try
             {
-                if (_playerLogic.BanPlayer(username))
+                if (_playerLogic.UpdatePlayer(player))
                 {
                     return Ok();
                 }
                 else
                 {
-                    return BadRequest(new { message = "Player: " + username + "was not banned successfully" });
+                    return BadRequest(new { message = "Player: " + player.Username + "was not successfully updated" });
                 }
-
             }
-            catch (ArgumentException e)
+            catch (ArgumentException ex)
             {
-                return BadRequest($"{e.Message}");
+				return BadRequest(new { message = ex.Message });
             }
         }
 
-        [HttpGet("AllPlayers")]
+		[HttpGet("AllPlayers")]
         public IActionResult GetListOfPlayers()
         {
             try
@@ -101,5 +104,19 @@ namespace GameClientApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("delete/{playerId}")]
+        public IActionResult DeletePlayer(int? playerId)
+        {
+            if (_playerLogic.DeletePlayer(playerId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { message = "Player: " + playerId + " was not deleted successfully" });
+            }
+        }
+
     }
 }

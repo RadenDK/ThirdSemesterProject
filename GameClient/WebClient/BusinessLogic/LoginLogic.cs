@@ -31,8 +31,13 @@ namespace WebClient.BusinessLogic
             //Remembers the username that is logged in with. The ClaimTypes.Name constant specifies the
             //type of the claim (user's name), and username is the value of the claim, representing the logged-in user's username.
             var claims = new List<Claim> {
-                new Claim("Username", player.Username),
-            };
+				new Claim("PlayerId", player.PlayerId.ToString()),
+				new Claim("Username", player.Username),
+				new Claim("InGameName", player.InGameName),
+				new Claim("Elo", player.Elo.ToString()),
+				new Claim("Currency", player.CurrencyAmount.ToString()),
+
+			};
 
             //The ClaimsIdentity represents the identity of the user and contains
             //the claims associated with that identity.

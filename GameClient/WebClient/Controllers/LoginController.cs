@@ -42,16 +42,16 @@ namespace WebClient.Controllers
 		{
 			try
 			{
-				var response = await _loginLogic.VerifyCredentials(username, password);
+				HttpResponseMessage response = await _loginLogic.VerifyCredentials(username, password);
 				if (response.IsSuccessStatusCode)
 				{
-					var player = await _loginLogic.GetPlayerFromResponse(response);
-					var principal = _loginLogic.CreatePrincipal(player);
+					PlayerModel player = await _loginLogic.GetPlayerFromResponse(response);
+					ClaimsPrincipal principal = _loginLogic.CreatePrincipal(player);
 
 					//Creates an encrypted authentication ticket(cookie) containing the user's principal (identity) information and adds it to the current response.
 					await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-					return RedirectToAction("HomePage", "Homepage", player);
+					return RedirectToAction("HomePage", "Homepage");
 				}
 				else
 				{
@@ -59,8 +59,12 @@ namespace WebClient.Controllers
                     {
                         ViewBag.ErrorMessage = "Username or password is incorrect.";
                     }
-                    // If the API returned a 400 status code, return the same view
-                    return View("Index");
+                    if (response.StatusCode == HttpStatusCode.Forbidden)
+					{
+						ViewBag.ErrorMessage = "You are banned dumbass🔥🔥";
+					}
+					// If the API returned a 400 status code, return the same view
+					return View("Index");
 				}
 			}
 			catch

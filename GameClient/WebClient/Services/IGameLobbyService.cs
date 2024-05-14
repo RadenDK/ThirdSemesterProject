@@ -8,6 +8,9 @@ namespace WebClient.Services
         Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken);
 
         Task<List<GameLobbyModel>> GetAllGameLobbies(string accessToken);
+    
         Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username, string accessToken);
+
+        Task<bool> LeaveGameLobby(int playerId, int gameLobbyId, string accessToken);
     }
 }

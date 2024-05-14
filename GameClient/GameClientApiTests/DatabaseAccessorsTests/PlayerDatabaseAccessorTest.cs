@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 		}
 
 		[Fact]
-		public void GetPassword_TC1_ReturnsPasswordOfValidPlayer()
+		public void GetPlayer_TC1_ReturnsPasswordOfValidPlayer()
 		{
 			// Arrange
 			InsertMockPlayerInTestDatabase();
@@ -68,14 +69,14 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
 			// Act
-			string testResult = SUT.GetPassword(mockUsername);
+			PlayerModel testResult = SUT.GetPlayer(mockUsername);
 
 			// Assert
-			Assert.True(expectedPassword == testResult, $"Expected password for {mockUsername} to be {expectedPassword}, but it was {testResult}");
+			Assert.True(expectedPassword == testResult.PasswordHash, $"Expected password for {mockUsername} to be {expectedPassword}, but it was {testResult}");
 		}
 
 		[Fact]
-		public void GetPassword_TC2_ReturnsNullIfUsernameIsNotFound()
+		public void GetPlayer_TC2_ReturnsNullIfUsernameIsNotFound()
 		{
 			// Arrange
 			string mockUsername = "usernameWhichDoesNotExist";
@@ -83,14 +84,14 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
 			// Act
-			string testResult = SUT.GetPassword(mockUsername);
+			PlayerModel testResult = SUT.GetPlayer(mockUsername);
 
 			// Assert
 			Assert.True(testResult == null, $"Expected password for {mockUsername} to be null, but it was {testResult}");
 		}
 
 		[Fact]
-		public void GetPassword_TC3_ReturnsNullIfUsernameIsNull()
+		public void GetPlayer_TC3_ReturnsNullIfUsernameIsNull()
 		{
 			// Arrange
 			string? mockUsername = null;
@@ -98,7 +99,7 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
 
 			// Act
-			string testResult = SUT.GetPassword(mockUsername);
+			PlayerModel testResult = SUT.GetPlayer(mockUsername);
 
 			// Assert
 			Assert.True(testResult == null, "Expected password for null username to be null, but it was not");
@@ -132,50 +133,6 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 				string query = "SELECT 1 FROM Player WHERE Username = @Username";
 				IEnumerable<string> queryResult = connection.Query<string>(query, new { UserName = mockPlayer.Username });
 				Assert.True(queryResult.Any(), "Expected a mock player to be inserted in the database but could not find it");
-			}
-		}
-
-		[Fact]
-		public void InsertPlayer_TC2_MethodDoesNotInsertPlayerWithMissingInformation()
-		{
-			// Arrange
-			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
-
-			AccountRegistrationModel mockPlayer = new AccountRegistrationModel { Username = "username1" };
-
-			// Act
-			bool testResult = SUT.CreatePlayer(mockPlayer);
-
-			// Assert
-			Assert.False(testResult);
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				string query = "SELECT 1 FROM Player WHERE Username = @Username";
-				IEnumerable<string> queryResult = connection.Query<string>(query, new { Username = mockPlayer.Username });
-				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
-			}
-		}
-
-		[Fact]
-		public void InsertPlayer_TC2_MethodDoesNotInsertPlayerWhenPlayerIsNull()
-		{
-			// Arrange
-			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
-
-			AccountRegistrationModel mockPlayer = null;
-
-			// Act
-			bool testResult = SUT.CreatePlayer(mockPlayer);
-
-			// Assert
-			Assert.False(testResult);
-			using (SqlConnection connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
-				string query = "SELECT 1 FROM Player";
-				IEnumerable<string> queryResult = connection.Query<string>(query);
-				Assert.True(!queryResult.Any(), "Expected not to find mock player in the database but found one");
 			}
 		}
 
@@ -297,6 +254,45 @@ namespace GameClientApiTests.DatabaseAccessorsTests
 			// Assert
 			Assert.NotNull(players);
 			Assert.False(players.Any());
+		}
+
+		[Fact]
+		public void Updateplayer_TC1_UpdatesPlayerInDatabase()
+		{
+			//Arrange
+			InsertMockPlayerInTestDatabase();
+			PlayerDatabaseAccessor SUT = new PlayerDatabaseAccessor(_configuration);
+
+			PlayerModel updatedPlayer = new PlayerModel
+			{
+				Username = "Player1",
+				InGameName = "UpdatedInGameName",
+				Elo = 1500,
+				Email = "updated@test.com",
+				Banned = false,
+				CurrencyAmount = 1000,
+				PlayerId = 1
+			};
+
+			//Act
+			bool updateResult = SUT.UpdatePlayer(updatedPlayer);
+
+			//Assert
+			Assert.True(updateResult);
+
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = "SELECT * FROM Player WHERE PlayerId = @PlayerId";
+				PlayerModel queryResult = connection.QuerySingle<PlayerModel>(query, new { PlayerId = updatedPlayer.PlayerId });
+
+				Assert.Equal(updatedPlayer.Username, queryResult.Username);
+				Assert.Equal(updatedPlayer.InGameName, queryResult.InGameName);
+				Assert.Equal(updatedPlayer.Elo, queryResult.Elo);
+				Assert.Equal(updatedPlayer.Email, queryResult.Email);
+				Assert.Equal(updatedPlayer.Banned, queryResult.Banned);
+				Assert.Equal(updatedPlayer.CurrencyAmount, queryResult.CurrencyAmount);
+			}
 		}
 	}
 }

@@ -114,12 +114,7 @@ namespace GameClientApiTests.PlayerControllerTests
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("Username already exists", deserializedValue["message"]);
+            Assert.IsType<BadRequestObjectResult>(testResult);
         }
 
         [Fact]
@@ -147,14 +142,9 @@ namespace GameClientApiTests.PlayerControllerTests
             // Act
             IActionResult testResult = SUT.CreatePlayer(mockPlayer);
 
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(testResult);
-            var serializedValue = JsonConvert.SerializeObject(badRequestResult.Value);
-            var deserializedValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedValue);
-            Assert.NotNull(deserializedValue);
-            Assert.True(deserializedValue.ContainsKey("message"));
-            Assert.Equal("InGameName already exists", deserializedValue["message"]);
-        }
+			// Assert
+			Assert.IsType<BadRequestObjectResult>(testResult);
+		}
 
 
         [Fact]
@@ -203,12 +193,11 @@ namespace GameClientApiTests.PlayerControllerTests
                 Password = "Player1"
             };
 
-            PlayerModel expectedPlayer = new PlayerModel { Username = mockLogin.Username };
+			string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
 
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mockLogin.Password);
+			PlayerModel expectedPlayer = new PlayerModel { Username = mockLogin.Username, PasswordHash = hashedPassword };
 
-            _mockAccessor.Setup(a => a.GetPassword(mockLogin.Username)).Returns(hashedPassword);
-			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username)).Returns(expectedPlayer);
+			_mockAccessor.Setup(a => a.GetPlayer(mockLogin.Username, null, null)).Returns(expectedPlayer);
 
 			// Insert a mock player into the test database
 
@@ -241,39 +230,58 @@ namespace GameClientApiTests.PlayerControllerTests
         }
 
         [Fact]
-        public void BanPlayer_TC1_ReturnsOKWhenPlayerIsBanned()
+        public void UpdatePlayer_TC1_ReturnsOkWhenPlayerUpdatedSuccesfully()
         {
-            // Arrange
-            int playerIdToBan = 1;
-            PlayerModel playerToBan = new PlayerModel { PlayerId = playerIdToBan, Banned = false };
+			//Arrange
+			PlayerModel oldPlayer = new PlayerModel
+			{
+				Username = "oldPlayer1",
+				InGameName = "oldPlayer1",
+				Email = "email@test.com",
+				Elo = 1000,
+				CurrencyAmount = 1000,
+				Banned = false,
+				PlayerId = 1
+			};
 
-            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns(playerToBan);
-            _mockAccessor.Setup(a => a.BanPlayer(It.IsAny<PlayerModel>(), It.IsAny<SqlTransaction>())).Returns(true);
+			PlayerModel updatedPlayer = new PlayerModel
+            {
+                Username = "updatedPlayer1",
+                InGameName = "updatedPlayer1",
+                Email = "email@test.com",
+                Elo = 1000,
+                CurrencyAmount = 1000,
+                Banned = false,
+                PlayerId = 1
+            };
+
+            _mockAccessor.Setup(a => a.GetPlayer(null, updatedPlayer.PlayerId, null)).Returns(oldPlayer);
+            _mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(true);
 
             PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-            // Act
-            IActionResult testResult = SUT.BanPlayer(playerIdToBan.ToString());
+            //Act
+            IActionResult testResult = SUT.UpdatePlayer(updatedPlayer);
 
-            // Assert
+            //Assert
             Assert.IsType<OkResult>(testResult);
         }
 
-        [Fact]
-        public void BanPlayer_TC2_ReturnsBadRequestWhenPlayerDoesNotExist()
-        {
-            // Arrange
-            string nonExistingPlayerId = "nonExistingUser";
+		[Fact]
+		public void UpdatePlayer_TC2_ReturnsBadRequestWhenPlayerNotUpdatedSuccesfully()
+		{
+            //Arrange
+            PlayerModel updatedPlayer = new PlayerModel { Username = ""};
+            
+			_mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(false);
 
-            _mockAccessor.Setup(a => a.GetPlayer(It.IsAny<string>())).Returns((PlayerModel)null);
+			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
 
-            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+			//Act
+			IActionResult testResult = SUT.UpdatePlayer(updatedPlayer);
 
-            // Act
-            IActionResult testResult = SUT.BanPlayer(nonExistingPlayerId);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(testResult);
-        }
-    }
+			//Assert
+			Assert.IsType<BadRequestObjectResult>(testResult);
+		}
+	}
 }

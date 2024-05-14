@@ -63,11 +63,11 @@ namespace GameClientApi.Controllers
         }
 
         [HttpPost("join")]
-		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequest joinRequest)
+		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequestModel joinRequestModel)
 		{
 			try
 			{
-				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequest.PlayerId, joinRequest.GameLobbyId, joinRequest.LobbyPassword);
+				GameLobbyModel gameLobby = _gameLobbyLogic.JoinGameLobby(joinRequestModel.PlayerId, joinRequestModel.GameLobbyId, joinRequestModel.LobbyPassword);
 
 				return Ok(gameLobby);
 
@@ -82,5 +82,28 @@ namespace GameClientApi.Controllers
 			}
 			
 		}
+
+        [HttpPost("leave")]
+        public IActionResult LeaveGameLobby([FromBody] LeaveGameLobbyRequestModel leaveRequest)
+        {
+            try
+            {
+                bool success = _gameLobbyLogic.LeaveGameLobby(leaveRequest);
+
+                if (success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Something went wrong with leaving lobby");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
 	}
 }

@@ -92,12 +92,10 @@
 			loginButton.Location = new Point(184, 217);
 			loginButton.Name = "loginButton";
 			loginButton.Size = new Size(75, 23);
-			loginButton.TabIndex = 5;
+			loginButton.TabIndex = 2;
 			loginButton.Text = "Login";
 			loginButton.UseVisualStyleBackColor = true;
 			loginButton.Click += loginButton_Click;
-			loginButton.TabIndex = 2;
-			this.AcceptButton = loginButton;
 			// 
 			// loginPanel
 			// 
@@ -116,6 +114,7 @@
 			// 
 			// LoginForm
 			// 
+			AcceptButton = loginButton;
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(935, 527);
@@ -123,7 +122,7 @@
 			Margin = new Padding(3, 2, 3, 2);
 			Name = "LoginForm";
 			StartPosition = FormStartPosition.CenterScreen;
-			Text = "Form1";
+			Text = "Login";
 			loginPanel.ResumeLayout(false);
 			loginPanel.PerformLayout();
 			ResumeLayout(false);

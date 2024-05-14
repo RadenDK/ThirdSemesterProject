@@ -12,4 +12,6 @@ public interface IGameLobbyLogic
     Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username);
 
     string GetUsername(ClaimsPrincipal userPrincipal);
+
+    Task<bool> LeaveGameLobby(int playerId, int gameLobbyId);
 }

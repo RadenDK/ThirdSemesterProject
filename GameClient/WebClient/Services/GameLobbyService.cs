@@ -83,5 +83,28 @@ namespace WebClient.Services
 				throw new Exception($"Failed to create game lobby. HTTP response code: {response.StatusCode}"); 
 			}
 		}
+
+		public async Task<bool> LeaveGameLobby(int playerId, int gameLobbyId, string accessToken)
+		{
+			string endpoint = "GameLobby/Leave";
+			
+			LeaveGameLobbyRequestModel leaveRequest = new LeaveGameLobbyRequestModel { PlayerId = playerId, GameLobbyId = gameLobbyId };
+
+			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(leaveRequest), Encoding.UTF8, "application/json");
+
+			_httpClientService.SetAuthenticationHeader(accessToken);
+			
+			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
+			
+			if (response.IsSuccessStatusCode)
+			{
+				return true;
+			}
+			else
+			{
+				throw new Exception($"Failed to create game lobby. HTTP response code: {response.StatusCode}");
+			}
+
+		}
 	}
 }

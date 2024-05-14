@@ -17,21 +17,21 @@ namespace GameClientApi.DatabaseAccessors
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
-		public string? GetPassword(string username)
+		public PlayerModel GetPlayer(string username = null, int? playerId = null, SqlTransaction transaction = null)
 		{
-			string selectQueryString = "SELECT PasswordHash FROM Player WHERE Username = @UserName";
+			string selectQueryString;
+			object queryParameters;
 
-			using (SqlConnection connection = new SqlConnection(_connectionString))
+			if (playerId.HasValue)
 			{
-				connection.Open();
-				var password = connection.QuerySingleOrDefault<string>(selectQueryString, new { UserName = username });
-				return password;
+				selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE PlayerId = @PlayerId";
+				queryParameters = new { PlayerId = playerId };
 			}
-		}
-
-		public PlayerModel GetPlayer(string username, SqlTransaction transaction = null)
-		{
-			string selectQueryString = "SELECT * FROM Player WHERE Username = @Username";
+			else
+			{
+				selectQueryString = "SELECT PlayerID, Username, PasswordHash, InGameName, Elo, Email, Banned, CurrencyAmount, IsOwner, GameLobbyId, OnlineStatus FROM Player WHERE Username = @Username";
+				queryParameters = new { Username = username };
+			}
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -44,7 +44,7 @@ namespace GameClientApi.DatabaseAccessors
 				connection.Open();
 			}
 
-			PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, new { UserName = username });
+			PlayerModel player = connection.QuerySingleOrDefault<PlayerModel>(selectQueryString, queryParameters);
 
 			if (transaction == null)
 			{
@@ -54,36 +54,9 @@ namespace GameClientApi.DatabaseAccessors
 			return player;
 		}
 
-		public bool SetOfflineStatus(PlayerModel player, SqlTransaction transaction = null)
-		{
-			string updateQueryString = "UPDATE Player SET OnlineStatus = 0 WHERE Username = @Username";
-
-			IDbConnection connection;
-			if (transaction != null)
-			{
-				connection = transaction.Connection;
-			}
-			else
-			{
-				connection = new SqlConnection(_connectionString);
-				connection.Open();
-			}
-
-			int rowsAffected = connection.Execute(updateQueryString, new
-			{
-				Username = player.Username
-			}, transaction: transaction);
-
-			if (transaction == null)
-			{
-				connection.Close();
-			}
-			return rowsAffected > 0;
-		}
-
 		public bool SetOnlineStatus(PlayerModel player, SqlTransaction transaction = null)
 		{
-			string updateQueryString = "UPDATE Player SET OnlineStatus = 1 WHERE Username = @Username";
+			string updateQueryString = "UPDATE Player SET OnlineStatus = @OnlineStatus WHERE Username = @Username";
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -98,6 +71,7 @@ namespace GameClientApi.DatabaseAccessors
 
 			int rowsAffected = connection.Execute(updateQueryString, new
 			{
+				OnlineStatus = player.OnlineStatus,
 				Username = player.Username
 			}, transaction: transaction);
 
@@ -125,8 +99,6 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			bool playerInserted = false;
 
-			if (AccountHasValues(newPlayer))
-			{
 				string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
 					"VALUES (@Username, @Password, @InGameName, @Email, @Birthday)";
 
@@ -136,41 +108,10 @@ namespace GameClientApi.DatabaseAccessors
 					var rowsAffected = connection.Execute(insertQuery, newPlayer);
 					playerInserted = rowsAffected == 1;
 				}
-			}
 
 			return playerInserted;
 		}
 
-		private bool AccountHasValues(AccountRegistrationModel newAccount)
-		{
-			if (newAccount == null)
-			{
-				return false;
-			}
-
-			if (string.IsNullOrEmpty(newAccount.Username))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.Password))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.Email))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.InGameName))
-			{
-				return false;
-			}
-			if (newAccount.BirthDay == null || newAccount.BirthDay < new DateTime(1753, 1, 1) || newAccount.BirthDay > new DateTime(9999, 12, 31))
-			{
-				return false;
-			}
-
-			return true;
-		}
 
 		public bool UsernameExists(string username)
 		{
@@ -276,9 +217,9 @@ namespace GameClientApi.DatabaseAccessors
             return rowsAffected > 0;
 		}
 
-		public bool BanPlayer(PlayerModel player, SqlTransaction transaction = null)
+		public bool UpdatePlayer(PlayerModel player, SqlTransaction transaction = null)
 		{
-			string banPlayerQuery = "UPDATE Player SET Banned = @Banned WHERE PlayerId = @PlayerId";
+			string updatePlayerQuery = "UPDATE Player SET Username = @Username, InGameName = @InGameName, Elo = @Elo, Email = @Email, Banned = @Banned, CurrencyAmount = @CurrencyAmount WHERE PlayerId = @PlayerId";
 
 			IDbConnection connection;
 			if (transaction != null)
@@ -291,9 +232,14 @@ namespace GameClientApi.DatabaseAccessors
 				connection.Open();
 			}
 
-			int rowsAffected = connection.Execute(banPlayerQuery, new
+			int rowsAffected = connection.Execute(updatePlayerQuery, new
 			{
+				Username = player.Username,
+				InGameName = player.InGameName,
+				Elo = player.Elo,
+				Email = player.Email,
 				Banned = player.Banned,
+				CurrencyAmount = player.CurrencyAmount,
 				PlayerId = player.PlayerId
 			}, transaction: transaction);
 
@@ -322,5 +268,14 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			sqlTransaction.Rollback();
 		}
-	}
+
+        public bool DeletePlayer(int? playerId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var result = connection.Execute("DELETE FROM Player WHERE PlayerID = @PlayerId", new { PlayerID = playerId });
+                return result > 0;
+            }
+        }
+    }
 }

@@ -316,7 +316,7 @@ h1 {
     width: 140px;
     border-left: none;
     transform: translateX(0);
-    transform: translateY(-10px);
+    transform: translateY(-7px);
 }
 
 .noselect:focus {

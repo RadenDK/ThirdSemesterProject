@@ -4,7 +4,10 @@ namespace WebClient.Models
 {
     public class PlayerModel
     {
-        [JsonPropertyName("username")]
+		[JsonPropertyName("playerId")]
+		public int PlayerId { get; set; }
+
+		[JsonPropertyName("username")]
         public string Username { get; set; }
 
         [JsonPropertyName("password")]

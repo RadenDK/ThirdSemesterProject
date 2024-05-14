@@ -1,6 +1,6 @@
 ﻿namespace GameClientApi.Models
 {
-	public class JoinGameLobbyRequest
+	public class JoinGameLobbyRequestModel
 	{
 		public int PlayerId { get; set; }
 

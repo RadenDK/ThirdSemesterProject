@@ -1,20 +1,15 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using GameClientApi.Controllers;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GameClientApiTests.ControllerTests
 {
+	[Collection("Sequential")]
 	public class GameLobbyControllerIntergrationTest : IDisposable
 	{
 
@@ -94,7 +89,7 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequest = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModel = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 6,
 				GameLobbyId = 2,
@@ -102,7 +97,7 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResult = SUT.JoinGameLobby(joinRequest);
+			IActionResult testResult = SUT.JoinGameLobby(joinRequestModel);
 
 			// Assert
 			Assert.True(testResult is OkObjectResult, "The result should be of type OkObjectResult.");
@@ -111,16 +106,16 @@ namespace GameClientApiTests.ControllerTests
 			Assert.True(okResult.Value is GameLobbyModel, "The value in the result should be of type GameLobbyModel.");
 			GameLobbyModel returnValue = (GameLobbyModel)okResult.Value;
 
-			Assert.True(joinRequest.GameLobbyId == returnValue.GameLobbyId, "The GameLobbyId in the response does not match the GameLobbyId in the request.");
+			Assert.True(joinRequestModel.GameLobbyId == returnValue.GameLobbyId, "The GameLobbyId in the response does not match the GameLobbyId in the request.");
 
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId FROM Player WHERE PlayerId = @PlayerId", connection))
 				{
-					command.Parameters.AddWithValue("@PlayerId", joinRequest.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModel.PlayerId);
 					var gameLobbyId = (int)command.ExecuteScalar();
-					Assert.True(joinRequest.GameLobbyId == gameLobbyId, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
+					Assert.True(joinRequestModel.GameLobbyId == gameLobbyId, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
 				}
 			}
 		}
@@ -137,7 +132,7 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequest = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModel = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 6,
 				GameLobbyId = 3,
@@ -145,22 +140,22 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResult = SUT.JoinGameLobby(joinRequest);
+			IActionResult testResult = SUT.JoinGameLobby(joinRequestModel);
 
 			// Assert
 			OkObjectResult okResult = Assert.IsType<OkObjectResult>(testResult);
 			GameLobbyModel returnValue = Assert.IsType<GameLobbyModel>(okResult.Value);
 
-			Assert.Equal(joinRequest.GameLobbyId, returnValue.GameLobbyId);
+			Assert.Equal(joinRequestModel.GameLobbyId, returnValue.GameLobbyId);
 
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId FROM Player WHERE PlayerId = @PlayerId", connection))
 				{
-					command.Parameters.AddWithValue("@PlayerId", joinRequest.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModel.PlayerId);
 					var gameLobbyId = (int)command.ExecuteScalar();
-					Assert.True(joinRequest.GameLobbyId == gameLobbyId, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
+					Assert.True(joinRequestModel.GameLobbyId == gameLobbyId, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
 				}
 			}
 		}
@@ -174,7 +169,7 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequest = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModel = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 6,
 				GameLobbyId = 999,
@@ -182,7 +177,7 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResult = SUT.JoinGameLobby(joinRequest);
+			IActionResult testResult = SUT.JoinGameLobby(joinRequestModel);
 
 			// Assert
 			Assert.IsType<BadRequestObjectResult>(testResult);
@@ -192,7 +187,7 @@ namespace GameClientApiTests.ControllerTests
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId FROM Player WHERE PlayerId = @PlayerId", connection))
 				{
-					command.Parameters.AddWithValue("@PlayerId", joinRequest.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModel.PlayerId);
 					int? gameLobbyId = (int?)command.ExecuteScalar();
 					Assert.True(gameLobbyId == null, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
 				}
@@ -211,7 +206,7 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequest = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModel = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 6,
 				GameLobbyId = 3, // Game lobby ID with a password
@@ -219,7 +214,7 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResult = SUT.JoinGameLobby(joinRequest);
+			IActionResult testResult = SUT.JoinGameLobby(joinRequestModel);
 
 			// Assert
 			Assert.IsType<BadRequestObjectResult>(testResult);
@@ -237,7 +232,7 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequest = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModel = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 6,
 				GameLobbyId = 1,
@@ -245,7 +240,7 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResult = SUT.JoinGameLobby(joinRequest);
+			IActionResult testResult = SUT.JoinGameLobby(joinRequestModel);
 
 			// Assert
 			Assert.True(testResult is BadRequestObjectResult, "The result should be of type BadRequestObjectResult.");
@@ -255,7 +250,7 @@ namespace GameClientApiTests.ControllerTests
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId FROM Player WHERE PlayerId = @PlayerId", connection))
 				{
-					command.Parameters.AddWithValue("@PlayerId", joinRequest.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModel.PlayerId);
 					var result = command.ExecuteScalar();
 					int? gameLobbyId = result == DBNull.Value ? null : (int?)result;
 					Assert.True(gameLobbyId == null, "The GameLobbyId in the database does not match the GameLobbyId in the request.");
@@ -275,14 +270,14 @@ namespace GameClientApiTests.ControllerTests
 
 			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
 
-			JoinGameLobbyRequest joinRequestPlayer1 = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModelPlayer1 = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 1,
 				GameLobbyId = 3,
 				LobbyPassword = "password"
 			};
 
-			JoinGameLobbyRequest joinRequestPlayer2 = new JoinGameLobbyRequest
+			JoinGameLobbyRequestModel joinRequestModelPlayer2 = new JoinGameLobbyRequestModel
 			{
 				PlayerId = 2,
 				GameLobbyId = 3,
@@ -290,8 +285,8 @@ namespace GameClientApiTests.ControllerTests
 			};
 
 			// Act
-			IActionResult testResultPlayer1 = SUT.JoinGameLobby(joinRequestPlayer1);
-			IActionResult testResultPlayer2 = SUT.JoinGameLobby(joinRequestPlayer2);
+			IActionResult testResultPlayer1 = SUT.JoinGameLobby(joinRequestModelPlayer1);
+			IActionResult testResultPlayer2 = SUT.JoinGameLobby(joinRequestModelPlayer2);
 
 			// Assert
 			// Check that one of the players received a BadRequest response
@@ -303,7 +298,7 @@ namespace GameClientApiTests.ControllerTests
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM Player WHERE GameLobbyId = @GameLobbyId", connection))
 				{
-					command.Parameters.AddWithValue("@GameLobbyId", joinRequestPlayer1.GameLobbyId);
+					command.Parameters.AddWithValue("@GameLobbyId", joinRequestModelPlayer1.GameLobbyId);
 					int playersInLobby = (int)command.ExecuteScalar();
 					Assert.True(playersInLobby == 3, "There should be 3 players in the lobby.");
 				}
@@ -315,14 +310,56 @@ namespace GameClientApiTests.ControllerTests
 				connection.Open();
 				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId FROM Player WHERE PlayerId = @PlayerId", connection))
 				{
-					command.Parameters.AddWithValue("@PlayerId", joinRequestPlayer1.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModelPlayer1.PlayerId);
 					int? gameLobbyIdPlayer1 = (int?)command.ExecuteScalar();
 
 					command.Parameters.Clear();
-					command.Parameters.AddWithValue("@PlayerId", joinRequestPlayer2.PlayerId);
+					command.Parameters.AddWithValue("@PlayerId", joinRequestModelPlayer2.PlayerId);
 					int? gameLobbyIdPlayer2 = (int?)command.ExecuteScalar();
 
-					Assert.True(gameLobbyIdPlayer1 == joinRequestPlayer1.GameLobbyId || gameLobbyIdPlayer2 == joinRequestPlayer2.GameLobbyId, "One of the players should have their GameLobbyId updated in the database.");
+					Assert.True(gameLobbyIdPlayer1 == joinRequestModelPlayer1.GameLobbyId || gameLobbyIdPlayer2 == joinRequestModelPlayer2.GameLobbyId, "One of the players should have their GameLobbyId updated in the database.");
+				}
+			}
+		}
+
+		[Fact]
+		public void LeaveGameLobby_PlayerLeavesSuccessfully_WhenPlayerExistsInLobby()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayers();
+
+			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			IPlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+
+			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
+
+			LeaveGameLobbyRequestModel leaveRequest = new LeaveGameLobbyRequestModel { GameLobbyId = 3, PlayerId = 5 };
+
+			// Act
+			IActionResult result = SUT.LeaveGameLobby(leaveRequest);
+
+			// Assert
+			Assert.IsType<OkResult>(result); // Assert that the result is an OkResult
+
+			// Check that the player has left the lobby in the database
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId, IsOwner FROM Player WHERE PlayerId = @PlayerId", connection))
+				{
+					command.Parameters.AddWithValue("@PlayerId", leaveRequest.PlayerId);
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							int? gameLobbyId = reader.IsDBNull(0) ? null : reader.GetInt32(0);
+							bool isOwner = reader.GetBoolean(1);
+
+							Assert.True(gameLobbyId == null, "GameLobbyId not null"); // Assert that the GameLobbyId is null
+							Assert.True(isOwner == false, "Player is still gameowner"); // Assert that IsOwner is 0
+						}
+					}
 				}
 			}
 		}
