@@ -159,7 +159,7 @@ namespace GameClientApi.BusinessLogic
 
 			try
 			{
-				if (UpdatedPlayerHasValues(updatedPlayer))
+				if (UpdatedPlayerHasValues(updatedPlayer, oldPlayer))
 				{
 					if (updatedPlayer.Banned == true && oldPlayer.Banned == false)
 					{
@@ -179,22 +179,27 @@ namespace GameClientApi.BusinessLogic
 			return false;
 		}
 
-		private bool UpdatedPlayerHasValues(PlayerModel updatedPlayer)
+		private bool UpdatedPlayerHasValues(PlayerModel updatedPlayer, PlayerModel oldPlayer)
 		{
 			if (updatedPlayer == null)
 			{
 				return false;
 			}
-
-			if (string.IsNullOrEmpty(updatedPlayer.Username) || _playerAccessor.UsernameExists(updatedPlayer.Username))
+			if (oldPlayer.Username != updatedPlayer.Username || string.IsNullOrEmpty(updatedPlayer.Username))
 			{
-				return false;
+				if (_playerAccessor.UsernameExists(updatedPlayer.Username))
+				{
+					return false;
+				}
+			}
+			if (oldPlayer.InGameName != updatedPlayer.InGameName || string.IsNullOrEmpty(updatedPlayer.InGameName))
+			{
+				if (_playerAccessor.InGameNameExists(updatedPlayer.InGameName))
+				{
+					return false;
+				}
 			}
 			if (string.IsNullOrEmpty(updatedPlayer.Email))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(updatedPlayer.InGameName) || _playerAccessor.InGameNameExists(updatedPlayer.InGameName))
 			{
 				return false;
 			}
