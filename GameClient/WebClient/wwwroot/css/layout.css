@@ -102,9 +102,8 @@ body {
     background-color 0.2s cubic-bezier(0.94, 0.41, 0, 1.41),
     transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
     cursor: default;
-    border: 1px solid rgba(0, 0, 0, 0.40);
+    border: 1px solid rgba(255, 255, 255, 0.40);
     border-radius: 15px;
-    background-color: var(--primary-blue);
 }
 
 #bento-box-0 #user-icon, #bento-box-0 #user-text {
@@ -115,7 +114,7 @@ body {
 
 #bento-box-0 #currency-icon, #bento-box-0 #elo-icon, #bento-box-0 #currency-text, #bento-box-0 #elo-text {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -123,20 +122,31 @@ body {
     text-decoration: none;
     font-weight: 650;
     padding: 10px;
+    color: white;
 }
 
 #bento-box-0 #user-icon {
     align-self: center;
+    color: var(--primary-blue);
 }
+#bento-box-0 #currency-icon {
+    color: var(--primary-blue);
+}
+#bento-box-0 #elo-icon {
+    color: var(--primary-blue);
+}
+
 
 #elo-text {
     text-decoration: none;
     font-weight: 650;
+    color: white;
 }
 
 #currency-text {
     text-decoration: none;
     font-weight: 650;
+    color: white;
 }
 
 #bento-box-1 {

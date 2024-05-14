@@ -19,10 +19,14 @@
 			<div class="bento-box" id="bento-box-0">
 				<i class='fas fa-user-circle' id="user-icon"></i>
 				<span class="text" id="user-text">@User.FindFirst("InGameName")?.Value</span>
-				<i class='fab fa-ethereum' id="currency-icon"></i>
-				<span class="text" id="currency-text">@User.FindFirst("Currency")?.Value</span>
-				<i class='fas fa-shekel-sign' id="elo-icon"></i>
-				<span class="text" id="elo-text">@User.FindFirst("Elo")?.Value</span>
+				<div id="currency">
+                    <i class='fab fa-ethereum' id="currency-icon"></i>
+                    <span class="text" id="currency-text">@User.FindFirst("Currency")?.Value</span>
+                </div>
+                <div id="elo">
+                    <i class='fas fa-shekel-sign' id="elo-icon"></i>
+                    <span class="text" id="elo-text">@User.FindFirst("Elo")?.Value</span>
+                </div>
 			</div>
 			<div class="bento-box" id="bento-box-1">
 				<a asp-controller="GameLobby" asp-action="ViewAllGameLobbies" class="menu-item">
