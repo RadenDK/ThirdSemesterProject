@@ -238,5 +238,48 @@ namespace GameClientApiTests.PlayerControllerTests
             // Assert
             Assert.IsType<BadRequestObjectResult>(testResult);
         }
-    }
+
+        [Fact]
+        public void UpdatePlayer_TC1_ReturnsOkWhenPlayerUpdatedSuccesfully()
+        {
+            //Arrange
+            PlayerModel updatedPlayer = new PlayerModel
+            {
+                Username = "updatedPlayer1",
+                InGameName = "updatedPlayer1",
+                Email = "email@test.com",
+                Elo = 1000,
+                CurrencyAmount = 1000,
+                Banned = false,
+                PlayerId = 1
+            };
+
+            _mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(true);
+
+            PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+            //Act
+            IActionResult testResult = SUT.UpdatePlayer(updatedPlayer);
+
+            //Assert
+            Assert.IsType<OkResult>(testResult);
+        }
+
+		[Fact]
+		public void UpdatePlayer_TC2_ReturnsBadRequestWhenPlayerNotUpdatedSuccesfully()
+		{
+            //Arrange
+            PlayerModel updatedPlayer = new PlayerModel { Username = ""};
+            
+			_mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(false);
+
+			PlayerController SUT = new PlayerController(_configuration, _mockAccessor.Object);
+
+			//Act
+			IActionResult testResult = SUT.UpdatePlayer(updatedPlayer);
+
+			//Assert
+			Assert.IsType<BadRequestObjectResult>(testResult);
+		}
+	}
 }
