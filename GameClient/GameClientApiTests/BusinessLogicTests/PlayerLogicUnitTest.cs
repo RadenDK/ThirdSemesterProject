@@ -3,6 +3,7 @@ using GameClientApi.BusinessLogic;
 using GameClientApi.Models;
 using Microsoft.Extensions.Configuration;
 using Moq;
+using Xunit.Sdk;
 
 namespace GameClientApiTests.BusinessLogicTests
 {
@@ -29,10 +30,10 @@ namespace GameClientApiTests.BusinessLogicTests
 
 			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null)).Returns(testPlayer);
 			
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+			bool testResult = SUT.VerifyLogin(testUsername, testPassword);
 
 			// Assert
 			Assert.True(testResult, "Should return True but does not");
@@ -49,13 +50,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.GetPlayer("invalidUsername", null, null))
 				.Returns(testPlayer);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(() =>
 			{
 				// Act
-				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+				bool testResult = SUT.VerifyLogin(testUsername, testPassword);
 			});
 		}
 
@@ -69,13 +70,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.GetPlayer("Username", null, null))
 				.Returns<string?>(null);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(() =>
 			{
 				// Act
-				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+				bool testResult = SUT.VerifyLogin(testUsername, testPassword);
 			});
 		}
 
@@ -89,13 +90,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null))
 				.Returns<string?>(null);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(() =>
 			{
 				// Act
-				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+				bool testResult = SUT.VerifyLogin(testUsername, testPassword);
 			});
 		}
 
@@ -109,13 +110,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.GetPlayer(testUsername, null, null))
 				.Returns<string?>(null);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(() =>
 			{
 				// Act
-				bool testResult = playerService.VerifyLogin(testUsername, testPassword);
+				bool testResult = SUT.VerifyLogin(testUsername, testPassword);
 			});
 		}
 
@@ -139,10 +140,10 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.CreatePlayer(It.IsAny<AccountRegistrationModel>()))
 				.Returns(true);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.CreatePlayer(mockPlayer);
+			bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			// Assert
 			Assert.True(testResult);
@@ -168,13 +169,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentException>(() =>
 			{
 				// Act
-				bool testResult = playerService.CreatePlayer(mockPlayer);
+				bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			});
 		}
@@ -199,13 +200,13 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Assert
 			Assert.Throws<ArgumentException>(() =>
 			{
 				// Act
-				bool testResult = playerService.CreatePlayer(mockPlayer);
+				bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			});
 		}
@@ -230,14 +231,90 @@ namespace GameClientApiTests.BusinessLogicTests
 			_mockAccessor.Setup(a => a.CreatePlayer(mockPlayer))
 				.Returns(false);
 
-			PlayerLogic playerService = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
 
 			// Act
-			bool testResult = playerService.CreatePlayer(mockPlayer);
+			bool testResult = SUT.CreatePlayer(mockPlayer);
 
 			// Assert
 			Assert.False(testResult);
 		}
 
-    }
+		[Fact]
+		public void UpdatePlayer_TC1_ReturnsTrueWhenPlayerIsUpdated()
+		{
+			//Arrange
+			PlayerModel oldPlayer = new PlayerModel
+			{
+				Username = "Player1",
+				InGameName = "Player1",
+				Email = "email@test.com",
+				Elo = 10,
+				CurrencyAmount = 1000,
+				Banned = false,
+				PlayerId = 1
+			};
+
+			PlayerModel updatedPlayer = new PlayerModel
+			{
+				Username = "UpdatedPlayer1",
+				InGameName = "UpdatedPlayer1",
+				Email = "email@test.com",
+				Elo = 10,
+				CurrencyAmount = 1000,
+				Banned = false,
+				PlayerId = 1
+			};
+
+			_mockAccessor.Setup(a => a.UpdatePlayer(updatedPlayer, null)).Returns(true);
+			_mockAccessor.Setup(a => a.GetPlayer(null, updatedPlayer.PlayerId, null)).Returns(oldPlayer);
+
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+
+			//Act
+			bool testResult = SUT.UpdatePlayer(updatedPlayer);
+
+			//Assert
+			Assert.True(testResult);
+			Assert.NotEqual(oldPlayer, updatedPlayer);
+		}
+
+		[Fact]
+		public void UpdatePlayer_TC2_ThrowsExceptionWhenUsernameExists()
+		{
+			//Arrange
+			PlayerModel oldPlayer = new PlayerModel { PlayerId = 2, Username = "oldUsername" };
+			PlayerModel updatedPlayer = new PlayerModel { PlayerId = 2, Username = "Username" };
+
+			_mockAccessor.Setup(p => p.GetPlayer(null, updatedPlayer.PlayerId, null)).Returns(oldPlayer);
+			_mockAccessor.Setup(p => p.UsernameExists(updatedPlayer.Username)).Returns(true);
+
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+
+			//Act
+			bool testResult = SUT.UpdatePlayer(updatedPlayer);
+
+			//Assert
+			Assert.False(testResult);
+		}
+
+		[Fact]
+		public void UpdatePlayer_TC3_ThrowsExceptionWhenInGameNameExists()
+		{
+			//Arrange
+			PlayerModel oldPlayer = new PlayerModel { PlayerId = 2, Username = "oldUsername" };
+			PlayerModel updatedPlayer = new PlayerModel { PlayerId = 2, Username = "Username" };
+
+			_mockAccessor.Setup(p => p.GetPlayer(null, updatedPlayer.PlayerId, null)).Returns(oldPlayer);
+			_mockAccessor.Setup(p => p.InGameNameExists(updatedPlayer.InGameName)).Returns(true);
+
+			PlayerLogic SUT = new PlayerLogic(_mockConfiguration, _mockAccessor.Object);
+
+			//Act
+			bool testResult = SUT.UpdatePlayer(updatedPlayer);
+
+			//Assert
+			Assert.False(testResult);
+		}
+	}
 }
