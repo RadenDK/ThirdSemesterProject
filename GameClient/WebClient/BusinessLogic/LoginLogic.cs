@@ -34,6 +34,8 @@ namespace WebClient.BusinessLogic
 				new Claim("PlayerId", player.PlayerId.ToString()),
 				new Claim("Username", player.Username),
 				new Claim("InGameName", player.InGameName),
+				new Claim("Elo", player.Elo.ToString()),
+				new Claim("Currency", player.CurrencyAmount.ToString()),
 
 			};
 

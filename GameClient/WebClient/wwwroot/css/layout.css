@@ -91,7 +91,8 @@ body {
 
 #bento-box-0{
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: flex-start;
     padding: 20px 20px;
     margin-bottom: 15px;
@@ -103,14 +104,28 @@ body {
     transform 0.4s cubic-bezier(0.6,-0.46, 0.3, 2.02);
     cursor: default;
     border: 1px solid rgba(255, 255, 255, 0.42);
-    border-radius: 12px;
+    border-radius: 25px;
+    background-color: var(--primary-blue);
 }
 
 #user-text {
-    color: var(--white);
     text-decoration: none;
     font-weight: 650;
     padding: 10px;
+}
+
+#bento-box-0 #user-icon {
+    align-self: center;
+}
+
+#elo-text {
+    text-decoration: none;
+    font-weight: 650;
+}
+
+#currency-text {
+    text-decoration: none;
+    font-weight: 650;
 }
 
 #bento-box-1 {
