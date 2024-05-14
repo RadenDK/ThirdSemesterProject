@@ -32,6 +32,12 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerManagement));
 			PlayerManagementLabel = new Label();
 			playerDataGridView = new DataGridView();
+			playerModelBindingSource = new BindingSource(components);
+			backButton = new Button();
+			selectButton = new Button();
+			searchTextBox = new TextBox();
+			reloadPictureBox = new PictureBox();
+			managementPanel = new Panel();
 			PlayerId = new DataGridViewTextBoxColumn();
 			usernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
 			inGameNameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -42,12 +48,6 @@
 			isOwnerDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
 			gameLobbyIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
 			onlineStatusDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-			playerModelBindingSource = new BindingSource(components);
-			backButton = new Button();
-			selectButton = new Button();
-			searchTextBox = new TextBox();
-			reloadPictureBox = new PictureBox();
-			managementPanel = new Panel();
 			((System.ComponentModel.ISupportInitialize)playerDataGridView).BeginInit();
 			((System.ComponentModel.ISupportInitialize)playerModelBindingSource).BeginInit();
 			((System.ComponentModel.ISupportInitialize)reloadPictureBox).BeginInit();
@@ -58,10 +58,10 @@
 			// 
 			PlayerManagementLabel.AutoSize = true;
 			PlayerManagementLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			PlayerManagementLabel.Location = new Point(3, 11);
+			PlayerManagementLabel.Location = new Point(3, 15);
 			PlayerManagementLabel.Margin = new Padding(2, 0, 2, 0);
 			PlayerManagementLabel.Name = "PlayerManagementLabel";
-			PlayerManagementLabel.Size = new Size(164, 21);
+			PlayerManagementLabel.Size = new Size(202, 28);
 			PlayerManagementLabel.TabIndex = 1;
 			PlayerManagementLabel.Text = "Player Management";
 			// 
@@ -71,12 +71,74 @@
 			playerDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			playerDataGridView.Columns.AddRange(new DataGridViewColumn[] { PlayerId, usernameDataGridViewTextBoxColumn, inGameNameDataGridViewTextBoxColumn, eloDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, bannedDataGridViewCheckBoxColumn, currencyAmountDataGridViewTextBoxColumn, isOwnerDataGridViewCheckBoxColumn, gameLobbyIdDataGridViewTextBoxColumn, onlineStatusDataGridViewCheckBoxColumn });
 			playerDataGridView.DataSource = playerModelBindingSource;
-			playerDataGridView.Location = new Point(2, 76);
-			playerDataGridView.Margin = new Padding(2);
+			playerDataGridView.Location = new Point(2, 101);
+			playerDataGridView.Margin = new Padding(2, 3, 2, 3);
 			playerDataGridView.Name = "playerDataGridView";
 			playerDataGridView.RowHeadersWidth = 62;
-			playerDataGridView.Size = new Size(906, 401);
+			playerDataGridView.Size = new Size(1035, 535);
 			playerDataGridView.TabIndex = 3;
+			// 
+			// playerModelBindingSource
+			// 
+			playerModelBindingSource.DataSource = typeof(ModelLayer.PlayerModel);
+			// 
+			// backButton
+			// 
+			backButton.Location = new Point(854, 641);
+			backButton.Margin = new Padding(2, 3, 2, 3);
+			backButton.Name = "backButton";
+			backButton.Size = new Size(90, 27);
+			backButton.TabIndex = 5;
+			backButton.Text = "Back";
+			backButton.UseVisualStyleBackColor = true;
+			backButton.Click += backButton_Click;
+			// 
+			// selectButton
+			// 
+			selectButton.Location = new Point(947, 641);
+			selectButton.Margin = new Padding(2, 3, 2, 3);
+			selectButton.Name = "selectButton";
+			selectButton.Size = new Size(90, 27);
+			selectButton.TabIndex = 6;
+			selectButton.Text = "Select";
+			selectButton.UseVisualStyleBackColor = true;
+			// 
+			// searchTextBox
+			// 
+			searchTextBox.ForeColor = Color.Gray;
+			searchTextBox.Location = new Point(3, 65);
+			searchTextBox.Name = "searchTextBox";
+			searchTextBox.Size = new Size(660, 27);
+			searchTextBox.TabIndex = 7;
+			searchTextBox.Text = "Search...";
+			searchTextBox.TextChanged += searchTextBox_TextChanged;
+			// 
+			// reloadPictureBox
+			// 
+			reloadPictureBox.Cursor = Cursors.Hand;
+			reloadPictureBox.Image = (Image)resources.GetObject("reloadPictureBox.Image");
+			reloadPictureBox.Location = new Point(1019, 77);
+			reloadPictureBox.Name = "reloadPictureBox";
+			reloadPictureBox.Size = new Size(18, 19);
+			reloadPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+			reloadPictureBox.TabIndex = 8;
+			reloadPictureBox.TabStop = false;
+			reloadPictureBox.Click += ReloadPictureBox_Click;
+			// 
+			// managementPanel
+			// 
+			managementPanel.Anchor = AnchorStyles.None;
+			managementPanel.Controls.Add(selectButton);
+			managementPanel.Controls.Add(PlayerManagementLabel);
+			managementPanel.Controls.Add(searchTextBox);
+			managementPanel.Controls.Add(reloadPictureBox);
+			managementPanel.Controls.Add(backButton);
+			managementPanel.Controls.Add(playerDataGridView);
+			managementPanel.Location = new Point(14, 16);
+			managementPanel.Margin = new Padding(3, 4, 3, 4);
+			managementPanel.Name = "managementPanel";
+			managementPanel.Size = new Size(1041, 671);
+			managementPanel.TabIndex = 9;
 			// 
 			// PlayerId
 			// 
@@ -113,7 +175,7 @@
 			eloDataGridViewTextBoxColumn.MinimumWidth = 8;
 			eloDataGridViewTextBoxColumn.Name = "eloDataGridViewTextBoxColumn";
 			eloDataGridViewTextBoxColumn.ReadOnly = true;
-			eloDataGridViewTextBoxColumn.Width = 135;
+			eloDataGridViewTextBoxColumn.Width = 150;
 			// 
 			// emailDataGridViewTextBoxColumn
 			// 
@@ -122,7 +184,7 @@
 			emailDataGridViewTextBoxColumn.MinimumWidth = 8;
 			emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
 			emailDataGridViewTextBoxColumn.ReadOnly = true;
-			emailDataGridViewTextBoxColumn.Width = 150;
+			emailDataGridViewTextBoxColumn.Width = 200;
 			// 
 			// bannedDataGridViewCheckBoxColumn
 			// 
@@ -131,7 +193,7 @@
 			bannedDataGridViewCheckBoxColumn.MinimumWidth = 8;
 			bannedDataGridViewCheckBoxColumn.Name = "bannedDataGridViewCheckBoxColumn";
 			bannedDataGridViewCheckBoxColumn.ReadOnly = true;
-			bannedDataGridViewCheckBoxColumn.Width = 90;
+			bannedDataGridViewCheckBoxColumn.Width = 150;
 			// 
 			// currencyAmountDataGridViewTextBoxColumn
 			// 
@@ -172,76 +234,13 @@
 			onlineStatusDataGridViewCheckBoxColumn.Visible = false;
 			onlineStatusDataGridViewCheckBoxColumn.Width = 150;
 			// 
-			// playerModelBindingSource
-			// 
-			playerModelBindingSource.DataSource = typeof(ModelLayer.PlayerModel);
-			// 
-			// backButton
-			// 
-			backButton.Location = new Point(747, 481);
-			backButton.Margin = new Padding(2);
-			backButton.Name = "backButton";
-			backButton.Size = new Size(79, 20);
-			backButton.TabIndex = 5;
-			backButton.Text = "Back";
-			backButton.UseVisualStyleBackColor = true;
-			backButton.Click += backButton_Click;
-			// 
-			// selectButton
-			// 
-			selectButton.Location = new Point(829, 481);
-			selectButton.Margin = new Padding(2);
-			selectButton.Name = "selectButton";
-			selectButton.Size = new Size(79, 20);
-			selectButton.TabIndex = 6;
-			selectButton.Text = "Select";
-			selectButton.UseVisualStyleBackColor = true;
-			// 
-			// searchTextBox
-			// 
-			searchTextBox.ForeColor = Color.Gray;
-			searchTextBox.Location = new Point(3, 49);
-			searchTextBox.Margin = new Padding(3, 2, 3, 2);
-			searchTextBox.Name = "searchTextBox";
-			searchTextBox.Size = new Size(578, 23);
-			searchTextBox.TabIndex = 7;
-			searchTextBox.Text = "Search...";
-			searchTextBox.TextChanged += searchTextBox_TextChanged;
-			// 
-			// reloadPictureBox
-			// 
-			reloadPictureBox.Cursor = Cursors.Hand;
-			reloadPictureBox.Image = (Image)resources.GetObject("reloadPictureBox.Image");
-			reloadPictureBox.Location = new Point(892, 58);
-			reloadPictureBox.Margin = new Padding(3, 2, 3, 2);
-			reloadPictureBox.Name = "reloadPictureBox";
-			reloadPictureBox.Size = new Size(16, 14);
-			reloadPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-			reloadPictureBox.TabIndex = 8;
-			reloadPictureBox.TabStop = false;
-			reloadPictureBox.Click += ReloadPictureBox_Click;
-			// 
-			// managementPanel
-			// 
-			managementPanel.Anchor = AnchorStyles.None;
-			managementPanel.Controls.Add(selectButton);
-			managementPanel.Controls.Add(PlayerManagementLabel);
-			managementPanel.Controls.Add(searchTextBox);
-			managementPanel.Controls.Add(reloadPictureBox);
-			managementPanel.Controls.Add(backButton);
-			managementPanel.Controls.Add(playerDataGridView);
-			managementPanel.Location = new Point(12, 12);
-			managementPanel.Name = "managementPanel";
-			managementPanel.Size = new Size(911, 503);
-			managementPanel.TabIndex = 9;
-			// 
 			// PlayerManagement
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(935, 527);
+			ClientSize = new Size(1069, 703);
 			Controls.Add(managementPanel);
-			Margin = new Padding(2);
+			Margin = new Padding(2, 3, 2, 3);
 			Name = "PlayerManagement";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Player Management";
