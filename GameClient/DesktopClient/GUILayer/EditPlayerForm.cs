@@ -103,7 +103,7 @@ namespace DesktopClient.GUILayer
 
         private async void deleteButton_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Are you sure to delete this player?", "Confirm Delete", MessageBoxButtons.YesNo);
+            DialogResult confirmResult = MessageBox.Show("Are you sure to delete this player?", "Confirm Delete", MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
                 bool result = await _playerController.DeletePlayer(_player);
