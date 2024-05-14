@@ -139,11 +139,11 @@ namespace GameClientApi.BusinessLogic
 				{
 					BanPlayer(newPlayer, transaction);
 				}
-				if (_playerAccessor.UsernameExists(newPlayer.Username) && newPlayer.Username != oldPlayer.Username)
+				if (_playerAccessor.UsernameExists(newPlayer.Username))
 				{
 					throw new ArgumentException("Username already exists");
 				}
-				if (_playerAccessor.InGameNameExists(newPlayer.InGameName) && newPlayer.InGameName != oldPlayer.InGameName)
+				if (_playerAccessor.InGameNameExists(newPlayer.InGameName))
 				{
 					throw new ArgumentException("InGameName already exists");
 				}
