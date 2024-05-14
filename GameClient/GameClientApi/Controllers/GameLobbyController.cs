@@ -84,7 +84,6 @@ namespace GameClientApi.Controllers
 		}
 
         [HttpPost("leave")]
-
         public IActionResult LeaveGameLobby([FromBody] LeaveGameLobbyRequestModel leaveRequest)
         {
             try
