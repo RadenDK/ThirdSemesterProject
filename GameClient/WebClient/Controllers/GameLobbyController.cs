@@ -59,7 +59,7 @@ namespace WebClient.Controllers
 
 				GameLobbyModel gameLobby = await _gameLobbyLogic.CreateGameLobby(newLobby, username);
 
-				JoinGameLobbyRequest request = new JoinGameLobbyRequest { GameLobbyId = gameLobby.GameLobbyId.Value };
+				JoinGameLobbyRequest request = new JoinGameLobbyRequest { GameLobbyId = gameLobby.GameLobbyId.Value, LobbyPassword = newLobby.PasswordHash };
 
 				return await GameLobby(request);
 
