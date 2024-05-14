@@ -99,8 +99,6 @@ namespace GameClientApi.DatabaseAccessors
 		{
 			bool playerInserted = false;
 
-			if (AccountHasValues(newPlayer))
-			{
 				string insertQuery = "INSERT INTO Player (Username, PasswordHash, InGameName, Email, Birthday) " +
 					"VALUES (@Username, @Password, @InGameName, @Email, @Birthday)";
 
@@ -110,41 +108,10 @@ namespace GameClientApi.DatabaseAccessors
 					var rowsAffected = connection.Execute(insertQuery, newPlayer);
 					playerInserted = rowsAffected == 1;
 				}
-			}
 
 			return playerInserted;
 		}
 
-		private bool AccountHasValues(AccountRegistrationModel newAccount)
-		{
-			if (newAccount == null)
-			{
-				return false;
-			}
-
-			if (string.IsNullOrEmpty(newAccount.Username))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.Password))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.Email))
-			{
-				return false;
-			}
-			if (string.IsNullOrEmpty(newAccount.InGameName))
-			{
-				return false;
-			}
-			if (newAccount.BirthDay == null || newAccount.BirthDay < new DateTime(1753, 1, 1) || newAccount.BirthDay > new DateTime(9999, 12, 31))
-			{
-				return false;
-			}
-
-			return true;
-		}
 
 		public bool UsernameExists(string username)
 		{
