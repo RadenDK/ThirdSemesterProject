@@ -1,17 +1,11 @@
 ﻿using GameClientApi.DatabaseAccessors;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using GameClientApi.Controllers;
 using GameClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApiTests.TestHelpers;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GameClientApiTests.ControllerTests
 {
@@ -324,6 +318,48 @@ namespace GameClientApiTests.ControllerTests
 					int? gameLobbyIdPlayer2 = (int?)command.ExecuteScalar();
 
 					Assert.True(gameLobbyIdPlayer1 == joinRequestModelPlayer1.GameLobbyId || gameLobbyIdPlayer2 == joinRequestModelPlayer2.GameLobbyId, "One of the players should have their GameLobbyId updated in the database.");
+				}
+			}
+		}
+
+		[Fact]
+		public void LeaveGameLobby_PlayerLeavesSuccessfully_WhenPlayerExistsInLobby()
+		{
+			// Arrange
+			InsertMockGameLobbies();
+			InsertMockPlayers();
+
+			IGameLobbyDatabaseAccessor gameLobbyDatabaseAccessor = new GameLobbyDatabaseAccessor(_configuration);
+			IPlayerDatabaseAccessor playerDatabaseAccessor = new PlayerDatabaseAccessor(_configuration);
+
+			GameLobbyController SUT = new GameLobbyController(_configuration, gameLobbyDatabaseAccessor, playerDatabaseAccessor);
+
+			LeaveGameLobbyRequestModel leaveRequest = new LeaveGameLobbyRequestModel { GameLobbyId = 3, PlayerId = 5 };
+
+			// Act
+			IActionResult result = SUT.LeaveGameLobby(leaveRequest);
+
+			// Assert
+			Assert.IsType<OkResult>(result); // Assert that the result is an OkResult
+
+			// Check that the player has left the lobby in the database
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				using (SqlCommand command = new SqlCommand("SELECT GameLobbyId, IsOwner FROM Player WHERE PlayerId = @PlayerId", connection))
+				{
+					command.Parameters.AddWithValue("@PlayerId", leaveRequest.PlayerId);
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							int? gameLobbyId = reader.IsDBNull(0) ? null : reader.GetInt32(0);
+							bool isOwner = reader.GetBoolean(1);
+
+							Assert.True(gameLobbyId == null, "GameLobbyId not null"); // Assert that the GameLobbyId is null
+							Assert.True(isOwner == false, "Player is still gameowner"); // Assert that IsOwner is 0
+						}
+					}
 				}
 			}
 		}
