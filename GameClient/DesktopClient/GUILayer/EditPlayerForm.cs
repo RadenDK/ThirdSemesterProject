@@ -110,8 +110,7 @@ namespace DesktopClient.GUILayer
                 if (result)
                 {
                     PlayerEdited?.Invoke();
-                    MessageBox.Show(_player.Username + (_player.PlayerId) + " was successfully deleted.", "Delete Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
+                    MessageBox.Show($"{_player.Username} ({_player.PlayerId}) was successfully deleted.", "Delete Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);                    this.Close();
                 }
                 else
                 {
