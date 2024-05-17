@@ -61,7 +61,7 @@ namespace WebClient.Controllers
                     }
                     if (response.StatusCode == HttpStatusCode.Forbidden)
 					{
-						ViewBag.ErrorMessage = "You are banned dumbass🔥🔥";
+						ViewBag.ErrorMessage = "You're account has been banned";
 					}
 					// If the API returned a 400 status code, return the same view
 					return View("Index");
