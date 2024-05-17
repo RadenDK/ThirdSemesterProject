@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
@@ -115,6 +116,28 @@ namespace GameClientApi.Controllers
             else
             {
                 return BadRequest(new { message = "Player: " + playerId + " was not deleted successfully" });
+            }
+        }
+        [HttpPost("logout")]
+        public IActionResult Logout([FromBody] JsonElement playerIdJson)
+        {
+
+            int playerId = playerIdJson.GetProperty("PlayerId").GetInt32();
+            try
+            {
+                if (_playerLogic.Logout(playerId))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Error logging out the player on (API)" });
+                }
+            }
+            catch (Exception e)
+            {
+                // Return BadRequest with the exception message
+                return BadRequest(new { message = e.Message });
             }
         }
 

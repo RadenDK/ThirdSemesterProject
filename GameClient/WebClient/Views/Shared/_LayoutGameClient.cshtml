@@ -17,7 +17,11 @@
 	<div class="sidebar">
 		<div class="section" id="section-1">
 		<div class="bento-box" id="bento-box-0">
-            <i class='fas fa-user-circle' id="user-icon"></i>
+           <form asp-controller="Login" asp-action="Logout" method="post">
+               <button type="submit" class="user-icon-button">
+                   <i class='fas fa-user-circle' id="user-icon"></i>
+               </button>
+           </form>
             <span class="text" id="user-text">@User.FindFirst("InGameName")?.Value</span>
             <div id="elo&currency">
 	            <div id="currency">
@@ -37,10 +41,8 @@
 				</a>
 			</div>
 			<div class="bento-box" id="bento-box-2">
-				<a href="profile.html" class="menu-item">
 					@* <img src="~/assets/maskot.png" alt="Profile"> *@
 					<div class="text" id="profile-text">PROFILE</div>
-				</a>
 			</div>
 			<div class="bento-box" id="bento-box-3">
 				<a href="collection.html" class="menu-item">

@@ -14,5 +14,6 @@ namespace GameClientApi.BusinessLogic
 		List<PlayerModel> GetAllPlayers();
 		bool DeletePlayer(int? playerId);
 		bool UpdatePlayer(PlayerModel player);
+		bool Logout(int playerId, SqlTransaction transaction = null);
 	}
 }
