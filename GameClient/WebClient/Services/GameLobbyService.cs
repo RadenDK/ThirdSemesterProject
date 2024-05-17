@@ -102,7 +102,7 @@ namespace WebClient.Services
 			}
 			else
 			{
-				throw new Exception($"Failed to create game lobby. HTTP response code: {response.StatusCode}");
+				throw new Exception($"Failed leave lobby: {response.StatusCode}, response message: {response.Content}");
 			}
 
 		}
