@@ -535,7 +535,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     margin-right: 10px;
 }
 
-.footer-layout-lobby .menu-item {
+.footer-layout-lobby .menu-item{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -548,6 +548,30 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
     .footer-layout-lobby .menu-item:hover .icon {
         transform: translateX(-5%); /* Moves the SVG to the right */
+    }
+
+.footer-layout-lobby .leave-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+    .footer-layout-lobby .leave-button:hover .icon {
+        transform: translateX(-5%); /* Moves the SVG to the right */
+    } {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.footer-layout-lobby .text {
+    margin-left: 15px;
+}
+
+    .footer-layout-lobby .leave-button:hover .icon {
+    transform: translateX(-5%); /* Moves the SVG to the right */
     }
 
 
