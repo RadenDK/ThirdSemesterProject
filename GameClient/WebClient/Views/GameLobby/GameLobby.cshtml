@@ -2,28 +2,51 @@
 
 @{
     Layout = "_LayoutLobby";
+    int maxPlayersPerTeam = (int)Math.Ceiling(Model.AmountOfPlayers / 2.0);
 }
 
 <div class="parent-container">
     <div class="teams-container">
         <div class="team">
             <h2>TEAM ONE</h2>
-            <ul class="team-members">
-                <li>Player 1</li>
-                <li>Player 2</li>
-                <li>Player 3</li>
-                <li>Player 4</li>
-                <li>Player 5</li>
+            <ul class="team-members team-one-members">
+                @if (Model.PlayersInLobby != null)
+                {
+                    int teamOneCount = 0;
+                    for (int i = 0; i < Model.PlayersInLobby.Count; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            <li>@Model.PlayersInLobby[i].InGameName</li>
+                            teamOneCount++;
+                        }
+                    }
+                    for (int i = teamOneCount; i < maxPlayersPerTeam; i++)
+                    {
+                        <li>Empty</li>
+                    }
+                }
             </ul>
         </div>
         <div class="team">
             <h2>TEAM TWO</h2>
-            <ul class="team-members">
-                <li>Player 1</li>
-                <li>Player 2</li>
-                <li>Player 3</li>
-                <li>Player 4</li>
-                <li>Player 5</li>
+            <ul class="team-members team-two-members">
+                @if (Model.PlayersInLobby != null)
+                {
+                    int teamTwoCount = 0;
+                    for (int i = 0; i < Model.PlayersInLobby.Count; i++)
+                    {
+                        if (i % 2 != 0)
+                        {
+                            <li>@Model.PlayersInLobby[i].InGameName</li>
+                            teamTwoCount++;
+                        }
+                    }
+                    for (int i = teamTwoCount; i < maxPlayersPerTeam; i++)
+                    {
+                        <li>Empty</li>
+                    }
+                }
             </ul>
         </div>
     </div>
@@ -42,7 +65,7 @@
             </div>
         </div>
         <div class="Lobbychat-input">
-            <input type="text" id="chat-text-input" placeholder="Type your message here..."/>
+            <input type="text" id="chat-text-input" placeholder="Type your message here..." />
             <button id="send-chat-btn">Send</button>
         </div>
     </div>
