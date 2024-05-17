@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var currentLobbyId;
+
+$(document).ready(function () {
     $("#search-lobby-field").on("input", function () {
         var value = $(this).val().toLowerCase();
         var hasResults = false;
@@ -83,7 +85,7 @@ window.onclick = function (event) {
     }
 }
 $(".table-row").click(function (event) {
-    var lobbyId = $(this).data("lobby-id");
+    currentLobbyId = $(this).data("lobby-id");
 
     // Check if the lobby is private
     if ($(this).find('.bi-lock-fill').length > 0) {
@@ -92,7 +94,7 @@ $(".table-row").click(function (event) {
     } else {
         // If the lobby is not private, send a POST request with a null password
         var requestBody = {
-            gameLobbyId: lobbyId,
+            gameLobbyId: currentLobbyId,
             lobbyPassword: null
         };
 
@@ -123,12 +125,12 @@ $(".table-row").click(function (event) {
 // This below code gets triggered when ever you press the submit button
 // in the password modal. The "submitPassword" is the id of that button
 $("#submitPassword").click(function (event) {
-    var lobbyId = $(".table-row").data("lobby-id");
+   
     var password = $("#passwordInput").val();
 
     // Create the request body
     var requestBody = {
-        gameLobbyId: lobbyId,
+        gameLobbyId: currentLobbyId,
         lobbyPassword: password
     };
 
