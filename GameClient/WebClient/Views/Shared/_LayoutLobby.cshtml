@@ -27,7 +27,7 @@
 
 <div class="footer-layout-lobby">
 
-    @if (controller == "GameLobby" && action == "GameLobby")
+    @if (controller == "GameLobby" && action == "GameLobby" || controller == "GameLobby" && action == "CreateGameLobby")
     {
         <form asp-controller="GameLobby" asp-action="LeaveGameLobby" method="post" class="leave-button">
             <input type="hidden" name="gameLobbyId" value="@gameLobby.GameLobbyId" />
