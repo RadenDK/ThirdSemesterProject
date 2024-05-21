@@ -16,7 +16,7 @@ namespace WebClient.Services
 
 		public async Task<List<GameLobbyModel>> GetAllGameLobbies(string accessToken)
 		{
-			string endpoint = "GameLobby/AllGameLobbies";
+			string endpoint = "GameLobby/gameLobbies";
 
 			_httpClientService.SetAuthenticationHeader(accessToken);
 
@@ -38,7 +38,7 @@ namespace WebClient.Services
 
 		public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken)
 		{
-			string url = "GameLobby/Join";
+			string url = "GameLobby/joinGameLobby";
 			var json = JsonConvert.SerializeObject(request);
 			var data = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -65,7 +65,7 @@ namespace WebClient.Services
 
 		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username, string accessToken)
 		{
-			string endpoint = "GameLobby/CreateGameLobby";
+			string endpoint = "GameLobby/gameLobby";
 			var payload = new { newLobby, username };
 			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
@@ -86,7 +86,7 @@ namespace WebClient.Services
 
 		public async Task<bool> LeaveGameLobby(int playerId, int gameLobbyId, string accessToken)
 		{
-			string endpoint = "GameLobby/Leave";
+			string endpoint = "GameLobby/leaveGameLobby";
 			
 			LeaveGameLobbyRequestModel leaveRequest = new LeaveGameLobbyRequestModel { PlayerId = playerId, GameLobbyId = gameLobbyId };
 

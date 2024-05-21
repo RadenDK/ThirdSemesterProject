@@ -50,7 +50,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPost("create")]
+        [HttpPost("player")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
         {
             try
@@ -72,7 +72,7 @@ namespace GameClientApi.Controllers
         }
 
 
-        [HttpPut("update")]
+        [HttpPut("player")]
         public IActionResult UpdatePlayer([FromBody] PlayerModel player)
         {
             try
@@ -92,7 +92,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-		[HttpGet("AllPlayers")]
+		[HttpGet("players")]
         public IActionResult GetListOfPlayers()
         {
             try
@@ -106,7 +106,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpDelete("delete/{playerId}")]
+        [HttpDelete("player/{playerId}")]
         public IActionResult DeletePlayer(int? playerId)
         {
             if (_playerLogic.DeletePlayer(playerId))
