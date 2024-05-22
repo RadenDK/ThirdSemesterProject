@@ -16,7 +16,7 @@ namespace GameClientApi.Controllers
             _adminLogic = new AdminLogic(adminDatabaseAccessor);
         }
 
-        [HttpPost("verify")]
+        [HttpPut("admins/login")]
         public IActionResult VerifyAdminLogin(AdminLoginModel adminLoginModel)
         {
             try
