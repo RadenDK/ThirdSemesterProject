@@ -48,7 +48,30 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPost("player")]
+        [HttpPut("logout")]
+        public IActionResult Logout([FromBody] JsonElement playerIdJson)
+        {
+
+            int playerId = playerIdJson.GetProperty("PlayerId").GetInt32();
+            try
+            {
+                if (_playerLogic.Logout(playerId))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Error logging out the player on (API)" });
+                }
+            }
+            catch (Exception e)
+            {
+                // Return BadRequest with the exception message
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpPost("players")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
         {
             try
@@ -70,7 +93,7 @@ namespace GameClientApi.Controllers
         }
 
 
-        [HttpPut("player")]
+        [HttpPut("players")]
         public IActionResult UpdatePlayer([FromBody] PlayerModel player)
         {
             try
@@ -104,7 +127,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpDelete("player/{playerId}")]
+        [HttpDelete("players/{playerId}")]
         public IActionResult DeletePlayer(int? playerId)
         {
             if (_playerLogic.DeletePlayer(playerId))
@@ -116,28 +139,7 @@ namespace GameClientApi.Controllers
                 return BadRequest(new { message = "Player: " + playerId + " was not deleted successfully" });
             }
         }
-        [HttpPost("logout")]
-        public IActionResult Logout([FromBody] JsonElement playerIdJson)
-        {
-
-            int playerId = playerIdJson.GetProperty("PlayerId").GetInt32();
-            try
-            {
-                if (_playerLogic.Logout(playerId))
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest(new { message = "Error logging out the player on (API)" });
-                }
-            }
-            catch (Exception e)
-            {
-                // Return BadRequest with the exception message
-                return BadRequest(new { message = e.Message });
-            }
-        }
+        
 
     }
 }

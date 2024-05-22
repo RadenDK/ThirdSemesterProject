@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
 using System.Text;
 using WebClient.Models;
 
@@ -33,8 +32,6 @@ namespace WebClient.Services
 				throw new Exception($"Failed to get game lobbies. HTTP status code: {response.StatusCode}");
 			}
 		}
-
-
 
 		public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken)
 		{
