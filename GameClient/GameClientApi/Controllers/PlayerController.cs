@@ -22,7 +22,7 @@ namespace GameClientApi.Controllers
         }
 
 
-        [HttpPut("login")]
+        [HttpPut("players/login")]
         public IActionResult DoesPlayerExist(LoginModel loginModel)
         {
             try
@@ -48,7 +48,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPut("logout")]
+        [HttpPut("players/logout")]
         public IActionResult Logout([FromBody] JsonElement playerIdJson)
         {
 

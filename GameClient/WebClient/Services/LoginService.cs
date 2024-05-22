@@ -18,7 +18,7 @@ namespace WebClient.Services
 
             _httpClientService.SetAuthenticationHeader(accessToken);
 
-            return await _httpClientService.PutAsync("Player/login", content);
+            return await _httpClientService.PutAsync("player/players/login", content);
         }
 
         public async Task<HttpResponseMessage> LogoutAsync(int playerId, string accessToken)
@@ -27,7 +27,7 @@ namespace WebClient.Services
 
             _httpClientService.SetAuthenticationHeader(accessToken);
             
-            HttpResponseMessage response = await _httpClientService.PutAsync("Player/logout", content);
+            HttpResponseMessage response = await _httpClientService.PutAsync("player/players/logout", content);
             
             return response;
         }
