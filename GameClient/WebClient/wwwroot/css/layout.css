@@ -74,7 +74,7 @@ body {
     align-items: center;
     padding: 10px;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: background-color 0.3s ease-in-out; /* Add transition for smooth color change */
 }
 
@@ -93,7 +93,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 10px;
+    padding: 0 10px 5px;
     margin-bottom: 15px;
     margin-top: 5px;
     margin-right: 0px;
@@ -106,48 +106,102 @@ body {
     border-radius: 15px;
 }
 
+
+
 #bento-box-0 #user-icon, #bento-box-0 #user-text {
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
-#bento-box-0 #currency-icon, #bento-box-0 #elo-icon, #bento-box-0 #currency-text, #bento-box-0 #elo-text {
+    #bento-box-0 #user-icon {
+        margin-top: 20px;
+    } 
+
+   
+
+#bento-box-0 #currency, #bento-box-0 #elo {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
+#elo\&currency {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px;
+}
+
+
 #user-text {
     text-decoration: none;
     font-weight: 650;
-    padding: 10px;
+    font-size: 20px;
     color: white;
 }
 
 #bento-box-0 #user-icon {
     align-self: center;
+    padding-right: 5px;
     color: var(--primary-blue);
 }
 #bento-box-0 #currency-icon {
     color: var(--primary-blue);
+    padding: 5px;
 }
 #bento-box-0 #elo-icon {
     color: var(--primary-blue);
+    padding: 5px;
 }
 
+#user-text {
+    text-decoration: none;
+    color: white;
+}
 
 #elo-text {
     text-decoration: none;
     font-weight: 650;
     color: white;
+    font-size: 12px;
 }
 
 #currency-text {
     text-decoration: none;
     font-weight: 650;
     color: white;
+    font-size: 12px;
 }
+
+#user-icon {
+    font-size: 40px;
+}
+
+#elo-icon {
+    font-size: 15px;
+}
+
+#currency-icon {
+    font-size: 15px;
+}
+
+#logout-text {
+    text-decoration: none;
+    font-weight: 650;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: color ease-in-out;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: inherit;
+}
+
+    #logout-text:hover {
+        color: var(--hover-blue);
+        transform: scale(1.1);
+    }
 
 #bento-box-1 {
     padding: 20px 20px;
@@ -504,7 +558,7 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
     margin-right: 10px;
 }
 
-.footer-layout-lobby .menu-item {
+.footer-layout-lobby .menu-item{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -517,6 +571,30 @@ input[type="text"]:not(.lobbyName-bento-box input[type="text"]):not(.teamSize-be
 
     .footer-layout-lobby .menu-item:hover .icon {
         transform: translateX(-5%); /* Moves the SVG to the right */
+    }
+
+.footer-layout-lobby .leave-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+    .footer-layout-lobby .leave-button:hover .icon {
+        transform: translateX(-5%); /* Moves the SVG to the right */
+    } {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.footer-layout-lobby .text {
+    margin-left: 15px;
+}
+
+    .footer-layout-lobby .leave-button:hover .icon {
+    transform: translateX(-5%); /* Moves the SVG to the right */
     }
 
 

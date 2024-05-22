@@ -56,5 +56,12 @@ namespace WebClient.BusinessLogic
 			var player = JsonSerializer.Deserialize<PlayerModel>(playerData);
 			return player;
 		}
+
+		public async Task<bool> Logout(int playerId)
+		{
+			string accessToken = await _tokenManager.GetAccessToken();
+			HttpResponseMessage response = await _loginService.LogoutAsync(playerId, accessToken);
+			return response.IsSuccessStatusCode;
+		}
 	}
 }

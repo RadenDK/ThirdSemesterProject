@@ -22,7 +22,7 @@ namespace DesktopClient.ServiceLayer
 
 		public async Task<List<PlayerModel>> GetAllPlayers(string accessToken)
 		{
-			string endpoint = "Player/AllPlayers";
+			string endpoint = "Player/players";
 
 			_httpClientService.SetAuthenticationHeader(accessToken);
 			HttpResponseMessage response = await _httpClientService.GetAsync(endpoint);
@@ -43,7 +43,7 @@ namespace DesktopClient.ServiceLayer
 		{
 			try
 			{
-				string endpoint = "Player/update";
+				string endpoint = "Player/player";
 
 				StringContent content = new StringContent(
 					JsonConvert.SerializeObject(player),
@@ -71,7 +71,7 @@ namespace DesktopClient.ServiceLayer
 
         public async Task<bool> DeletePlayer(int? playerId, string accessToken)
         {
-            string endpoint = "Player/delete";
+            string endpoint = "Player/player";
 
             _httpClientService.SetAuthenticationHeader(accessToken);
             HttpResponseMessage response = await _httpClientService.DeleteAsync(endpoint + "/" + playerId);

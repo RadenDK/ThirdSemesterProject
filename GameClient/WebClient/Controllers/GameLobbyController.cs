@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebClient.Controllers
 {
+	[Authorize]
 	public class GameLobbyController : Controller
 	{
 		private readonly IGameLobbyLogic _gameLobbyLogic;

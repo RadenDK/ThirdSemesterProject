@@ -47,7 +47,7 @@ namespace GameClientApi.DatabaseAccessors
                 connection.Open();
             }
 
-            int rowsAffected = connection.Execute(deleteLobbyQuery, new { GameLobbyId = gameLobbyId });
+            int rowsAffected = connection.Execute(deleteLobbyQuery, new { GameLobbyId = gameLobbyId }, transaction: transaction);
             
             if (rowsAffected > 0) deletionSucces = true;
 

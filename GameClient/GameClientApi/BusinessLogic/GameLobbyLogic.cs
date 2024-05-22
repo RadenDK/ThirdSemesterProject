@@ -220,6 +220,8 @@ namespace GameClientApi.BusinessLogic
 
             _playerLogic.UpdatePlayerLobbyId(player, gameLobby);
 
+            gameLobby.PlayersInLobby = _playerLogic.GetAllPlayersInLobby(gameLobby.GameLobbyId);
+
             return gameLobby;
         }
 

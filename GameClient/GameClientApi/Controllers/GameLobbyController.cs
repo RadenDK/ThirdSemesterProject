@@ -25,7 +25,7 @@ namespace GameClientApi.Controllers
 			_gameLobbyLogic = new GameLobbyLogic(configuration,
 				gameLobbyDatabaseAccessor, _playerLogic);
 		}
-		[HttpGet("AllGameLobbies")]
+		[HttpGet("gameLobbies")]
 		public IActionResult AllGameLobbies()
 		{
 			try
@@ -39,7 +39,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPost("CreateGameLobby")]
+        [HttpPost("gameLobby")]
         public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
         {
             GameLobbyModel gameLobby = data.newLobby;
@@ -62,7 +62,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpPost("join")]
+        [HttpPost("joinGameLobby")]
 		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequestModel joinRequestModel)
 		{
 			try
@@ -83,7 +83,7 @@ namespace GameClientApi.Controllers
 			
 		}
 
-        [HttpPost("leave")]
+        [HttpPost("leaveGameLobby")]
         public IActionResult LeaveGameLobby([FromBody] LeaveGameLobbyRequestModel leaveRequest)
         {
             try

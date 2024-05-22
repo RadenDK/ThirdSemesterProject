@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GameClientApi.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using GameClientApi.Models;
@@ -49,7 +50,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPost("create")]
+        [HttpPost("player")]
         public IActionResult CreatePlayer(AccountRegistrationModel accountRegistration)
         {
             try
@@ -71,7 +72,7 @@ namespace GameClientApi.Controllers
         }
 
 
-        [HttpPut("update")]
+        [HttpPut("player")]
         public IActionResult UpdatePlayer([FromBody] PlayerModel player)
         {
             try
@@ -91,7 +92,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-		[HttpGet("AllPlayers")]
+		[HttpGet("players")]
         public IActionResult GetListOfPlayers()
         {
             try
@@ -105,7 +106,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpDelete("delete/{playerId}")]
+        [HttpDelete("player/{playerId}")]
         public IActionResult DeletePlayer(int? playerId)
         {
             if (_playerLogic.DeletePlayer(playerId))
@@ -115,6 +116,28 @@ namespace GameClientApi.Controllers
             else
             {
                 return BadRequest(new { message = "Player: " + playerId + " was not deleted successfully" });
+            }
+        }
+        [HttpPost("logout")]
+        public IActionResult Logout([FromBody] JsonElement playerIdJson)
+        {
+
+            int playerId = playerIdJson.GetProperty("PlayerId").GetInt32();
+            try
+            {
+                if (_playerLogic.Logout(playerId))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Error logging out the player on (API)" });
+                }
+            }
+            catch (Exception e)
+            {
+                // Return BadRequest with the exception message
+                return BadRequest(new { message = e.Message });
             }
         }
 
