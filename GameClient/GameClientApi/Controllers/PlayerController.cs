@@ -22,12 +22,11 @@ namespace GameClientApi.Controllers
         }
 
 
-        [HttpPost("verify")]
+        [HttpPut("login")]
         public IActionResult DoesPlayerExist(LoginModel loginModel)
         {
             try
             {
-
                 bool playerExists = _playerLogic.VerifyLogin(loginModel.Username, loginModel.Password);
                 if (playerExists)
                 {

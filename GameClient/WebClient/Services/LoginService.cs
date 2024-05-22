@@ -20,7 +20,7 @@ namespace WebClient.Services
 
             _httpClientService.SetAuthenticationHeader(accessToken);
 
-            return await _httpClientService.PostAsync("Player/verify", content);
+            return await _httpClientService.PutAsync("Player/login", content);
         }
 
         public async Task<HttpResponseMessage> LogoutAsync(int playerId, string accessToken)
