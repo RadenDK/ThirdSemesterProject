@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
 using System.Text;
 using WebClient.Models;
 
@@ -25,7 +24,9 @@ namespace WebClient.Services
 			if (response.IsSuccessStatusCode)
 			{
 				string responseBody = await response.Content.ReadAsStringAsync();
+
 				List<GameLobbyModel> gameLobbies = JsonConvert.DeserializeObject<List<GameLobbyModel>>(responseBody);
+
 				return gameLobbies;
 			}
 			else
@@ -34,44 +35,18 @@ namespace WebClient.Services
 			}
 		}
 
-
-
-		public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken)
-		{
-			string url = "GameLobby/joinGameLobby";
-			var json = JsonConvert.SerializeObject(request);
-			var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-			try
-			{
-				_httpClientService.SetAuthenticationHeader(accessToken);
-
-				var response = await _httpClientService.PostAsync(url, data);
-				if (response.IsSuccessStatusCode)
-				{
-					var responseBody = await response.Content.ReadAsStringAsync();
-					return JsonConvert.DeserializeObject<GameLobbyModel>(responseBody);
-				}
-				else
-				{
-					throw new Exception($"Failed to join game lobby. HTTP status code: {response.StatusCode}");
-				}
-			}
-			catch (HttpRequestException ex)
-			{
-				throw new Exception("An error occurred while trying to join the game lobby. Please try again later.", ex);
-			}
-		}
-
 		public async Task<GameLobbyModel> CreateGameLobby(GameLobbyModel newLobby, string username, string accessToken)
 		{
-			string endpoint = "GameLobby/gameLobby";
+			string endpoint = "GameLobby/gameLobbies";
+
 			var payload = new { newLobby, username };
+
 			StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
 			_httpClientService.SetAuthenticationHeader(accessToken);
 
 			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
+
 			if (response.IsSuccessStatusCode)
 			{
 				string responseBody = await response.Content.ReadAsStringAsync();
@@ -84,9 +59,40 @@ namespace WebClient.Services
 			}
 		}
 
-		public async Task<bool> LeaveGameLobby(int playerId, int gameLobbyId, string accessToken)
+        public async Task<GameLobbyModel> JoinGameLobby(JoinGameLobbyRequest request, string accessToken)
+        {
+            string url = "GameLobby/gameLobbies/join";
+
+            string json = JsonConvert.SerializeObject(request);
+
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                _httpClientService.SetAuthenticationHeader(accessToken);
+
+                HttpResponseMessage response = await _httpClientService.PutAsync(url, data);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    return JsonConvert.DeserializeObject<GameLobbyModel>(responseBody);
+                }
+                else
+                {
+                    throw new Exception($"Failed to join game lobby. HTTP status code: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception("An error occurred while trying to join the game lobby. Please try again later.", ex);
+            }
+        }
+
+        public async Task<bool> LeaveGameLobby(int playerId, int gameLobbyId, string accessToken)
 		{
-			string endpoint = "GameLobby/leaveGameLobby";
+			string endpoint = "GameLobby/gameLobbies/leave";
 			
 			LeaveGameLobbyRequestModel leaveRequest = new LeaveGameLobbyRequestModel { PlayerId = playerId, GameLobbyId = gameLobbyId };
 
@@ -94,7 +100,7 @@ namespace WebClient.Services
 
 			_httpClientService.SetAuthenticationHeader(accessToken);
 			
-			HttpResponseMessage response = await _httpClientService.PostAsync(endpoint, jsonContent);
+			HttpResponseMessage response = await _httpClientService.PutAsync(endpoint, jsonContent);
 			
 			if (response.IsSuccessStatusCode)
 			{

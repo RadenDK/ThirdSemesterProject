@@ -6,7 +6,7 @@ using GameClientApi.Models;
 namespace GameClientApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AdminController : Controller
     {
         private AdminLogic _adminLogic;
@@ -16,7 +16,7 @@ namespace GameClientApi.Controllers
             _adminLogic = new AdminLogic(adminDatabaseAccessor);
         }
 
-        [HttpPost("verify")]
+        [HttpPut("admins/login")]
         public IActionResult VerifyAdminLogin(AdminLoginModel adminLoginModel)
         {
             try

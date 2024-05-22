@@ -7,7 +7,7 @@ namespace WebClient.Services
     public class HttpClientService : IHttpClientService
     {
         private readonly HttpClient _httpClient;
-        private Uri BaseAddress = new Uri("https://localhost:7092");
+        private Uri BaseAddress = new Uri("https://localhost:7092/api/");
 
     public HttpClientService(HttpClient httpClient)
         {
@@ -23,6 +23,11 @@ namespace WebClient.Services
         public async Task<HttpResponseMessage> PostAsync(string url, StringContent content)
         {
             return await _httpClient.PostAsync(url, content);
+        }
+
+        public async Task<HttpResponseMessage> PutAsync(string url, StringContent content)
+        {
+            return await _httpClient.PutAsync(url, content);
         }
 
         public async Task<HttpResponseMessage> GetAsync(string url)

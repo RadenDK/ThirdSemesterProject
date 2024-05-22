@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameClientApi.Controllers
 {
-	public class TokensController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TokenController : Controller
 	{
 		private ISecurityHelper _securityHelper;
 
-		public TokensController(ISecurityHelper securityHelper)
+		public TokenController(ISecurityHelper securityHelper)
 		{
 			_securityHelper = securityHelper;
 		}
 
-		[Route("token")]
-		[HttpPost]
-		//Generate and return a JWT token
-		public IActionResult GenerateTokens([FromBody] TokenRequestModel request)
+        [HttpPost("tokens")]
+        public IActionResult GenerateTokens([FromBody] TokenRequestModel request)
 		{
 			TokenModel tokens = _securityHelper.GenerateTokens(request);
 
@@ -30,7 +30,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-		[HttpPost("token/refresh")]
+		[HttpPost("tokens/refresh")]
 		public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestModel refreshRequest)
 		{
 			TokenModel tokens = _securityHelper.RefreshTokens(refreshRequest.RefreshToken);

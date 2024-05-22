@@ -32,7 +32,7 @@ namespace WebClient.Services
             {
 				_httpClientService.SetAuthenticationHeader(accessToken);
 
-				return await _httpClientService.PostAsync("Player/player", data);
+				return await _httpClientService.PostAsync("Player/players", data);
             }
             catch (HttpRequestException)
             {

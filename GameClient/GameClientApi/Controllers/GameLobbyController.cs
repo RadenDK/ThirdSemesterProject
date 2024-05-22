@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace GameClientApi.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	[Authorize]
 	public class GameLobbyController : Controller
 	{
@@ -25,6 +25,7 @@ namespace GameClientApi.Controllers
 			_gameLobbyLogic = new GameLobbyLogic(configuration,
 				gameLobbyDatabaseAccessor, _playerLogic);
 		}
+
 		[HttpGet("gameLobbies")]
 		public IActionResult AllGameLobbies()
 		{
@@ -39,7 +40,7 @@ namespace GameClientApi.Controllers
 			}
 		}
 
-        [HttpPost("gameLobby")]
+        [HttpPost("gameLobbies")]
         public IActionResult CreateGameLobby([FromBody] CreateGameLobbyModel data)
         {
             GameLobbyModel gameLobby = data.newLobby;
@@ -62,7 +63,7 @@ namespace GameClientApi.Controllers
             }
         }
 
-        [HttpPost("joinGameLobby")]
+        [HttpPut("gamelobbies/join")]
 		public IActionResult JoinGameLobby([FromBody] JoinGameLobbyRequestModel joinRequestModel)
 		{
 			try
@@ -83,7 +84,7 @@ namespace GameClientApi.Controllers
 			
 		}
 
-        [HttpPost("leaveGameLobby")]
+        [HttpPut("gamelobbies/leave")]
         public IActionResult LeaveGameLobby([FromBody] LeaveGameLobbyRequestModel leaveRequest)
         {
             try
