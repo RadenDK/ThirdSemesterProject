@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace GameClientApi.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	[Authorize]
 	public class GameLobbyController : Controller
 	{

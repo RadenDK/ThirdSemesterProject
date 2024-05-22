@@ -13,7 +13,7 @@ namespace GameClientApi.Controllers
 			_securityHelper = securityHelper;
 		}
 
-		[Route("token")]
+		[Route("api/token")]
 		[HttpPost]
 		//Generate and return a JWT token
 		public IActionResult GenerateTokens([FromBody] TokenRequestModel request)

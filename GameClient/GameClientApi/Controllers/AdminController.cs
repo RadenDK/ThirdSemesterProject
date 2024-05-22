@@ -6,7 +6,7 @@ using GameClientApi.Models;
 namespace GameClientApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AdminController : Controller
     {
         private AdminLogic _adminLogic;
