@@ -80,6 +80,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<GameHub>("/gameHub"); // Map the SignalR hub
 
 // Map the SignalR hub
 app.MapHub<GameHub>("/gameHub");
