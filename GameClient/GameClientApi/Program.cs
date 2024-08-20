@@ -3,6 +3,7 @@ using GameClientApi.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GameClientApi; // Add this to include the GameHub namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,28 +18,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-
 // Get the secret key from configuration
 byte[] secretKey = Encoding.UTF8.GetBytes(builder.Configuration["SECRET_KEY"]);
 
 // Configure the JWT Authentication Service
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-	options.TokenValidationParameters = new TokenValidationParameters()
-	{
-		ValidateIssuerSigningKey = true,
-		IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-		ValidateIssuer = false,
-		ValidateAudience = false,
-		ValidateLifetime = true
-	};
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true
+    };
 });
-
 
 // Add CORS services
 builder.Services.AddCors(options =>
@@ -81,5 +80,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map the SignalR hub
+app.MapHub<GameHub>("/gameHub");
 
 app.Run();
