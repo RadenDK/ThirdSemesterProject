@@ -88,15 +88,23 @@ int maxPlayersPerTeam = (int)Math.Ceiling(Model.AmountOfPlayers / 2.0);
         const message = document.getElementById("chat-text-input").value;
         if (message.trim() !== "") {
             console.log("Sending message: ", message);
-            connection.invoke("SendMessage", user, message).catch(err => console.error("Send Message Error: ", err.toString()));
+            connection.invoke("SendMessage", user, message).then(() => {
+                console.log("Message sent successfully.");
+            }).catch(err => console.error("Send Message Error: ", err.toString()));
             document.getElementById("chat-text-input").value = "";
+        } else {
+            console.log("Message is empty, not sending.");
         }
     }
 
-    document.getElementById("send-chat-btn").addEventListener("click", sendMessage);
+    document.getElementById("send-chat-btn").addEventListener("click", () => {
+        console.log("Send button clicked.");
+        sendMessage();
+    });
 
     document.getElementById("chat-text-input").addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
+            console.log("Enter key pressed.");
             sendMessage();
             event.preventDefault();
         }
