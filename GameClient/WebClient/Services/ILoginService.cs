@@ -6,5 +6,6 @@ namespace WebClient.Services
     {
         Task<HttpResponseMessage> VerifyPlayerCredentials(string username, string password, string accessToken);
         Task<HttpResponseMessage> LogoutAsync(int playerId, string accessToken);
+        Task<PlayerModel> GetPlayerAsync(string username, string accessToken);
     }
 }

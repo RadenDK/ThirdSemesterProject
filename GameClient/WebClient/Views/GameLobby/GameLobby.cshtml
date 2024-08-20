@@ -1,8 +1,9 @@
-﻿@model GameLobbyModel
+﻿
+@model GameLobbyModel
 
 @{
-    Layout = "_LayoutLobby";
-    int maxPlayersPerTeam = (int)Math.Ceiling(Model.AmountOfPlayers / 2.0);
+Layout = "_LayoutLobby";
+int maxPlayersPerTeam = (int)Math.Ceiling(Model.AmountOfPlayers / 2.0);
 }
 
 <div class="parent-container">
@@ -12,19 +13,19 @@
             <ul class="team-members team-one-members">
                 @if (Model.PlayersInLobby != null)
                 {
-                    int teamOneCount = 0;
-                    for (int i = 0; i < Model.PlayersInLobby.Count; i++)
-                    {
-                        if (i % 2 == 0)
-                        {
-                            <li>@Model.PlayersInLobby[i].InGameName</li>
-                            teamOneCount++;
-                        }
-                    }
-                    for (int i = teamOneCount; i < maxPlayersPerTeam; i++)
-                    {
-                        <li>Empty</li>
-                    }
+                int teamOneCount = 0;
+                for (int i = 0; i < Model.PlayersInLobby.Count; i++)
+                {
+                if (i % 2 == 0)
+                {
+                <li>@Model.PlayersInLobby[i].InGameName</li>
+                teamOneCount++;
+                }
+                }
+                for (int i = teamOneCount; i < maxPlayersPerTeam; i++)
+                {
+                <li>Empty</li>
+                }
                 }
             </ul>
         </div>
@@ -33,19 +34,19 @@
             <ul class="team-members team-two-members">
                 @if (Model.PlayersInLobby != null)
                 {
-                    int teamTwoCount = 0;
-                    for (int i = 0; i < Model.PlayersInLobby.Count; i++)
-                    {
-                        if (i % 2 != 0)
-                        {
-                            <li>@Model.PlayersInLobby[i].InGameName</li>
-                            teamTwoCount++;
-                        }
-                    }
-                    for (int i = teamTwoCount; i < maxPlayersPerTeam; i++)
-                    {
-                        <li>Empty</li>
-                    }
+                int teamTwoCount = 0;
+                for (int i = 0; i < Model.PlayersInLobby.Count; i++)
+                {
+                if (i % 2 != 0)
+                {
+                <li>@Model.PlayersInLobby[i].InGameName</li>
+                teamTwoCount++;
+                }
+                }
+                for (int i = teamTwoCount; i < maxPlayersPerTeam; i++)
+                {
+                <li>Empty</li>
+                }
                 }
             </ul>
         </div>
@@ -54,15 +55,8 @@
         <div class="chat-header">
             <h2 id="chat-title">Group Chat</h2>
         </div>
-        <div class="chat-messages">
-            <div class="message">
-                <span class="sender">User1</span>
-                <p class="text">Hello, this is a placeholder message.</p>
-            </div>
-            <div class="message">
-                <span class="sender">User2</span>
-                <p class="text">This is another placeholder message.</p>
-            </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be dynamically added here -->
         </div>
         <div class="Lobbychat-input">
             <input type="text" id="chat-text-input" placeholder="Type your message here..." />
@@ -70,3 +64,41 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/gameHub")
+        .build();
+
+    connection.on("ReceiveMessage", (user, message) => {
+        const chatMessages = document.getElementById("chat-messages");
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message");
+        messageElement.innerHTML = `<span class="sender">${user}</span><p class="text">${message}</p>`;
+        chatMessages.appendChild(messageElement);
+    });
+
+    connection.start().then(() => {
+        console.log("SignalR Connected.");
+    }).catch(err => console.error("SignalR Connection Error: ", err.toString()));
+
+    function sendMessage() {
+        const user = "User"; // Replace with actual user
+        const message = document.getElementById("chat-text-input").value;
+        if (message.trim() !== "") {
+            console.log("Sending message: ", message);
+            connection.invoke("SendMessage", user, message).catch(err => console.error("Send Message Error: ", err.toString()));
+            document.getElementById("chat-text-input").value = "";
+        }
+    }
+
+    document.getElementById("send-chat-btn").addEventListener("click", sendMessage);
+
+    document.getElementById("chat-text-input").addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            sendMessage();
+            event.preventDefault();
+        }
+    });
+</script>

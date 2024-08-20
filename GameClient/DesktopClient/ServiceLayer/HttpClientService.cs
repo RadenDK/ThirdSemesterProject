@@ -1,11 +1,14 @@
-﻿using System.Net.Http.Headers;
+﻿using DesktopClient.ServiceLayer;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace DesktopClient.Services
 {
 	public class HttpClientService : IHttpClientService
 	{
 		private readonly HttpClient _httpClient;
-		private Uri BaseAddress = new Uri("https://localhost:7092/api/");
+		private Uri BaseAddress = new Uri("https://localhost:7092");
 
 		public HttpClientService(HttpClient httpClient)
 		{

@@ -23,7 +23,7 @@ namespace DesktopClient.ServiceLayer
             StringContent stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             try
             {
-                HttpResponseMessage response = await _httpClientService.PostAsync("Token/tokens", stringContent);
+                HttpResponseMessage response = await _httpClientService.PostAsync("token", stringContent);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -48,7 +48,7 @@ namespace DesktopClient.ServiceLayer
 
             try
             {
-                HttpResponseMessage response = await _httpClientService.PostAsync("Token/tokens/refresh", stringContent);
+                HttpResponseMessage response = await _httpClientService.PostAsync("token", stringContent);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();

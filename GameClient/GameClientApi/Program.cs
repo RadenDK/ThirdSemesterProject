@@ -14,6 +14,8 @@ builder.Services.AddScoped<ISecurityHelper, SecurityHelper>();
 builder.Services.AddScoped<IAdminDatabaseAccessor, AdminDatabaseAccessor>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 
 // Get the secret key from configuration

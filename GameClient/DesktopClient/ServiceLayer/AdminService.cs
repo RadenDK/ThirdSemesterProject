@@ -19,11 +19,11 @@ namespace DesktopClient.ServiceLayer
 
         public async Task<bool> VerifyAdminLoginCredentials(int adminId, string password, string accesToken)
         {
-            StringContent content = new StringContent(JsonSerializer.Serialize(new { AdminId = adminId, PasswordHash = password }), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(new { AdminId = adminId, PasswordHash = password }), Encoding.UTF8, "application/json");
             
             _httpClientService.SetAuthenticationHeader(accesToken);
 
-            HttpResponseMessage response = await _httpClientService.PutAsync("Admin/admins/login", content);
+            var response = await _httpClientService.PostAsync("Admin/verify", content);
 
             return response.IsSuccessStatusCode;
 

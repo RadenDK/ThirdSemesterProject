@@ -43,7 +43,7 @@ namespace DesktopClient.ServiceLayer
 		{
 			try
 			{
-				string endpoint = "Player/players";
+				string endpoint = "Player/player";
 
 				StringContent content = new StringContent(
 					JsonConvert.SerializeObject(player),
@@ -71,7 +71,7 @@ namespace DesktopClient.ServiceLayer
 
         public async Task<bool> DeletePlayer(int? playerId, string accessToken)
         {
-            string endpoint = "Player/players";
+            string endpoint = "Player/player";
 
             _httpClientService.SetAuthenticationHeader(accessToken);
             HttpResponseMessage response = await _httpClientService.DeleteAsync(endpoint + "/" + playerId);
